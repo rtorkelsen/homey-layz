@@ -1,0 +1,27 @@
+{
+  "type": "boolean",
+  "title": { 
+  	"en": "Filter pump",
+  	"no": "Filterpumpe" },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "uiQuickAction": true,
+  "icon": "/assets/icons/filter.svg",
+  "values": [
+    {
+      "id": "1",
+      "title": {
+        "en": "On",
+        "no": "På"
+      }
+    },
+    {
+      "id": "0",
+      "title": {
+        "en": "Off",
+        "no": "Av"
+      }
+    }
+  ]
+}

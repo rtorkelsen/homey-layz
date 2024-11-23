@@ -1,0 +1,12 @@
+{
+    "type": "boolean",
+    "title": { 
+        "en": "Filter Pump",
+        "no": "Filterpume"     
+    },
+    "getable": true,
+    "setable": true,
+    "insights": true,
+    "uiComponent": null
+    
+}

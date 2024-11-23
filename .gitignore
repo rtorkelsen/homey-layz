@@ -1,0 +1,32 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+*.log
+
+# Homey-specific build directories
+.homeybuild/
+
+# Environmental files (do not expose sensitive data)
+.env
+env.json
+
+# OS-specific and IDE-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Temporary files or caches
+*.tmp
+*.cache
+*.bak
+
+# Ignore dist or build folders (if you use one)
+dist/
+build/

@@ -1,0 +1,77 @@
+{
+  "name": {
+    "en": "Lay-Z"
+  },
+  "class": "other",
+  "capabilities": [
+    "temp_now",
+    "target_temperature",
+    "thermostat_mode",
+    "onoff",
+    "pump_onoff",
+    "msg_onoff",
+    "heat_temp_reach",
+    "pump_state",
+    "heat_state",
+    "system_error"
+  ],
+
+  
+  "capabilitiesOptions": {
+    "thermostat_mode": {
+      "title": {
+        "en": "Thermostat Mode",
+        "no": "Termostatmodus"
+      },
+      "type": "enum",
+      "values": [
+        {
+          "id": "heat",
+          "title": {
+            "en": "Heat",
+            "no": "Varme"
+          }
+        },
+        {
+          "id": "cool",
+          "title": {
+            "en": "Cool",
+            "no": "Kjøl"
+          }
+        },
+        {
+          "id": "off",
+          "title": {
+            "en": "Off",
+            "no": "Av"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true,
+      "uiComponent": "dropdown",
+      "icon": "/assets/icons/thermostat_mode.svg"
+    }
+  },
+  "images": {
+    "large": "drivers/Lay-Z/assets/images/large.png",
+    "small": "drivers/Lay-Z/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "login",
+      "view": "login.html"
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

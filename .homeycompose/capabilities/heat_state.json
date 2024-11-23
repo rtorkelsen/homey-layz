@@ -1,0 +1,27 @@
+{
+  "type": "boolean",
+  "title": { 
+  	"en": "Heating",
+  	"no": "Varme" },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "uiQuickAction": true,
+  "insights": true,
+  "icon": "/assets/icons/heat.svg","values": [
+    {
+      "id": "1",
+      "title": {
+        "en": "On",
+        "no": "På"
+      }
+    },
+    {
+      "id": "0",
+      "title": {
+        "en": "Off",
+        "no": "Av"
+      }
+    }
+  ]
+}

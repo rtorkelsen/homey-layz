@@ -1,0 +1,12 @@
+{
+    "type": "boolean",
+    "title": { 
+        "en": "Massage",
+        "no": "Massasje"     
+    },
+    "getable": true,
+    "setable": true,
+    "insights": true,
+    "uiComponent": "button"
+    
+}

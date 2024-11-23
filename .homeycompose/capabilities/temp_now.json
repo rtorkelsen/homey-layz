@@ -1,0 +1,11 @@
+{
+  "type": "number",
+  "title": { "en": "Temperature", "no": "Temperatur" },
+  "getable": true,
+  "setable": false,
+  "step": 1,
+  "uiComponent": "sensor",
+  "uiQuickAction": true, 
+  "insights": true,
+  "icon": "/assets/icons/temp.svg"
+}

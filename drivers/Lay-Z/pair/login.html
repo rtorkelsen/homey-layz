@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2></h2>
+
+<p style="text-align: center; font-size: 16px; color: gray;">Login with your Bestway account</p>
+
+<form id="loginForm">
+  <div class="container">
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username (e-mail)" name="uname" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <button type="submit">Login</button>
+  </div>
+  <div id="errorMessage" style="color: red;"></div>
+  <div id="successMessage" style="color: green;"></div>
+</form>
+<script>
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const username = e.target.uname.value;
+  const password = e.target.psw.value;
+
+  Homey.emit('login', { username, password }, (error) => {
+    if (error) {
+      document.getElementById('errorMessage').innerText = 'Failed to login';
+      return;
+    }
+
+    document.getElementById('successMessage').innerText = 'Login successful';
+
+    setTimeout(() => {
+      Homey.nextView();
+    }, 500); // delay in milliseconds
+  });
+});
+
+</script>
+</body>
+</html>

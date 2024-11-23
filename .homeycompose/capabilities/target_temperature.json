@@ -1,0 +1,13 @@
+{
+    "type": "number",
+    "title": {
+      "en": "Target Temperature",
+      "no": "Måltemperatur"
+    },
+    "getable": true,
+    "setable": true,
+    "chartType": "line",
+    "uiComponent": "sensor",
+    "icon": "/assets/icons/temp.svg"
+  }
+  

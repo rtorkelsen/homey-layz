@@ -1,0 +1,81 @@
+{
+    "name": {
+        "en": "Lay-Z"
+    },
+    "class": "other",
+    "capabilities": [
+        "temp_now",
+        "target_temperature",
+        "thermostat_mode",
+        "onoff",
+        "pump_onoff",
+        "msg_onoff",
+        "heat_temp_reach",
+        "pump_state",
+        "heat_state",
+        "system_error"
+    ],
+    "capabilitiesOptions": {
+        "target_temperature": {
+            "title": {
+                "en": "Target Temperature",
+                "no": "M\u00e5ltemperatur"
+            },
+            "type": "number",
+            "units": {
+                "en": "\u00b0C/\u00b0F",
+                "no": "\u00b0C/\u00b0F"
+            },
+            "getable": true,
+            "setable": true,
+            "min": 20,
+            "max": 104,
+            "step": 1,
+            "chartType": "line",
+            "uiComponent": "sensor",
+            "icon": "/assets/icons/temp.svg"
+        },
+        "system_error": {
+            "title": {
+                "en": "System Error",
+                "no": "Systemfeil"
+            },
+            "type": "boolean",
+            "getable": true,
+            "setable": false,
+            "uiComponent": "sensor",
+            "icon": "/assets/icons/error.svg"
+        },
+        "onoff": {
+            "title": {
+                "en": "Power",
+                "no": "Power"
+            },
+            "type": "boolean",
+            "getable": true,
+            "setable": true
+        }
+    },
+    "uiComponent": "thermostat",
+    "images": {
+        "large": "drivers/Lay-Z/assets/images/large.png",
+        "small": "drivers/Lay-Z/assets/images/small.png"
+    },
+    "pair": [
+        {
+            "id": "login",
+            "view": "login.html"
+        },
+        {
+            "id": "list_devices",
+            "template": "list_devices",
+            "navigation": {
+                "next": "add_devices"
+            }
+        },
+        {
+            "id": "add_devices",
+            "template": "add_devices"
+        }
+    ]
+}
