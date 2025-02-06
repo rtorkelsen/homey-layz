@@ -2,7 +2,7 @@
     "type": "boolean",
     "title": { 
         "en": "Massage",
-        "no": "Bobler"     
+        "no": "Massasje"
     },
     "getable": true,
     "setable": true,
