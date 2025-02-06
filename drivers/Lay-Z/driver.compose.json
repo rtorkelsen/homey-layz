@@ -2,49 +2,60 @@
     "name": {
         "en": "Lay-Z"
     },
-    "class": "other",
+    "class": "thermostat",
     "capabilities": [
         "temp_now",
+        "measure_temperature",
         "target_temperature",
         "thermostat_mode",
+        "measure_power",
         "onoff",
         "pump_onoff",
         "msg_onoff",
         "heat_temp_reach",
         "pump_state",
         "heat_state",
-        "system_error"
+        "alarm_generic"
     ],
     "capabilitiesOptions": {
-        "target_temperature": {
-            "title": {
-                "en": "Target Temperature",
-                "no": "M\u00e5ltemperatur"
-            },
-            "type": "number",
-            "units": {
-                "en": "\u00b0C/\u00b0F",
-                "no": "\u00b0C/\u00b0F"
-            },
-            "getable": true,
-            "setable": true,
-            "min": 20,
-            "max": 104,
-            "step": 1,
-            "chartType": "line",
-            "uiComponent": "sensor",
-            "icon": "/assets/icons/temp.svg"
+        "thermostat_mode": {
+            "values": [
+                {
+                    "id": "heat",
+                    "title": {
+                        "en": "Heater on",
+                        "no": "Varme på"
+                    }
+                },
+                {
+                    "id": "off",
+                    "title": {
+                        "en": "Heater off",
+                        "no": "Varme av"
+                    }
+                }
+            ],
+            "insights": true
         },
-        "system_error": {
+        "target_temperature": {
+            "min": 20,
+            "max": 40,
+            "step": 1,
+            "decimals": 0,
+            "insights": true
+        },
+        "measure_temperature": {
+            "insights": true,
+            "decimals": 0
+        },
+        "measure_power": {
+            "insights": true
+        },
+        "alarm_generic": {
             "title": {
-                "en": "System Error",
+                "en": "System failure",
                 "no": "Systemfeil"
-            },
-            "type": "boolean",
-            "getable": true,
-            "setable": false,
-            "uiComponent": "sensor",
-            "icon": "/assets/icons/error.svg"
+            }
         },
         "onoff": {
             "title": {
@@ -76,6 +87,105 @@
         {
             "id": "add_devices",
             "template": "add_devices"
+        }
+    ],
+    "settings": [
+        {
+            "type": "group",
+            "label": {
+                "en": "Activation of app functions",
+                "no": "Aktivering av app-funksjoner"
+            },
+            "children": [
+                {
+                    "id": "power_control_enabled",
+                    "type": "checkbox",
+                    "label": {
+                        "en": "Enable power on/off control",
+                        "no": "Aktiver av/på-styring"
+                    },
+                    "hint": {
+                        "en": "Enable or disable the on/off control for this device.",
+                        "no": "Aktiver eller deaktiver av/på-styring for denne enheten."
+                    },
+                    "value": true
+                },
+                {
+                    "id": "filter_pump_control_enabled",
+                    "type": "checkbox",
+                    "label": {
+                        "en": "Filter Pump Control",
+                        "no": "Aktiver filterpumpestyring"
+                    },
+                    "hint": {
+                        "en": "Enable or disable the on/off control for the filter pump.",
+                        "no": "Aktiver eller deaktiver av/på-styring for filterpumpen."
+                    },
+                    "value": true
+                },
+                {
+                    "id": "wave_control_enabled",
+                    "type": "checkbox",
+                    "label": {
+                        "en": "Wave Control",
+                        "no": "Aktiver boblestyring"
+                    },
+                    "hint": {
+                        "en": "Enable or disable the on/off control for the wave function.",
+                        "no": "Aktiver eller deaktiver av/på-styring for boblefunksjonen."
+                    },
+                    "value": true
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "label": {
+                "en": "Power Settings",
+                "no": "Strøminnstillinger"
+            },
+            "children": [
+                {
+                    "id": "heater_power",
+                    "type": "number",
+                    "label": {
+                        "en": "Heater Power",
+                        "no": "Varmeelementeffekt"
+                    },
+                    "hint": {
+                        "en": "Read user manual for correct value.",
+                        "no": "Les brukermanual for korrekt verdi."
+                    },
+                    "value": 2000,
+                    "units": {
+                        "en": "Watt"
+                    },
+                    "attr": {
+                        "min": 0,
+                        "max": 3000
+                    }
+                },
+                {
+                    "id": "filter_pump_power",
+                    "type": "number",
+                    "label": {
+                        "en": "Filter Pump Power",
+                        "no": "Filterpumpeeffekt"
+                    },
+                    "hint": {
+                        "en": "Read user manual for correct value.",
+                        "no": "Les brukermanual for korrekt verdi."
+                    },
+                    "value": 50,
+                    "units": {
+                        "en": "Watt"
+                    },
+                    "attr": {
+                        "min": 0,
+                        "max": 200
+                    }
+                }
+            ]
         }
     ]
 }

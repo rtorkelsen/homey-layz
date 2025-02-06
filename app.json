@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.utkikk.layz",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": [
@@ -40,6 +40,16 @@
     "large": "/assets/images/large.png",
     "xlarge": "/assets/images/xlarge.png"
   },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Ruben Torkelsen"
+      },
+      {
+        "name": "Einar Hagen"
+      }
+    ]
+  },
   "contributing": {
     "donate": {
       "paypal": {
@@ -56,49 +66,60 @@
       "name": {
         "en": "Lay-Z"
       },
-      "class": "other",
+      "class": "thermostat",
       "capabilities": [
         "temp_now",
+        "measure_temperature",
         "target_temperature",
         "thermostat_mode",
+        "measure_power",
         "onoff",
         "pump_onoff",
         "msg_onoff",
         "heat_temp_reach",
         "pump_state",
         "heat_state",
-        "system_error"
+        "alarm_generic"
       ],
       "capabilitiesOptions": {
-        "target_temperature": {
-          "title": {
-            "en": "Target Temperature",
-            "no": "Måltemperatur"
-          },
-          "type": "number",
-          "units": {
-            "en": "°C/°F",
-            "no": "°C/°F"
-          },
-          "getable": true,
-          "setable": true,
-          "min": 20,
-          "max": 104,
-          "step": 1,
-          "chartType": "line",
-          "uiComponent": "sensor",
-          "icon": "/assets/icons/temp.svg"
+        "thermostat_mode": {
+          "values": [
+            {
+              "id": "heat",
+              "title": {
+                "en": "Heater on",
+                "no": "Varme på"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Heater off",
+                "no": "Varme av"
+              }
+            }
+          ],
+          "insights": true
         },
-        "system_error": {
+        "target_temperature": {
+          "min": 20,
+          "max": 40,
+          "step": 1,
+          "decimals": 0,
+          "insights": true
+        },
+        "measure_temperature": {
+          "insights": true,
+          "decimals": 0
+        },
+        "measure_power": {
+          "insights": true
+        },
+        "alarm_generic": {
           "title": {
-            "en": "System Error",
+            "en": "System failure",
             "no": "Systemfeil"
-          },
-          "type": "boolean",
-          "getable": true,
-          "setable": false,
-          "uiComponent": "sensor",
-          "icon": "/assets/icons/error.svg"
+          }
         },
         "onoff": {
           "title": {
@@ -132,6 +153,105 @@
           "template": "add_devices"
         }
       ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Activation of app functions",
+            "no": "Aktivering av app-funksjoner"
+          },
+          "children": [
+            {
+              "id": "power_control_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Enable power on/off control",
+                "no": "Aktiver av/på-styring"
+              },
+              "hint": {
+                "en": "Enable or disable the on/off control for this device.",
+                "no": "Aktiver eller deaktiver av/på-styring for denne enheten."
+              },
+              "value": true
+            },
+            {
+              "id": "filter_pump_control_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Filter Pump Control",
+                "no": "Aktiver filterpumpestyring"
+              },
+              "hint": {
+                "en": "Enable or disable the on/off control for the filter pump.",
+                "no": "Aktiver eller deaktiver av/på-styring for filterpumpen."
+              },
+              "value": true
+            },
+            {
+              "id": "wave_control_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Wave Control",
+                "no": "Aktiver boblestyring"
+              },
+              "hint": {
+                "en": "Enable or disable the on/off control for the wave function.",
+                "no": "Aktiver eller deaktiver av/på-styring for boblefunksjonen."
+              },
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Power Settings",
+            "no": "Strøminnstillinger"
+          },
+          "children": [
+            {
+              "id": "heater_power",
+              "type": "number",
+              "label": {
+                "en": "Heater Power",
+                "no": "Varmeelementeffekt"
+              },
+              "hint": {
+                "en": "Read user manual for correct value.",
+                "no": "Les brukermanual for korrekt verdi."
+              },
+              "value": 2000,
+              "units": {
+                "en": "Watt"
+              },
+              "attr": {
+                "min": 0,
+                "max": 3000
+              }
+            },
+            {
+              "id": "filter_pump_power",
+              "type": "number",
+              "label": {
+                "en": "Filter Pump Power",
+                "no": "Filterpumpeeffekt"
+              },
+              "hint": {
+                "en": "Read user manual for correct value.",
+                "no": "Les brukermanual for korrekt verdi."
+              },
+              "value": 50,
+              "units": {
+                "en": "Watt"
+              },
+              "attr": {
+                "min": 0,
+                "max": 200
+              }
+            }
+          ]
+        }
+      ],
       "id": "Lay-Z"
     }
   ],
@@ -139,52 +259,37 @@
     "heat_state": {
       "type": "boolean",
       "title": {
-        "en": "Heating",
-        "no": "Varme"
+        "en": "Heater on",
+        "no": "Varme på"
       },
       "getable": true,
       "setable": false,
       "uiComponent": "sensor",
-      "uiQuickAction": true,
-      "insights": true,
-      "icon": "/assets/icons/heat.svg",
-      "values": [
-        {
-          "id": "1",
-          "title": {
-            "en": "On",
-            "no": "På"
-          }
-        },
-        {
-          "id": "0",
-          "title": {
-            "en": "Off",
-            "no": "Av"
-          }
-        }
-      ]
+      "preventInsights": true,
+      "icon": "/assets/icons/heater.svg"
     },
     "heat_temp_reach": {
       "type": "boolean",
       "title": {
-        "en": "Target temperature is reached",
-        "no": "Måltemperatur er opnådd"
+        "en": "Target temperature reached",
+        "no": "Ønsket temperatur nådd"
       },
-      "uiComponent": null,
-      "getable": false,
-      "setable": false
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/icons/heater.svg"
     },
     "msg_onoff": {
       "type": "boolean",
       "title": {
         "en": "Massage",
-        "no": "Massasje"
+        "no": "Bobler"
       },
       "getable": true,
       "setable": true,
-      "insights": true,
-      "uiComponent": "button"
+      "preventInsights": true,
+      "uiComponent": "button",
+      "icon": "/assets/icons/bobbles.svg"
     },
     "pump_onoff": {
       "type": "boolean",
@@ -195,71 +300,30 @@
       "getable": true,
       "setable": true,
       "insights": true,
-      "uiComponent": null
+      "uiComponent": "button",
+      "icon": "/assets/icons/filter_pump.svg"
     },
     "pump_state": {
       "type": "boolean",
       "title": {
-        "en": "Filter pump",
-        "no": "Filterpumpe"
+        "en": "Filter pump on",
+        "no": "Filterpumpe på"
       },
       "getable": true,
       "setable": false,
       "uiComponent": "sensor",
-      "uiQuickAction": true,
-      "icon": "/assets/icons/filter.svg",
-      "values": [
-        {
-          "id": "1",
-          "title": {
-            "en": "On",
-            "no": "På"
-          }
-        },
-        {
-          "id": "0",
-          "title": {
-            "en": "Off",
-            "no": "Av"
-          }
-        }
-      ]
-    },
-    "system_error": {
-      "type": "boolean",
-      "title": {
-        "en": "System Error",
-        "no": "Systemfeil"
-      },
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor",
-      "icon": "/assets/icons/error.svg"
-    },
-    "target_temperature": {
-      "type": "number",
-      "title": {
-        "en": "Target Temperature",
-        "no": "Måltemperatur"
-      },
-      "getable": true,
-      "setable": true,
-      "chartType": "line",
-      "uiComponent": "sensor",
-      "icon": "/assets/icons/temp.svg"
+      "icon": "/assets/icons/filter_pump.svg"
     },
     "temp_now": {
       "type": "number",
       "title": {
-        "en": "Temperature",
-        "no": "Temperatur"
+        "en": "Current temperature",
+        "no": "Nåværende temperatur"
       },
       "getable": true,
       "setable": false,
-      "step": 1,
       "uiComponent": "sensor",
-      "uiQuickAction": true,
-      "insights": true,
+      "preventInsights": true,
       "icon": "/assets/icons/temp.svg"
     }
   }
