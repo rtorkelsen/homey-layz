@@ -271,8 +271,8 @@
     "heat_temp_reach": {
       "type": "boolean",
       "title": {
-        "en": "Target temperature reached",
-        "no": "Ønsket temperatur nådd"
+        "en": "Target temperature is reached",
+        "no": "Måltemperatur er opnådd"
       },
       "uiComponent": "sensor",
       "getable": true,
@@ -283,7 +283,7 @@
       "type": "boolean",
       "title": {
         "en": "Massage",
-        "no": "Bobler"
+        "no": "Massasje"
       },
       "getable": true,
       "setable": true,
