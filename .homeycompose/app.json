@@ -1,6 +1,6 @@
 {
   "id": "com.utkikk.layz",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": [
@@ -39,6 +39,16 @@
     "large": "/assets/images/large.png",
     "xlarge": "/assets/images/xlarge.png"
   },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Ruben Torkelsen"
+      },
+      {
+        "name": "Einar Hagen"
+      }
+    ]
+  },
   "contributing": {
     "donate": {
       "paypal": {
@@ -49,214 +59,5 @@
   "author": {
     "name": "Ruben Torkelsen",
     "email": "layz@utkikk.com"
-  },
-  "drivers": [
-    {
-      "id": "Lay-Z",
-      "name": {
-        "en": "Lay-Z"
-      },
-      "class": "other",
-      "capabilities": [
-        "temp_now",
-        "target_temperature",
-        "thermostat_mode",
-        "onoff",
-        "pump_onoff",
-        "msg_onoff",
-        "heat_temp_reach",
-        "pump_state",
-        "heat_state",
-        "system_error"
-      ],
-      "capabilitiesOptions": {
-        "target_temperature": {
-          "title": {
-            "en": "Target Temperature",
-            "no": "Måltemperatur"
-          },
-          "type": "number",
-          "units": {
-            "en": "°C/°F",
-            "no": "°C/°F"
-          },
-          "getable": true,
-          "setable": true,
-          "min": 20,
-          "max": 104,
-          "step": 1,
-          "chartType": "line",
-          "uiComponent": "sensor",
-          "icon": "/assets/icons/temp.svg"
-        },
-        "system_error": {
-          "title": {
-            "en": "System Error",
-            "no": "Systemfeil"
-          },
-          "type": "boolean",
-          "getable": true,
-          "setable": false,
-          "uiComponent": "sensor",
-          "icon": "/assets/icons/error.svg"
-        },
-        "onoff": {
-          "title": {
-            "en": "Power",
-            "no": "Power"
-          },
-          "type": "boolean",
-          "getable": true,
-          "setable": true
-        }
-      },
-      "uiComponent": "thermostat",
-      "images": {
-        "large": "drivers/Lay-Z/assets/images/large.png",
-        "small": "drivers/Lay-Z/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "login",
-          "view": "login.html"
-        },
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ]
-    }
-  ],
-  "capabilities": {
-    "heat_state": {
-      "type": "boolean",
-      "title": {
-        "en": "Heating",
-        "no": "Varme"
-      },
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor",
-      "uiQuickAction": true,
-      "insights": true,
-      "icon": "/assets/icons/heat.svg",
-      "values": [
-        {
-          "id": "1",
-          "title": {
-            "en": "On",
-            "no": "På"
-          }
-        },
-        {
-          "id": "0",
-          "title": {
-            "en": "Off",
-            "no": "Av"
-          }
-        }
-      ]
-    },
-    "heat_temp_reach": {
-      "type": "boolean",
-      "title": {
-        "en": "Target temperature is reached",
-        "no": "Måltemperatur er opnådd"
-      },
-      "uiComponent": null,
-      "getable": false,
-      "setable": false
-    },
-    "msg_onoff": {
-      "type": "boolean",
-      "title": {
-        "en": "Massage",
-        "no": "Massasje"
-      },
-      "getable": true,
-      "setable": true,
-      "insights": true,
-      "uiComponent": "button"
-    },
-    "pump_onoff": {
-      "type": "boolean",
-      "title": {
-        "en": "Filter Pump",
-        "no": "Filterpume"
-      },
-      "getable": true,
-      "setable": true,
-      "insights": true,
-      "uiComponent": null
-    },
-    "pump_state": {
-      "type": "boolean",
-      "title": {
-        "en": "Filter pump",
-        "no": "Filterpumpe"
-      },
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor",
-      "uiQuickAction": true,
-      "icon": "/assets/icons/filter.svg",
-      "values": [
-        {
-          "id": "1",
-          "title": {
-            "en": "On",
-            "no": "På"
-          }
-        },
-        {
-          "id": "0",
-          "title": {
-            "en": "Off",
-            "no": "Av"
-          }
-        }
-      ]
-    },
-    "system_error": {
-      "title": {
-        "en": "System Error",
-        "no": "Systemfeil"
-      },
-      "type": "boolean",
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor",
-      "icon": "/assets/icons/error.svg"
-    },
-    "target_temperature": {
-      "type": "number",
-      "title": {
-        "en": "Target Temperature",
-        "no": "Måltemperatur"
-      },
-      "getable": true,
-      "setable": true,
-      "chartType": "line",
-      "uiComponent": "sensor",
-      "icon": "/assets/icons/temp.svg"
-    },
-    "temp_now": {
-      "type": "number",
-      "title": {
-        "en": "Temperature",
-        "no": "Temperatur"
-      },
-      "getable": true,
-      "preventInsights": true,
-      "uiComponent": "sensor",
-      "icon": "/assets/icons/temp.svg"
-    }
   }
 }

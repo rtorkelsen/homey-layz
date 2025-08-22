@@ -1,11 +1,12 @@
 {
   "type": "number",
-  "title": { "en": "Temperature", "no": "Temperatur" },
+  "title": { 
+    "en": "Current temperature", 
+    "no": "Nåværende temperatur"
+  },
   "getable": true,
   "setable": false,
-  "step": 1,
   "uiComponent": "sensor",
-  "uiQuickAction": true, 
-  "insights": true,
+  "preventInsights": true,
   "icon": "/assets/icons/temp.svg"
 }

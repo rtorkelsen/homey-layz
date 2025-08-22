@@ -7,6 +7,6 @@
     "getable": true,
     "setable": true,
     "insights": true,
-    "uiComponent": null
-    
+    "uiComponent": "button",
+    "icon": "/assets/icons/filter_pump.svg"
 }

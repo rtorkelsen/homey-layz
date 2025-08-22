@@ -1,11 +1,11 @@
 {
-    
-    "type": "boolean",
-    "title": {
-      "en": "Target temperature is reached",
-      "no": "Måltemperatur er opnådd"
-    },
-    "uiComponent": null,
-    "getable": false,
-    "setable": false
+  "type": "boolean",
+  "title": {
+    "en": "Target temperature is reached",
+    "no": "Måltemperatur er opnådd"
+  },
+  "uiComponent": "sensor",
+  "getable": true,
+  "setable": false,
+  "icon": "/assets/icons/heater.svg"
 }
