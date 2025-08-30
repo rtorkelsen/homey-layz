@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.utkikk.layz",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": [
@@ -61,10 +61,212 @@
     "name": "Ruben Torkelsen",
     "email": "layz@utkikk.com"
   },
+  "flow": {
+    "triggers": [
+      {
+        "id": "filter_pump_changed",
+        "title": {
+          "en": "Filtering changed",
+          "no": "Filtrering endret seg",
+          "cs": "Filtrace se změnila",
+          "nl": "Filteren gewijzigd",
+          "de": "Filterung geändert",
+          "da": "Filtrering ændret",
+          "sv": "Filtrering ändrades",
+          "it": "Filtraggio cambiato",
+          "fr": "Filtration modifiée",
+          "ru": "Фильтрация изменилась",
+          "pl": "Filtracja została zmieniona"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      },
+      {
+        "id": "filter_pump_turned_off",
+        "title": {
+          "en": "Filtering turned off",
+          "no": "Filtrering ble slått av",
+          "cs": "Filtrace byla vypnuta",
+          "nl": "Filteren werd uitgeschakeld",
+          "de": "Filterung wurde ausgeschaltet",
+          "da": "Filtrering blev slukket",
+          "sv": "Filtrering stängdes av",
+          "it": "Il filtraggio è stato spento",
+          "fr": "La filtration a été éteinte",
+          "ru": "Фильтрация была выключена",
+          "pl": "Filtracja została wyłączona"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      },
+      {
+        "id": "filter_pump_turned_on",
+        "title": {
+          "en": "Filtering turned on",
+          "no": "Filtrering ble slått på",
+          "cs": "Filtrace byla zapnuta",
+          "nl": "Filteren werd ingeschakeld",
+          "de": "Filterung wurde eingeschaltet",
+          "da": "Filtrering blev tændt",
+          "sv": "Filtrering slogs på",
+          "it": "Il filtraggio è stato acceso",
+          "fr": "La filtration a été allumée",
+          "ru": "Фильтрация была включена",
+          "pl": "Filtracja została włączona"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "filter_pump_is_off",
+        "title": {
+          "en": "Filtering is off",
+          "no": "Filtrering er av",
+          "cs": "Filtrace je vypnutá",
+          "nl": "Filteren is uit",
+          "de": "Filterung ist aus",
+          "da": "Filtrering er slukket",
+          "sv": "Filtrering är av",
+          "it": "Il filtraggio è spento",
+          "fr": "La filtration est éteinte",
+          "ru": "Фильтрация выключена",
+          "pl": "Filtracja jest wyłączona"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      },
+      {
+        "id": "filter_pump_is_on",
+        "title": {
+          "en": "Filtering is on",
+          "no": "Filtrering er på",
+          "cs": "Filtrace je zapnutá",
+          "nl": "Filteren is aan",
+          "de": "Filterung ist an",
+          "da": "Filtrering er tændt",
+          "sv": "Filtrering är på",
+          "it": "Il filtraggio è acceso",
+          "fr": "La filtration est allumée",
+          "ru": "Фильтрация включена",
+          "pl": "Filtracja jest włączona"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "filter_pump_toggle",
+        "title": {
+          "en": "Toggle filtering",
+          "no": "Veksle filtrering mellom på og av",
+          "cs": "Přepnout filtraci",
+          "nl": "Filteren wisselen",
+          "de": "Filterung umschalten",
+          "da": "Skift filtrering",
+          "sv": "Växla filtrering",
+          "it": "Attiva/disattiva filtraggio",
+          "fr": "Basculer la filtration",
+          "ru": "Переключить фильтрацию",
+          "pl": "Przełącz filtrację"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      },
+      {
+        "id": "filter_pump_turn_off",
+        "title": {
+          "en": "Turn filtering off",
+          "no": "Slå av filtrering",
+          "cs": "Vypnout filtraci",
+          "nl": "Filteren uitschakelen",
+          "de": "Filterung ausschalten",
+          "da": "Sluk filtrering",
+          "sv": "Stäng av filtrering",
+          "it": "Spegni filtraggio",
+          "fr": "Éteindre la filtration",
+          "ru": "Выключить фильтрацию",
+          "pl": "Wyłącz filtrację"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      },
+      {
+        "id": "filter_pump_turn_on",
+        "title": {
+          "en": "Turn filtering on",
+          "no": "Slå på filtrering",
+          "cs": "Zapnout filtraci",
+          "nl": "Filteren inschakelen",
+          "de": "Filterung einschalten",
+          "da": "Tænd filtrering",
+          "sv": "Slå på filtrering",
+          "it": "Accendi filtraggio",
+          "fr": "Allumer la filtration",
+          "ru": "Включить фильтрацию",
+          "pl": "Włącz filtrację"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=Lay-Z"
+          }
+        ]
+      }
+    ]
+  },
   "drivers": [
     {
       "name": {
-        "en": "Lay-Z"
+        "en": "Lay-Z",
+        "no": "Lay-Z",
+        "cs": "Lay-Z",
+        "nl": "Lay-Z",
+        "de": "Lay-Z",
+        "da": "Lay-Z",
+        "sv": "Lay-Z",
+        "it": "Lay-Z",
+        "fr": "Lay-Z",
+        "ru": "Lay-Z",
+        "pl": "Lay-Z"
       },
       "class": "thermostat",
       "capabilities": [
@@ -90,14 +292,32 @@
               "id": "heat",
               "title": {
                 "en": "Heater on",
-                "no": "Varme på"
+                "no": "Varme på",
+                "cs": "Ohřívač zapnutý",
+                "nl": "Verwarming aan",
+                "de": "Heizung an",
+                "da": "Varme tændt",
+                "sv": "Värmen är på",
+                "it": "Riscaldamento acceso",
+                "fr": "Chauffage activé",
+                "ru": "Нагреватель включен",
+                "pl": "Grzanie włączone"
               }
             },
             {
               "id": "off",
               "title": {
                 "en": "Heater off",
-                "no": "Varme av"
+                "no": "Varme av",
+                "cs": "Ohřívač vypnutý",
+                "nl": "Verwarming uit",
+                "de": "Heizung aus",
+                "da": "Varme slukket",
+                "sv": "Värmen är av",
+                "it": "Riscaldamento spento",
+                "fr": "Chauffage désactivé",
+                "ru": "Нагреватель выключен",
+                "pl": "Grzanie wyłączone"
               }
             }
           ],
@@ -120,13 +340,31 @@
         "alarm_generic": {
           "title": {
             "en": "System failure",
-            "no": "Systemfeil"
+            "no": "Systemfeil",
+            "cs": "Porucha systému",
+            "nl": "Systeemfout",
+            "de": "Systemfehler",
+            "da": "Systemfejl",
+            "sv": "Systemfel",
+            "it": "Errore di sistema",
+            "fr": "Défaillance du système",
+            "ru": "Сбой системы",
+            "pl": "Awaria systemu"
           }
         },
         "onoff": {
           "title": {
             "en": "Power",
-            "no": "Power"
+            "no": "Power",
+            "cs": "Napájení",
+            "nl": "Stroom",
+            "de": "Strom",
+            "da": "Strøm",
+            "sv": "Ström",
+            "it": "Alimentazione",
+            "fr": "Alimentation",
+            "ru": "Питание",
+            "pl": "Zasilanie"
           },
           "type": "boolean",
           "getable": true,
@@ -138,7 +376,16 @@
         "jet_onoff": {
           "title": {
             "en": "Hydrojet",
-            "no": "Hydrojet"
+            "no": "Hydrojet",
+            "cs": "Hydro tryska",
+            "nl": "Hydrojet",
+            "de": "Hydrojet",
+            "da": "Hydrojet",
+            "sv": "Hydrojet",
+            "it": "Idrogetto",
+            "fr": "Hydrojet",
+            "ru": "Гидроджеты",
+            "pl": "Hydrojet"
           }
         }
       },
@@ -164,12 +411,30 @@
           "template": "add_devices"
         }
       ],
+      "repair": [
+        {
+          "id": "repair_login",
+          "view": "repair_login.html",
+          "navigation": {
+            "next": null
+          }
+        }
+      ],
       "settings": [
         {
           "type": "group",
           "label": {
             "en": "Activation of app functions",
-            "no": "Aktivering av app-funksjoner"
+            "no": "Aktivering av app-funksjoner",
+            "cs": "Aktivace funkcí aplikace",
+            "nl": "Activering van app-functies",
+            "de": "Aktivierung von App-Funktionen",
+            "da": "Aktivering af app-funktioner",
+            "sv": "Aktivering av app-funktioner",
+            "it": "Attivazione delle funzioni dell'app",
+            "fr": "Activation des fonctions de l'application",
+            "ru": "Активация функций приложения",
+            "pl": "Aktywacja funkcji aplikacji"
           },
           "children": [
             {
@@ -177,11 +442,29 @@
               "type": "checkbox",
               "label": {
                 "en": "Enable power on/off control",
-                "no": "Aktiver av/på-styring"
+                "no": "Aktiver av/på-styring",
+                "cs": "Povolit ovládání zapnutí/vypnutí",
+                "nl": "Schakel in-/uitschakelen in",
+                "de": "Ein-/Ausschalten aktivieren",
+                "da": "Aktivér tænd/sluk styring",
+                "sv": "Aktivera av/på-styrning",
+                "it": "Abilita controllo accensione/spegnimento",
+                "fr": "Activer le contrôle marche/arrêt",
+                "ru": "Включить управление включением/выключением",
+                "pl": "Włącz sterowanie włącz/wyłącz"
               },
               "hint": {
                 "en": "Enable or disable the on/off control for this device.",
-                "no": "Aktiver eller deaktiver av/på-styring for denne enheten."
+                "no": "Aktiver eller deaktiver av/på-styring for denne enheten.",
+                "cs": "Povolit nebo zakázat ovládání zapnutí/vypnutí pro toto zařízení.",
+                "nl": "Schakel het in-/uitschakelen voor dit apparaat in of uit.",
+                "de": "Aktivieren oder deaktivieren Sie die Ein-/Aus-Steuerung für dieses Gerät.",
+                "da": "Aktivér eller deaktiver tænd/sluk styring for denne enhed.",
+                "sv": "Aktivera eller inaktivera av/på-styrning för denna enhet.",
+                "it": "Abilita o disabilita il controllo di accensione/spegnimento per questo dispositivo.",
+                "fr": "Activer ou désactiver le contrôle marche/arrêt pour cet appareil.",
+                "ru": "Включить или отключить управление включением/выключением для этого устройства.",
+                "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz dla tego urządzenia."
               },
               "value": true
             },
@@ -190,11 +473,29 @@
               "type": "checkbox",
               "label": {
                 "en": "Filter Pump Control",
-                "no": "Aktiver filterpumpestyring"
+                "no": "Aktiver filterpumpestyring",
+                "cs": "Ovládání filtrační pumpy",
+                "nl": "Filterpompbesturing",
+                "de": "Steuerung der Filterpumpe",
+                "da": "Filterpumpestyring",
+                "sv": "Filterpumpskontroll",
+                "it": "Controllo pompa di filtraggio",
+                "fr": "Contrôle de la pompe de filtration",
+                "ru": "Управление фильтрационным насосом",
+                "pl": "Sterowanie pompą filtracyjną"
               },
               "hint": {
                 "en": "Enable or disable the on/off control for the filter pump.",
-                "no": "Aktiver eller deaktiver av/på-styring for filterpumpen."
+                "no": "Aktiver eller deaktiver av/på-styring for filterpumpen.",
+                "cs": "Povolit nebo zakázat ovládání zapnutí/vypnutí filtrační pumpy.",
+                "nl": "Schakel het in-/uitschakelen van de filterpomp in of uit.",
+                "de": "Aktivieren oder deaktivieren Sie die Ein-/Aus-Steuerung für die Filterpumpe.",
+                "da": "Aktivér eller deaktiver tænd/sluk styring for filterpumpen.",
+                "sv": "Aktivera eller inaktivera av/på-styrning för filterpumpen.",
+                "it": "Abilita o disabilita il controllo di accensione/spegnimento per la pompa di filtraggio.",
+                "fr": "Activer ou désactiver le contrôle marche/arrêt pour la pompe de filtration.",
+                "ru": "Включить или отключить управление включением/выключением для фильтрационного насоса.",
+                "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz pompy filtracyjnej."
               },
               "value": true
             },
@@ -203,11 +504,29 @@
               "type": "checkbox",
               "label": {
                 "en": "Wave Control",
-                "no": "Aktiver boblestyring"
+                "no": "Aktiver boblestyring",
+                "cs": "Ovládání vln",
+                "nl": "Golfbesturing",
+                "de": "Wellensteuerung",
+                "da": "Boblekontrol",
+                "sv": "Bubbelkontroll",
+                "it": "Controllo onde",
+                "fr": "Contrôle des vagues",
+                "ru": "Управление волнами",
+                "pl": "Sterowanie falami"
               },
               "hint": {
                 "en": "Enable or disable the on/off control for the wave function.",
-                "no": "Aktiver eller deaktiver av/på-styring for boblefunksjonen."
+                "no": "Aktiver eller deaktiver av/på-styring for boblefunksjonen.",
+                "cs": "Povolit nebo zakázat ovládání zapnutí/vypnutí funkce vln.",
+                "nl": "Schakel het in-/uitschakelen van de golf-functie in of uit.",
+                "de": "Aktivieren oder deaktivieren Sie die Ein-/Aus-Steuerung für die Wellenfunktion.",
+                "da": "Aktivér eller deaktiver tænd/sluk styring for boblefunktionen.",
+                "sv": "Aktivera eller inaktivera av/på-styrning för bubbelfunktionen.",
+                "it": "Abilita o disabilita il controllo di accensione/spegnimento per la funzione onde.",
+                "fr": "Activer ou désactiver le contrôle marche/arrêt pour la fonction vagues.",
+                "ru": "Включить или отключить управление включением/выключением для функции волн.",
+                "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz funkcji fal."
               },
               "value": true
             }
@@ -217,7 +536,16 @@
           "type": "group",
           "label": {
             "en": "Power Settings",
-            "no": "Strøminnstillinger"
+            "no": "Strøminnstillinger",
+            "cs": "Nastavení výkonu",
+            "nl": "Stroominstellingen",
+            "de": "Stromeinstellungen",
+            "da": "Strømindstillinger",
+            "sv": "Ströminställningar",
+            "it": "Impostazioni di potenza",
+            "fr": "Paramètres d'alimentation",
+            "ru": "Настройки питания",
+            "pl": "Ustawienia zasilania"
           },
           "children": [
             {
@@ -225,15 +553,42 @@
               "type": "number",
               "label": {
                 "en": "Heater Power",
-                "no": "Varmeelementeffekt"
+                "no": "Varmeelementeffekt",
+                "cs": "Výkon ohřívače",
+                "nl": "Verwarmingsvermogen",
+                "de": "Heizleistung",
+                "da": "Varmeeffekt",
+                "sv": "Värmeeffekt",
+                "it": "Potenza riscaldatore",
+                "fr": "Puissance du chauffage",
+                "ru": "Мощность нагревателя",
+                "pl": "Moc grzałki"
               },
               "hint": {
                 "en": "Read user manual for correct value.",
-                "no": "Les brukermanual for korrekt verdi."
+                "no": "Les brukermanual for korrekt verdi.",
+                "cs": "Přečtěte si uživatelskou příručku pro správnou hodnotu.",
+                "nl": "Raadpleeg de handleiding voor de juiste waarde.",
+                "de": "Lesen Sie das Benutzerhandbuch für den korrekten Wert.",
+                "da": "Læs brugermanualen for korrekt værdi.",
+                "sv": "Läs användarmanualen för rätt värde.",
+                "it": "Leggere il manuale utente per il valore corretto.",
+                "fr": "Consultez le manuel utilisateur pour la valeur correcte.",
+                "ru": "См. руководство пользователя для правильного значения.",
+                "pl": "Sprawdź instrukcję obsługi dla prawidłowej wartości."
               },
               "value": 2000,
               "units": {
-                "en": "Watt"
+                "en": "Watt",
+                "cs": "Watt",
+                "nl": "Watt",
+                "de": "Watt",
+                "da": "Watt",
+                "sv": "Watt",
+                "it": "Watt",
+                "fr": "Watt",
+                "ru": "Вт",
+                "pl": "Watt"
               },
               "attr": {
                 "min": 0,
@@ -245,15 +600,42 @@
               "type": "number",
               "label": {
                 "en": "Filter Pump Power",
-                "no": "Filterpumpeeffekt"
+                "no": "Filterpumpeeffekt",
+                "cs": "Výkon filtrační pumpy",
+                "nl": "Vermogen filterpomp",
+                "de": "Leistung der Filterpumpe",
+                "da": "Filterpumpeeffekt",
+                "sv": "Filterpumpseffekt",
+                "it": "Potenza pompa di filtraggio",
+                "fr": "Puissance de la pompe de filtration",
+                "ru": "Мощность фильтрационного насоса",
+                "pl": "Moc pompy filtracyjnej"
               },
               "hint": {
                 "en": "Read user manual for correct value.",
-                "no": "Les brukermanual for korrekt verdi."
+                "no": "Les brukermanual for korrekt verdi.",
+                "cs": "Přečtěte si uživatelskou příručku pro správnou hodnotu.",
+                "nl": "Raadpleeg de handleiding voor de juiste waarde.",
+                "de": "Lesen Sie das Benutzerhandbuch für den korrekten Wert.",
+                "da": "Læs brugermanualen for korrekt værdi.",
+                "sv": "Läs användarmanualen för rätt värde.",
+                "it": "Leggere il manuale utente per il valore corretto.",
+                "fr": "Consultez le manuel utilisateur pour la valeur correcte.",
+                "ru": "См. руководство пользователя для правильного значения.",
+                "pl": "Sprawdź instrukcję obsługi dla prawidłowej wartości."
               },
               "value": 50,
               "units": {
-                "en": "Watt"
+                "en": "Watt",
+                "cs": "Watt",
+                "nl": "Watt",
+                "de": "Watt",
+                "da": "Watt",
+                "sv": "Watt",
+                "it": "Watt",
+                "fr": "Watt",
+                "ru": "Вт",
+                "pl": "Watt"
               },
               "attr": {
                 "min": 0,
@@ -271,7 +653,16 @@
       "type": "boolean",
       "title": {
         "en": "Heater on",
-        "no": "Varme på"
+        "no": "Varme på",
+        "cs": "Ohřívač zapnutý",
+        "nl": "Verwarming aan",
+        "de": "Heizung an",
+        "da": "Varme tændt",
+        "sv": "Värmen är på",
+        "it": "Riscaldamento acceso",
+        "fr": "Chauffage activé",
+        "ru": "Нагреватель включен",
+        "pl": "Grzanie włączone"
       },
       "getable": true,
       "setable": false,
@@ -283,7 +674,16 @@
       "type": "boolean",
       "title": {
         "en": "Target temperature is reached",
-        "no": "Måltemperatur er opnådd"
+        "no": "Måltemperatur er oppnådd",
+        "cs": "Cílová teplota dosažena",
+        "nl": "Doeltemperatuur bereikt",
+        "de": "Zieltemperatur erreicht",
+        "da": "Måltemperatur er nået",
+        "sv": "Måltemperaturen är uppnådd",
+        "it": "Temperatura target raggiunta",
+        "fr": "Température cible atteinte",
+        "ru": "Целевая температура достигнута",
+        "pl": "Osiągnięto temperaturę docelową"
       },
       "uiComponent": "sensor",
       "getable": true,
@@ -294,7 +694,16 @@
       "type": "boolean",
       "title": {
         "en": "Hydrojets",
-        "no": "Hydrojets"
+        "no": "Hydrojets",
+        "cs": "Hydro trysky",
+        "nl": "Hydrojets",
+        "de": "Hydrodüsen",
+        "da": "Hydrostråler",
+        "sv": "Hydrostrålar",
+        "it": "Idrogetti",
+        "fr": "Hydrojets",
+        "ru": "Гидроструи",
+        "pl": "Hydrodysze"
       },
       "getable": true,
       "setable": true,
@@ -304,7 +713,16 @@
       "type": "enum",
       "title": {
         "en": "Massage mode",
-        "no": "Massasjemodus"
+        "no": "Massasjemodus",
+        "cs": "Režim masáže",
+        "nl": "Massage modus",
+        "de": "Massagemodus",
+        "da": "Massagetilstand",
+        "sv": "Massage­läge",
+        "it": "Modalità massaggio",
+        "fr": "Mode massage",
+        "ru": "Режим массажа",
+        "pl": "Tryb masażu"
       },
       "getable": true,
       "setable": true,
@@ -313,21 +731,48 @@
           "id": "off",
           "title": {
             "en": "Off",
-            "no": "Av"
+            "no": "Av",
+            "cs": "Vypnuto",
+            "nl": "Uit",
+            "de": "Aus",
+            "da": "Fra",
+            "sv": "Av",
+            "it": "Spento",
+            "fr": "Éteint",
+            "ru": "Выкл",
+            "pl": "Wyłączony"
           }
         },
         {
           "id": "low",
           "title": {
             "en": "Low",
-            "no": "Lav"
+            "no": "Lav",
+            "cs": "Nízký",
+            "nl": "Laag",
+            "de": "Niedrig",
+            "da": "Lav",
+            "sv": "Låg",
+            "it": "Basso",
+            "fr": "Faible",
+            "ru": "Низкий",
+            "pl": "Niski"
           }
         },
         {
           "id": "high",
           "title": {
             "en": "High",
-            "no": "Høy"
+            "no": "Høy",
+            "cs": "Vysoký",
+            "nl": "Hoog",
+            "de": "Hoch",
+            "da": "Høj",
+            "sv": "Hög",
+            "it": "Alto",
+            "fr": "Élevé",
+            "ru": "Высокий",
+            "pl": "Wysoki"
           }
         }
       ],
@@ -338,7 +783,16 @@
       "type": "boolean",
       "title": {
         "en": "Massage",
-        "no": "Massasje"
+        "no": "Massasje",
+        "cs": "Masáž",
+        "nl": "Massage",
+        "de": "Massage",
+        "da": "Massage",
+        "sv": "Massage",
+        "it": "Massaggio",
+        "fr": "Massage",
+        "ru": "Массаж",
+        "pl": "Masaż"
       },
       "getable": true,
       "setable": true,
@@ -349,8 +803,17 @@
     "pump_onoff": {
       "type": "boolean",
       "title": {
-        "en": "Filter Pump",
-        "no": "Filterpume"
+        "en": "Filtering",
+        "no": "Filtrering",
+        "cs": "Filtrace",
+        "nl": "Filteren",
+        "de": "Filtern",
+        "da": "Filtrering",
+        "sv": "Filtrering",
+        "it": "Filtraggio",
+        "fr": "Filtration",
+        "ru": "Фильтрация",
+        "pl": "Filtrowanie"
       },
       "getable": true,
       "setable": true,
@@ -361,8 +824,17 @@
     "pump_state": {
       "type": "boolean",
       "title": {
-        "en": "Filter pump on",
-        "no": "Filterpumpe på"
+        "en": "Filtering on",
+        "no": "Filtrering på",
+        "cs": "Filtrace zapnuta",
+        "nl": "Filteren aan",
+        "de": "Filtern an",
+        "da": "Filtrering tændt",
+        "sv": "Filtrering på",
+        "it": "Filtraggio acceso",
+        "fr": "Filtration activée",
+        "ru": "Фильтрация включена",
+        "pl": "Filtrowanie włączone"
       },
       "getable": true,
       "setable": false,
@@ -373,7 +845,16 @@
       "type": "number",
       "title": {
         "en": "Current temperature",
-        "no": "Nåværende temperatur"
+        "no": "Nåværende temperatur",
+        "cs": "Aktuální teplota",
+        "nl": "Huidige temperatuur",
+        "de": "Aktuelle Temperatur",
+        "da": "Nuværende temperatur",
+        "sv": "Nuvarande temperatur",
+        "it": "Temperatura attuale",
+        "fr": "Température actuelle",
+        "ru": "Текущая температура",
+        "pl": "Aktualna temperatura"
       },
       "getable": true,
       "setable": false,
