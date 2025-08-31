@@ -1,0 +1,70 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Massage mode",
+    "no": "Massasjemodus",
+    "cs": "Režim masáže",
+    "nl": "Massage modus",
+    "de": "Massagemodus",
+    "da": "Massagetilstand",
+    "sv": "Massage­läge",
+    "it": "Modalità massaggio",
+    "fr": "Mode massage",
+    "ru": "Режим массажа",
+    "pl": "Tryb masażu"
+  },
+  "getable": true,
+  "setable": true,
+  "values": [
+    { 
+      "id": "off",  
+      "title": { 
+        "en": "Off",  
+        "no": "Av",
+        "cs": "Vypnuto",
+        "nl": "Uit",
+        "de": "Aus",
+        "da": "Fra",
+        "sv": "Av",
+        "it": "Spento",
+        "fr": "Éteint",
+        "ru": "Выкл",
+        "pl": "Wyłączony"
+      } 
+    },
+    { 
+      "id": "low",  
+      "title": { 
+        "en": "Low",  
+        "no": "Lav",
+        "cs": "Nízký",
+        "nl": "Laag",
+        "de": "Niedrig",
+        "da": "Lav",
+        "sv": "Låg",
+        "it": "Basso",
+        "fr": "Faible",
+        "ru": "Низкий",
+        "pl": "Niski"
+      } 
+    },
+    { 
+      "id": "high", 
+      "title": { 
+        "en": "High", 
+        "no": "Høy",
+        "cs": "Vysoký",
+        "nl": "Hoog",
+        "de": "Hoch",
+        "da": "Høj",
+        "sv": "Hög",
+        "it": "Alto",
+        "fr": "Élevé",
+        "ru": "Высокий",
+        "pl": "Wysoki"
+      } 
+    }
+  ],
+  "uiComponent": "button",
+  "icon": "/assets/icons/bobbles.svg"
+}

@@ -2,7 +2,16 @@
   "type": "boolean",
   "title": {
     "en": "Target temperature is reached",
-    "no": "Måltemperatur er opnådd"
+    "no": "Måltemperatur er oppnådd",
+    "cs": "Cílová teplota dosažena",
+    "nl": "Doeltemperatuur bereikt",
+    "de": "Zieltemperatur erreicht",
+    "da": "Måltemperatur er nået",
+    "sv": "Måltemperaturen är uppnådd",
+    "it": "Temperatura target raggiunta",
+    "fr": "Température cible atteinte",
+    "ru": "Целевая температура достигнута",
+    "pl": "Osiągnięto temperaturę docelową"
   },
   "uiComponent": "sensor",
   "getable": true,

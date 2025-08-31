@@ -1,0 +1,23 @@
+{
+  "id": "filter_pump_is_on",
+  "title": {
+    "en": "Filtering is on",
+    "no": "Filtrering er på",
+    "cs": "Filtrace je zapnutá",
+    "nl": "Filteren is aan",
+    "de": "Filterung ist an",
+    "da": "Filtrering er tændt",
+    "sv": "Filtrering är på",
+    "it": "Il filtraggio è acceso",
+    "fr": "La filtration est allumée",
+    "ru": "Фильтрация включена",
+    "pl": "Filtracja jest włączona"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Lay-Z"
+    }
+  ]
+}

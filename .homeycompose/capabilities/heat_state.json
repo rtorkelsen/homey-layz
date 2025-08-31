@@ -1,8 +1,17 @@
 {
   "type": "boolean",
   "title": { 
-  	"en": "Heater on",
-  	"no": "Varme på"
+    "en": "Heater on",
+    "no": "Varme på",
+    "cs": "Ohřívač zapnutý",
+    "nl": "Verwarming aan",
+    "de": "Heizung an",
+    "da": "Varme tændt",
+    "sv": "Värmen är på",
+    "it": "Riscaldamento acceso",
+    "fr": "Chauffage activé",
+    "ru": "Нагреватель включен",
+    "pl": "Grzanie włączone"
   },
   "getable": true,
   "setable": false,

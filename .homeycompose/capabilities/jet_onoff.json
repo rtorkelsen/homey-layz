@@ -1,0 +1,19 @@
+{
+  "type": "boolean",
+  "title": { 
+    "en": "Hydrojets",
+    "no": "Hydrojets",
+    "cs": "Hydro trysky",
+    "nl": "Hydrojets",
+    "de": "Hydrodüsen",
+    "da": "Hydrostråler",
+    "sv": "Hydrostrålar",
+    "it": "Idrogetti",
+    "fr": "Hydrojets",
+    "ru": "Гидроструи",
+    "pl": "Hydrodysze"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "button"
+}

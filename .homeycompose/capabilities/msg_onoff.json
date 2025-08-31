@@ -1,12 +1,22 @@
 {
     "type": "boolean",
     "title": { 
-        "en": "Massage",
-        "no": "Massasje"
+      "en": "Massage",
+      "no": "Massasje",
+      "cs": "Masáž",
+      "nl": "Massage",
+      "de": "Massage",
+      "da": "Massage",
+      "sv": "Massage",
+      "it": "Massaggio",
+      "fr": "Massage",
+      "ru": "Массаж",
+      "pl": "Masaż"
     },
     "getable": true,
     "setable": true,
     "preventInsights": true,
     "uiComponent": "button",
     "icon": "/assets/icons/bobbles.svg"
-}
+  }
+  

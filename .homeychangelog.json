@@ -34,5 +34,21 @@
   },
   "1.1.2": {
     "en": "Minor bug fixes"
+  },
+  "1.2.0": {
+    "en": "Termostat class, power feature, settings, new icons, cleaning"
+  },
+  "1.2.1": {
+    "en": "support for HydroJet Pro (no jet support)"
+  },
+  "1.2.2": {
+    "en": "Updated with support for Hydrojet Pro, thanks to Michal Růžička from the lovely Czech Republic who kindly gave me access to his spa for a few days."
+  },
+  "1.2.3": {
+    "en": "Added new flow cards for controlling and monitoring the filtering (on/off/toggle/status). Thanks to Rene van Ziel for pointing out the missing functionality"
+  },
+  "1.2.4": {
+    "en": "updated Readme"
   }
+
 }

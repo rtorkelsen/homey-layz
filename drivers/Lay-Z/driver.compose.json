@@ -1,191 +1,392 @@
 {
-    "name": {
-        "en": "Lay-Z"
-    },
-    "class": "thermostat",
-    "capabilities": [
-        "temp_now",
-        "measure_temperature",
-        "target_temperature",
-        "thermostat_mode",
-        "measure_power",
-        "onoff",
-        "pump_onoff",
-        "msg_onoff",
-        "heat_temp_reach",
-        "pump_state",
-        "heat_state",
-        "alarm_generic"
-    ],
-    "capabilitiesOptions": {
-        "thermostat_mode": {
-            "values": [
-                {
-                    "id": "heat",
-                    "title": {
-                        "en": "Heater on",
-                        "no": "Varme på"
-                    }
-                },
-                {
-                    "id": "off",
-                    "title": {
-                        "en": "Heater off",
-                        "no": "Varme av"
-                    }
-                }
-            ],
-            "insights": true
+  "name": {
+    "en": "Lay-Z",
+    "no": "Lay-Z",
+    "cs": "Lay-Z",
+    "nl": "Lay-Z",
+    "de": "Lay-Z",
+    "da": "Lay-Z",
+    "sv": "Lay-Z",
+    "it": "Lay-Z",
+    "fr": "Lay-Z",
+    "ru": "Lay-Z",
+    "pl": "Lay-Z"
+  },
+  "class": "thermostat",
+  "capabilities": [
+    "temp_now",
+    "measure_temperature",
+    "target_temperature",
+    "thermostat_mode",
+    "measure_power",
+    "onoff",
+    "pump_onoff",
+    "msg_onoff",
+    "heat_temp_reach",
+    "pump_state",
+    "heat_state",
+    "alarm_generic",
+    "massage_mode",
+    "jet_onoff"
+  ],
+  "capabilitiesOptions": {
+    "thermostat_mode": {
+      "values": [
+        {
+          "id": "heat",
+          "title": {
+            "en": "Heater on",
+            "no": "Varme på",
+            "cs": "Ohřívač zapnutý",
+            "nl": "Verwarming aan",
+            "de": "Heizung an",
+            "da": "Varme tændt",
+            "sv": "Värmen är på",
+            "it": "Riscaldamento acceso",
+            "fr": "Chauffage activé",
+            "ru": "Нагреватель включен",
+            "pl": "Grzanie włączone"
+          }
         },
-        "target_temperature": {
-            "min": 20,
-            "max": 40,
-            "step": 1,
-            "decimals": 0,
-            "insights": true
-        },
-        "measure_temperature": {
-            "insights": true,
-            "decimals": 0
-        },
-        "measure_power": {
-            "insights": true
-        },
-        "alarm_generic": {
-            "title": {
-                "en": "System failure",
-                "no": "Systemfeil"
-            }
-        },
-        "onoff": {
-            "title": {
-                "en": "Power",
-                "no": "Power"
-            },
-            "type": "boolean",
-            "getable": true,
-            "setable": true
+        {
+          "id": "off",
+          "title": {
+            "en": "Heater off",
+            "no": "Varme av",
+            "cs": "Ohřívač vypnutý",
+            "nl": "Verwarming uit",
+            "de": "Heizung aus",
+            "da": "Varme slukket",
+            "sv": "Värmen är av",
+            "it": "Riscaldamento spento",
+            "fr": "Chauffage désactivé",
+            "ru": "Нагреватель выключен",
+            "pl": "Grzanie wyłączone"
+          }
         }
+      ],
+      "insights": true
     },
-    "uiComponent": "thermostat",
-    "images": {
-        "large": "drivers/Lay-Z/assets/images/large.png",
-        "small": "drivers/Lay-Z/assets/images/small.png"
+    "target_temperature": {
+      "min": 20,
+      "max": 40,
+      "step": 1,
+      "decimals": 0,
+      "insights": true
     },
-    "pair": [
+    "measure_temperature": {
+      "insights": true,
+      "decimals": 0
+    },
+    "measure_power": {
+      "insights": true
+    },
+    "alarm_generic": {
+      "title": {
+        "en": "System failure",
+        "no": "Systemfeil",
+        "cs": "Porucha systému",
+        "nl": "Systeemfout",
+        "de": "Systemfehler",
+        "da": "Systemfejl",
+        "sv": "Systemfel",
+        "it": "Errore di sistema",
+        "fr": "Défaillance du système",
+        "ru": "Сбой системы",
+        "pl": "Awaria systemu"
+      }
+    },
+    "onoff": {
+      "title": {
+        "en": "Power",
+        "no": "Power",
+        "cs": "Napájení",
+        "nl": "Stroom",
+        "de": "Strom",
+        "da": "Strøm",
+        "sv": "Ström",
+        "it": "Alimentazione",
+        "fr": "Alimentation",
+        "ru": "Питание",
+        "pl": "Zasilanie"
+      },
+      "type": "boolean",
+      "getable": true,
+      "setable": true
+    },
+    "massage_mode": {
+      "insights": false
+    },
+    "jet_onoff": {
+      "title": {
+        "en": "Hydrojet",
+        "no": "Hydrojet",
+        "cs": "Hydro tryska",
+        "nl": "Hydrojet",
+        "de": "Hydrojet",
+        "da": "Hydrojet",
+        "sv": "Hydrojet",
+        "it": "Idrogetto",
+        "fr": "Hydrojet",
+        "ru": "Гидроджеты",
+        "pl": "Hydrojet"
+      }
+    }
+  },
+  "uiComponent": "thermostat",
+  "images": {
+    "large": "drivers/Lay-Z/assets/images/large.png",
+    "small": "drivers/Lay-Z/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "login",
+      "view": "login.html"
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "repair": [
+  {
+    "id": "repair_login",
+    "view": "repair_login.html",
+    "navigation": {
+      "next": null
+    }
+  }
+],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Activation of app functions",
+        "no": "Aktivering av app-funksjoner",
+        "cs": "Aktivace funkcí aplikace",
+        "nl": "Activering van app-functies",
+        "de": "Aktivierung von App-Funktionen",
+        "da": "Aktivering af app-funktioner",
+        "sv": "Aktivering av app-funktioner",
+        "it": "Attivazione delle funzioni dell'app",
+        "fr": "Activation des fonctions de l'application",
+        "ru": "Активация функций приложения",
+        "pl": "Aktywacja funkcji aplikacji"
+      },
+      "children": [
         {
-            "id": "login",
-            "view": "login.html"
+          "id": "power_control_enabled",
+          "type": "checkbox",
+          "label": {
+            "en": "Enable power on/off control",
+            "no": "Aktiver av/på-styring",
+            "cs": "Povolit ovládání zapnutí/vypnutí",
+            "nl": "Schakel in-/uitschakelen in",
+            "de": "Ein-/Ausschalten aktivieren",
+            "da": "Aktivér tænd/sluk styring",
+            "sv": "Aktivera av/på-styrning",
+            "it": "Abilita controllo accensione/spegnimento",
+            "fr": "Activer le contrôle marche/arrêt",
+            "ru": "Включить управление включением/выключением",
+            "pl": "Włącz sterowanie włącz/wyłącz"
+          },
+          "hint": {
+            "en": "Enable or disable the on/off control for this device.",
+            "no": "Aktiver eller deaktiver av/på-styring for denne enheten.",
+            "cs": "Povolit nebo zakázat ovládání zapnutí/vypnutí pro toto zařízení.",
+            "nl": "Schakel het in-/uitschakelen voor dit apparaat in of uit.",
+            "de": "Aktivieren oder deaktivieren Sie die Ein-/Aus-Steuerung für dieses Gerät.",
+            "da": "Aktivér eller deaktiver tænd/sluk styring for denne enhed.",
+            "sv": "Aktivera eller inaktivera av/på-styrning för denna enhet.",
+            "it": "Abilita o disabilita il controllo di accensione/spegnimento per questo dispositivo.",
+            "fr": "Activer ou désactiver le contrôle marche/arrêt pour cet appareil.",
+            "ru": "Включить или отключить управление включением/выключением для этого устройства.",
+            "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz dla tego urządzenia."
+          },
+          "value": true
         },
         {
-            "id": "list_devices",
-            "template": "list_devices",
-            "navigation": {
-                "next": "add_devices"
-            }
+          "id": "filter_pump_control_enabled",
+          "type": "checkbox",
+          "label": {
+            "en": "Filter Pump Control",
+            "no": "Aktiver filterpumpestyring",
+            "cs": "Ovládání filtrační pumpy",
+            "nl": "Filterpompbesturing",
+            "de": "Steuerung der Filterpumpe",
+            "da": "Filterpumpestyring",
+            "sv": "Filterpumpskontroll",
+            "it": "Controllo pompa di filtraggio",
+            "fr": "Contrôle de la pompe de filtration",
+            "ru": "Управление фильтрационным насосом",
+            "pl": "Sterowanie pompą filtracyjną"
+          },
+          "hint": {
+            "en": "Enable or disable the on/off control for the filter pump.",
+            "no": "Aktiver eller deaktiver av/på-styring for filterpumpen.",
+            "cs": "Povolit nebo zakázat ovládání zapnutí/vypnutí filtrační pumpy.",
+            "nl": "Schakel het in-/uitschakelen van de filterpomp in of uit.",
+            "de": "Aktivieren oder deaktivieren Sie die Ein-/Aus-Steuerung für die Filterpumpe.",
+            "da": "Aktivér eller deaktiver tænd/sluk styring for filterpumpen.",
+            "sv": "Aktivera eller inaktivera av/på-styrning för filterpumpen.",
+            "it": "Abilita o disabilita il controllo di accensione/spegnimento per la pompa di filtraggio.",
+            "fr": "Activer ou désactiver le contrôle marche/arrêt pour la pompe de filtration.",
+            "ru": "Включить или отключить управление включением/выключением для фильтрационного насоса.",
+            "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz pompy filtracyjnej."
+          },
+          "value": true
         },
         {
-            "id": "add_devices",
-            "template": "add_devices"
+          "id": "wave_control_enabled",
+          "type": "checkbox",
+          "label": {
+            "en": "Wave Control",
+            "no": "Aktiver boblestyring",
+            "cs": "Ovládání vln",
+            "nl": "Golfbesturing",
+            "de": "Wellensteuerung",
+            "da": "Boblekontrol",
+            "sv": "Bubbelkontroll",
+            "it": "Controllo onde",
+            "fr": "Contrôle des vagues",
+            "ru": "Управление волнами",
+            "pl": "Sterowanie falami"
+          },
+          "hint": {
+            "en": "Enable or disable the on/off control for the wave function.",
+            "no": "Aktiver eller deaktiver av/på-styring for boblefunksjonen.",
+            "cs": "Povolit nebo zakázat ovládání zapnutí/vypnutí funkce vln.",
+            "nl": "Schakel het in-/uitschakelen van de golf-functie in of uit.",
+            "de": "Aktivieren oder deaktivieren Sie die Ein-/Aus-Steuerung für die Wellenfunktion.",
+            "da": "Aktivér eller deaktiver tænd/sluk styring for boblefunktionen.",
+            "sv": "Aktivera eller inaktivera av/på-styrning för bubbelfunktionen.",
+            "it": "Abilita o disabilita il controllo di accensione/spegnimento per la funzione onde.",
+            "fr": "Activer ou désactiver le contrôle marche/arrêt pour la fonction vagues.",
+            "ru": "Включить или отключить управление включением/выключением для функции волн.",
+            "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz funkcji fal."
+          },
+          "value": true
         }
-    ],
-    "settings": [
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Power Settings",
+        "no": "Strøminnstillinger",
+        "cs": "Nastavení výkonu",
+        "nl": "Stroominstellingen",
+        "de": "Stromeinstellungen",
+        "da": "Strømindstillinger",
+        "sv": "Ströminställningar",
+        "it": "Impostazioni di potenza",
+        "fr": "Paramètres d'alimentation",
+        "ru": "Настройки питания",
+        "pl": "Ustawienia zasilania"
+      },
+      "children": [
         {
-            "type": "group",
-            "label": {
-                "en": "Activation of app functions",
-                "no": "Aktivering av app-funksjoner"
-            },
-            "children": [
-                {
-                    "id": "power_control_enabled",
-                    "type": "checkbox",
-                    "label": {
-                        "en": "Enable power on/off control",
-                        "no": "Aktiver av/på-styring"
-                    },
-                    "hint": {
-                        "en": "Enable or disable the on/off control for this device.",
-                        "no": "Aktiver eller deaktiver av/på-styring for denne enheten."
-                    },
-                    "value": true
-                },
-                {
-                    "id": "filter_pump_control_enabled",
-                    "type": "checkbox",
-                    "label": {
-                        "en": "Filter Pump Control",
-                        "no": "Aktiver filterpumpestyring"
-                    },
-                    "hint": {
-                        "en": "Enable or disable the on/off control for the filter pump.",
-                        "no": "Aktiver eller deaktiver av/på-styring for filterpumpen."
-                    },
-                    "value": true
-                },
-                {
-                    "id": "wave_control_enabled",
-                    "type": "checkbox",
-                    "label": {
-                        "en": "Wave Control",
-                        "no": "Aktiver boblestyring"
-                    },
-                    "hint": {
-                        "en": "Enable or disable the on/off control for the wave function.",
-                        "no": "Aktiver eller deaktiver av/på-styring for boblefunksjonen."
-                    },
-                    "value": true
-                }
-            ]
+          "id": "heater_power",
+          "type": "number",
+          "label": {
+            "en": "Heater Power",
+            "no": "Varmeelementeffekt",
+            "cs": "Výkon ohřívače",
+            "nl": "Verwarmingsvermogen",
+            "de": "Heizleistung",
+            "da": "Varmeeffekt",
+            "sv": "Värmeeffekt",
+            "it": "Potenza riscaldatore",
+            "fr": "Puissance du chauffage",
+            "ru": "Мощность нагревателя",
+            "pl": "Moc grzałki"
+          },
+          "hint": {
+            "en": "Read user manual for correct value.",
+            "no": "Les brukermanual for korrekt verdi.",
+            "cs": "Přečtěte si uživatelskou příručku pro správnou hodnotu.",
+            "nl": "Raadpleeg de handleiding voor de juiste waarde.",
+            "de": "Lesen Sie das Benutzerhandbuch für den korrekten Wert.",
+            "da": "Læs brugermanualen for korrekt værdi.",
+            "sv": "Läs användarmanualen för rätt värde.",
+            "it": "Leggere il manuale utente per il valore corretto.",
+            "fr": "Consultez le manuel utilisateur pour la valeur correcte.",
+            "ru": "См. руководство пользователя для правильного значения.",
+            "pl": "Sprawdź instrukcję obsługi dla prawidłowej wartości."
+          },
+          "value": 2000,
+          "units": {
+            "en": "Watt",
+            "cs": "Watt",
+            "nl": "Watt",
+            "de": "Watt",
+            "da": "Watt",
+            "sv": "Watt",
+            "it": "Watt",
+            "fr": "Watt",
+            "ru": "Вт",
+            "pl": "Watt"
+          },
+          "attr": {
+            "min": 0,
+            "max": 3000
+          }
         },
         {
-            "type": "group",
-            "label": {
-                "en": "Power Settings",
-                "no": "Strøminnstillinger"
-            },
-            "children": [
-                {
-                    "id": "heater_power",
-                    "type": "number",
-                    "label": {
-                        "en": "Heater Power",
-                        "no": "Varmeelementeffekt"
-                    },
-                    "hint": {
-                        "en": "Read user manual for correct value.",
-                        "no": "Les brukermanual for korrekt verdi."
-                    },
-                    "value": 2000,
-                    "units": {
-                        "en": "Watt"
-                    },
-                    "attr": {
-                        "min": 0,
-                        "max": 3000
-                    }
-                },
-                {
-                    "id": "filter_pump_power",
-                    "type": "number",
-                    "label": {
-                        "en": "Filter Pump Power",
-                        "no": "Filterpumpeeffekt"
-                    },
-                    "hint": {
-                        "en": "Read user manual for correct value.",
-                        "no": "Les brukermanual for korrekt verdi."
-                    },
-                    "value": 50,
-                    "units": {
-                        "en": "Watt"
-                    },
-                    "attr": {
-                        "min": 0,
-                        "max": 200
-                    }
-                }
-            ]
+          "id": "filter_pump_power",
+          "type": "number",
+          "label": {
+            "en": "Filter Pump Power",
+            "no": "Filterpumpeeffekt",
+            "cs": "Výkon filtrační pumpy",
+            "nl": "Vermogen filterpomp",
+            "de": "Leistung der Filterpumpe",
+            "da": "Filterpumpeeffekt",
+            "sv": "Filterpumpseffekt",
+            "it": "Potenza pompa di filtraggio",
+            "fr": "Puissance de la pompe de filtration",
+            "ru": "Мощность фильтрационного насоса",
+            "pl": "Moc pompy filtracyjnej"
+          },
+          "hint": {
+            "en": "Read user manual for correct value.",
+            "no": "Les brukermanual for korrekt verdi.",
+            "cs": "Přečtěte si uživatelskou příručku pro správnou hodnotu.",
+            "nl": "Raadpleeg de handleiding voor de juiste waarde.",
+            "de": "Lesen Sie das Benutzerhandbuch für den korrekten Wert.",
+            "da": "Læs brugermanualen for korrekt værdi.",
+            "sv": "Läs användarmanualen för rätt värde.",
+            "it": "Leggere il manuale utente per il valore corretto.",
+            "fr": "Consultez le manuel utilisateur pour la valeur correcte.",
+            "ru": "См. руководство пользователя для правильного значения.",
+            "pl": "Sprawdź instrukcję obsługi dla prawidłowej wartości."
+          },
+          "value": 50,
+          "units": {
+            "en": "Watt",
+            "cs": "Watt",
+            "nl": "Watt",
+            "de": "Watt",
+            "da": "Watt",
+            "sv": "Watt",
+            "it": "Watt",
+            "fr": "Watt",
+            "ru": "Вт",
+            "pl": "Watt"
+          },
+          "attr": {
+            "min": 0,
+            "max": 200
+          }
         }
-    ]
+      ]
+    }
+  ]
 }

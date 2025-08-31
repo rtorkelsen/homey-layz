@@ -1,0 +1,23 @@
+{
+  "id": "filter_pump_turn_on",
+  "title": {
+    "en": "Turn filtering on",
+    "no": "Slå på filtrering",
+    "cs": "Zapnout filtraci",
+    "nl": "Filteren inschakelen",
+    "de": "Filterung einschalten",
+    "da": "Tænd filtrering",
+    "sv": "Slå på filtrering",
+    "it": "Accendi filtraggio",
+    "fr": "Allumer la filtration",
+    "ru": "Включить фильтрацию",
+    "pl": "Włącz filtrację"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Lay-Z"
+    }
+  ]
+}

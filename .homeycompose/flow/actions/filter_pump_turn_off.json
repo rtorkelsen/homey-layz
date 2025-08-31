@@ -1,0 +1,23 @@
+{
+  "id": "filter_pump_turn_off",
+  "title": {
+    "en": "Turn filtering off",
+    "no": "Slå av filtrering",
+    "cs": "Vypnout filtraci",
+    "nl": "Filteren uitschakelen",
+    "de": "Filterung ausschalten",
+    "da": "Sluk filtrering",
+    "sv": "Stäng av filtrering",
+    "it": "Spegni filtraggio",
+    "fr": "Éteindre la filtration",
+    "ru": "Выключить фильтрацию",
+    "pl": "Wyłącz filtrację"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Lay-Z"
+    }
+  ]
+}

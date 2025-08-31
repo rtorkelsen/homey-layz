@@ -1,8 +1,18 @@
 {
   "type": "boolean",
   "title": { 
-  	"en": "Filter pump on",
-  	"no": "Filterpumpe på" },
+    "en": "Filtering on",
+    "no": "Filtrering på",
+    "cs": "Filtrace zapnuta",
+    "nl": "Filteren aan",
+    "de": "Filtern an",
+    "da": "Filtrering tændt",
+    "sv": "Filtrering på",
+    "it": "Filtraggio acceso",
+    "fr": "Filtration activée",
+    "ru": "Фильтрация включена",
+    "pl": "Filtrowanie włączone"
+  },
   "getable": true,
   "setable": false,
   "uiComponent": "sensor",

@@ -1,0 +1,23 @@
+{
+  "id": "filter_pump_toggle",
+  "title": {
+    "en": "Toggle filtering",
+    "no": "Veksle filtrering mellom på og av",
+    "cs": "Přepnout filtraci",
+    "nl": "Filteren wisselen",
+    "de": "Filterung umschalten",
+    "da": "Skift filtrering",
+    "sv": "Växla filtrering",
+    "it": "Attiva/disattiva filtraggio",
+    "fr": "Basculer la filtration",
+    "ru": "Переключить фильтрацию",
+    "pl": "Przełącz filtrację"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Lay-Z"
+    }
+  ]
+}

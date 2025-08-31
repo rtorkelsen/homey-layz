@@ -1,0 +1,23 @@
+{
+  "id": "filter_pump_turned_off",
+  "title": {
+    "en": "Filtering turned off",
+    "no": "Filtrering ble slått av",
+    "cs": "Filtrace byla vypnuta",
+    "nl": "Filteren werd uitgeschakeld",
+    "de": "Filterung wurde ausgeschaltet",
+    "da": "Filtrering blev slukket",
+    "sv": "Filtrering stängdes av",
+    "it": "Il filtraggio è stato spento",
+    "fr": "La filtration a été éteinte",
+    "ru": "Фильтрация была выключена",
+    "pl": "Filtracja została wyłączona"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Lay-Z"
+    }
+  ]
+}

@@ -1,12 +1,22 @@
 {
     "type": "boolean",
     "title": { 
-        "en": "Filter Pump",
-        "no": "Filterpume"     
+      "en": "Filtering",
+      "no": "Filtrering",
+      "cs": "Filtrace",
+      "nl": "Filteren",
+      "de": "Filtern",
+      "da": "Filtrering",
+      "sv": "Filtrering",
+      "it": "Filtraggio",
+      "fr": "Filtration",
+      "ru": "Фильтрация",
+      "pl": "Filtrowanie"
     },
     "getable": true,
     "setable": true,
     "insights": true,
     "uiComponent": "button",
     "icon": "/assets/icons/filter_pump.svg"
-}
+  }
+  

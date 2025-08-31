@@ -2,7 +2,16 @@
   "type": "number",
   "title": { 
     "en": "Current temperature", 
-    "no": "Nåværende temperatur"
+    "no": "Nåværende temperatur",
+    "cs": "Aktuální teplota",
+    "nl": "Huidige temperatuur",
+    "de": "Aktuelle Temperatur",
+    "da": "Nuværende temperatur",
+    "sv": "Nuvarande temperatur",
+    "it": "Temperatura attuale",
+    "fr": "Température actuelle",
+    "ru": "Текущая температура",
+    "pl": "Aktualna temperatura"
   },
   "getable": true,
   "setable": false,

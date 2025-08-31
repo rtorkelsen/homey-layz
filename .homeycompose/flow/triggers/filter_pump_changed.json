@@ -1,0 +1,23 @@
+{
+  "id": "filter_pump_changed",
+  "title": {
+    "en": "Filtering changed",
+    "no": "Filtrering endret seg",
+    "cs": "Filtrace se změnila",
+    "nl": "Filteren gewijzigd",
+    "de": "Filterung geändert",
+    "da": "Filtrering ændret",
+    "sv": "Filtrering ändrades",
+    "it": "Filtraggio cambiato",
+    "fr": "Filtration modifiée",
+    "ru": "Фильтрация изменилась",
+    "pl": "Filtracja została zmieniona"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Lay-Z"
+    }
+  ]
+}
