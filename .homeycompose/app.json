@@ -1,17 +1,19 @@
 {
   "id": "com.utkikk.layz",
-  "version": "1.2.4",
-  "compatibility": ">=5.0.0",
+  "version": "1.3.0",
+  "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
     "local"
   ],
   "brandColor": "#0b509e",
   "name": {
-    "en": "Lay-Z"
+    "en": "Lay-Z",
+    "de": "Lay-Z"
   },
   "description": {
-    "en": "Experience total control of your Bestway Lay-Z Spa"
+    "en": "Experience total control of your Bestway Lay-Z Spa",
+    "de": "Volle Kontrolle über deinen Bestway Lay-Z Spa"
   },
   "tags": {
     "en": [
@@ -46,16 +48,13 @@
       },
       {
         "name": "Einar Hagen"
+      },
+      {
+        "name": "Andi Wirz"
       }
     ]
   },
-  "contributing": {
-    "donate": {
-      "paypal": {
-        "username": "rtorkelsen"
-      }
-    }
-  },
+
   "author": {
     "name": "Ruben Torkelsen",
     "email": "layz@utkikk.com"

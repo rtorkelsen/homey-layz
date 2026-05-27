@@ -1,0 +1,3 @@
+Bringe deinen Bestway Lay-Z-Spa Whirlpool und deine Poolfilter-Pumpe in Homey und steuere sie von überall. Stelle die Wassertemperatur ein, plane die Massagedüsen, verwalte den Filter und sperre das Bedienfeld – alles über Flows oder die Homey App.
+
+Die App unterstützt drei Gerätearten: V01 Spa-Modelle und eigenständige Poolfilter-Pumpen verbinden sich über dein Bestway Smart Hub Konto, neuere V02 Spa-Modelle über einen Freigabecode aus der SmartHub Connect App. Flows ermöglichen es, den Spa vor der Heimkehr vorzuheizen, eine Benachrichtigung zu erhalten wenn die Zieltemperatur erreicht ist oder dich zu informieren wenn die Filterkartusche gewechselt werden muss.

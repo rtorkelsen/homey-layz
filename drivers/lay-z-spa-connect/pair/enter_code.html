@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      padding: 32px 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .steps {
+      background: #f5f7fa;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.7;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #0063A6;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0063A6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .error {
+      margin-top: 12px;
+      color: #c0392b;
+      font-size: 13px;
+      display: none;
+    }
+
+    .spinner {
+      display: none;
+      text-align: center;
+      color: #888;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="title"></h2>
+  <p id="description"></p>
+
+  <div class="steps" id="steps"></div>
+
+  <input type="text" id="shareCode" placeholder="RW_Share_..." autocomplete="off" spellcheck="false" />
+
+  <button id="connectBtn" onclick="connect()"></button>
+
+  <p class="error" id="errorMsg"></p>
+  <p class="spinner" id="spinner">…</p>
+
+  <script>
+    function t(key, fallback) {
+      try { return Homey.__(key) || fallback; } catch(e) { return fallback; }
+    }
+
+    document.getElementById('title').textContent       = t('pair.connect.title',       'Connect your Lay-Z-Spa');
+    document.getElementById('description').textContent = t('pair.connect.description', 'Enter the share code from your Bestway Smart Hub app.');
+    document.getElementById('connectBtn').textContent  = t('pair.connect.button',      'Connect');
+
+    const stepsEl = document.getElementById('steps');
+    const steps = [
+      t('pair.connect.steps.1', 'Open the Bestway Smart Hub app'),
+      t('pair.connect.steps.2', 'Go to your spa → ··· → Share Device'),
+      t('pair.connect.steps.3', 'Copy the share code (starts with RW_Share_)'),
+      t('pair.connect.steps.4', 'Paste it below'),
+    ];
+    stepsEl.innerHTML = steps.map((s, i) => `${i + 1}. ${s}`).join('<br>');
+
+    function connect() {
+      const code    = document.getElementById('shareCode').value.trim();
+      const errorEl = document.getElementById('errorMsg');
+      const btn     = document.getElementById('connectBtn');
+      const spinner = document.getElementById('spinner');
+
+      errorEl.style.display  = 'none';
+      spinner.style.display  = 'block';
+      btn.disabled           = true;
+
+      Homey.emit('link_code', { code }, function(err) {
+        spinner.style.display = 'none';
+
+        if (err) {
+          errorEl.textContent   = err.message || t('pair.connect.error.link_failed', 'Could not connect. Please check the share code and try again.');
+          errorEl.style.display = 'block';
+          btn.disabled          = false;
+          return;
+        }
+
+        Homey.nextView();
+      });
+    }
+
+    document.getElementById('shareCode').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') connect();
+    });
+  </script>
+
+</body>
+</html>

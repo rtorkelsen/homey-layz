@@ -1,0 +1,52 @@
+{
+  "pair": {
+    "connect": {
+      "title": "Podłącz swoje Lay-Z-Spa",
+      "description": "Wprowadź kod udostępnienia z aplikacji Bestway Smart Hub, aby dodać spa do Homey.",
+      "button": "Połącz",
+      "steps": {
+        "1": "Otwórz aplikację Bestway Smart Hub",
+        "2": "Przejdź do swojego spa → ··· → Udostępnij urządzenie",
+        "3": "Skopiuj kod udostępnienia (zaczyna się od RW_Share_)",
+        "4": "Wklej go poniżej"
+      },
+      "error": {
+        "link_failed": "Nie udało się połączyć. Sprawdź kod udostępnienia i spróbuj ponownie.",
+        "no_devices": "Nie znaleziono urządzeń po połączeniu. Upewnij się, że spa jest skonfigurowane w aplikacji Bestway Smart Hub."
+      }
+    },
+    "repair": {
+      "title": "Ponownie połącz Lay-Z-Spa",
+      "description": "Wprowadź nowy kod udostępnienia, aby przywrócić połączenie.",
+      "button": "Połącz ponownie"
+    },
+    "error": {
+      "login_failed": "Logowanie nie powiodło się na wszystkich serwerach (EU, US, Global). Sprawdź adres e-mail i hasło.",
+      "wrong_password": "Nieprawidłowe hasło. Spróbuj ponownie.",
+      "not_authenticated": "Najpierw się zaloguj.",
+      "fetch_devices_failed": "Nie można pobrać urządzeń z chmury Bestway.",
+      "no_devices": "Nie znaleziono urządzeń na koncie Bestway. Upewnij się, że spa jest skonfigurowane w aplikacji Bestway Smart Hub."
+    },
+    "login": {
+      "title": "Zaloguj się do Bestway",
+      "description": "Wprowadź dane logowania do konta Bestway.",
+      "label_email": "Adres e-mail",
+      "placeholder_email": "email@przyklad.pl",
+      "label_password": "Hasło",
+      "button": "Zaloguj się"
+    },
+    "relogin": {
+      "title": "Zaktualizuj dane logowania Bestway",
+      "description": "Wprowadź dane logowania Bestway, aby przywrócić połączenie.",
+      "button": "Zaktualizuj"
+    }
+  },
+  "error": {
+    "control_failed": "Nie udało się wysłać polecenia do spa. Sprawdź połączenie.",
+    "credentials_missing": "Brakuje danych logowania. Usuń urządzenie i dodaj je ponownie.",
+    "hydrojet_not_supported": "HydroJet nie jest obsługiwany przez ten model spa.",
+    "lock_not_supported": "Blokada panelu nie może być przełączana przez aplikację dla tego modelu spa. Można ją zmienić tylko na fizycznym panelu sterowania.",
+    "device_offline": "Urządzenie jest w trybie offline.",
+    "system_errors": "Błąd(y) systemu"
+  }
+}

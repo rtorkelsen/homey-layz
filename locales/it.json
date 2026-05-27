@@ -1,0 +1,52 @@
+{
+  "pair": {
+    "connect": {
+      "title": "Connetti il tuo Lay-Z-Spa",
+      "description": "Inserisci il codice di condivisione dall'app Bestway Smart Hub per aggiungere la tua spa a Homey.",
+      "button": "Connetti",
+      "steps": {
+        "1": "Apri l'app Bestway Smart Hub",
+        "2": "Vai alla tua spa → ··· → Condividi dispositivo",
+        "3": "Copia il codice di condivisione (inizia con RW_Share_)",
+        "4": "Incollalo qui sotto"
+      },
+      "error": {
+        "link_failed": "Connessione non riuscita. Controlla il codice di condivisione e riprova.",
+        "no_devices": "Nessun dispositivo trovato dopo il collegamento. Assicurati che la tua spa sia configurata nell'app Bestway Smart Hub."
+      }
+    },
+    "repair": {
+      "title": "Riconnetti il tuo Lay-Z-Spa",
+      "description": "Inserisci un nuovo codice di condivisione per ripristinare la connessione.",
+      "button": "Riconnetti"
+    },
+    "error": {
+      "login_failed": "Accesso non riuscito su tutti i server (EU, US, Global). Controlla il tuo indirizzo email e la password.",
+      "wrong_password": "Password errata. Riprova.",
+      "not_authenticated": "Accedi prima.",
+      "fetch_devices_failed": "Impossibile recuperare i dispositivi dal cloud Bestway.",
+      "no_devices": "Nessun dispositivo trovato nel tuo account Bestway. Assicurati che la tua spa sia configurata nell'app Bestway Smart Hub."
+    },
+    "login": {
+      "title": "Accedi a Bestway",
+      "description": "Inserisci le credenziali del tuo account Bestway.",
+      "label_email": "Indirizzo email",
+      "placeholder_email": "email@esempio.it",
+      "label_password": "Password",
+      "button": "Accedi"
+    },
+    "relogin": {
+      "title": "Aggiorna le credenziali Bestway",
+      "description": "Inserisci le tue credenziali Bestway per ripristinare la connessione.",
+      "button": "Aggiorna"
+    }
+  },
+  "error": {
+    "control_failed": "Impossibile inviare il comando alla spa. Controlla la connessione.",
+    "credentials_missing": "Le credenziali di accesso mancano. Rimuovi e aggiungi nuovamente il dispositivo.",
+    "hydrojet_not_supported": "HydroJet non è supportato da questo modello di spa.",
+    "lock_not_supported": "Il blocco del pannello non può essere attivato/disattivato tramite l'app per questo modello di spa. Può essere modificato solo sul pannello di controllo fisico.",
+    "device_offline": "Il dispositivo è offline.",
+    "system_errors": "Errore/i di sistema"
+  }
+}

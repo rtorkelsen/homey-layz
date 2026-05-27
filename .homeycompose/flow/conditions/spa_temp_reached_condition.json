@@ -1,0 +1,18 @@
+{
+  "id": "spa_temp_reached_condition",
+  "title": {
+    "en": "Target temperature is !{{reached|not reached}}",
+    "de": "Zieltemperatur ist !{{erreicht|nicht erreicht}}"
+  },
+  "titleFormatted": {
+    "en": "[[device]] target temperature is !{{reached|not reached}}",
+    "de": "[[device]] Zieltemperatur ist !{{erreicht|nicht erreicht}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capability=bestway_temp_reached"
+    }
+  ]
+}

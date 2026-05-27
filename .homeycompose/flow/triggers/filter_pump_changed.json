@@ -13,6 +13,10 @@
     "ru": "Фильтрация изменилась",
     "pl": "Filtracja została zmieniona"
   },
+  "titleFormatted": {
+    "en": "[[device]] filtering changed",
+    "de": "[[device]] Filterung geändert"
+  },
   "args": [
     {
       "name": "device",

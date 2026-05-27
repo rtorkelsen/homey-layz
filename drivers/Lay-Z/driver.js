@@ -7,11 +7,82 @@ class SpaDriver extends Homey.Driver {
 
   async onInit() {
     this.log('SpaDriver has been initialized');
-  
+
     // Keep your pairing state
     this.devices = [];
     this._lastSessionAuth = null; // keep auth from successful login for pairing flow
-  
+
+    // **** Trigger cards (referenced by device.js) ****
+    this._triggerTempReached    = this.homey.flow.getDeviceTriggerCard('spa_temp_reached');
+    this._triggerErrorTriggered = this.homey.flow.getDeviceTriggerCard('spa_error_triggered');
+
+    // **** Spa conditions ****
+    this.homey.flow.getConditionCard('spa_error_active')
+      .registerRunListener((args) =>
+        args.device.getCapabilityValue('alarm_generic') === true,
+      );
+
+    this.homey.flow.getConditionCard('spa_temp_above')
+      .registerRunListener((args) => {
+        const current = args.device.getCapabilityValue('measure_temperature');
+        return typeof current === 'number' && current > args.temperature;
+      });
+
+    this.homey.flow.getConditionCard('spa_temp_below')
+      .registerRunListener((args) => {
+        const current = args.device.getCapabilityValue('measure_temperature');
+        return typeof current === 'number' && current < args.temperature;
+      });
+
+    this.homey.flow.getConditionCard('spa_temp_reached_condition')
+      .registerRunListener((args) =>
+        args.device.getCapabilityValue('bestway_temp_reached') === true,
+      );
+
+    this.homey.flow.getConditionCard('spa_airjet_active')
+      .registerRunListener((args) => {
+        const d = args.device;
+        return d.getCapabilityValue('airjet_low') === true ||
+               d.getCapabilityValue('airjet_high') === true ||
+               d.getCapabilityValue('msg_onoff') === true;
+      });
+
+    this.homey.flow.getConditionCard('spa_locked')
+      .registerRunListener((args) =>
+        args.device.getCapabilityValue('bestway_locked') === true,
+      );
+
+    // **** Spa action cards ****
+    const runSpa = (cap, method) => async (args) => {
+      const val = args.onoff === 'true';
+      const devices = [];
+      for (const id of ['Lay-Z', 'lay-z-spa-connect']) {
+        try { devices.push(...this.homey.drivers.getDriver(id).getDevices()); } catch (_) {}
+      }
+      for (const d of devices) {
+        if (typeof d[method] === 'function') {
+          await d[method](val).catch(() => {});
+        } else {
+          await d.triggerCapabilityListener(cap, val).catch(() => {});
+        }
+      }
+    };
+
+    this.homey.flow.getActionCard('spa_set_filter')
+      .registerRunListener(runSpa('onoff.filter', 'setFilter'));
+
+    this.homey.flow.getActionCard('spa_set_heating')
+      .registerRunListener(runSpa('onoff.heating', 'setHeating'));
+
+    this.homey.flow.getActionCard('spa_set_airjet_low')
+      .registerRunListener(runSpa('airjet_low', 'setAirjetLow'));
+
+    this.homey.flow.getActionCard('spa_set_airjet_high')
+      .registerRunListener(runSpa('airjet_high', 'setAirjetHigh'));
+
+    this.homey.flow.getActionCard('spa_set_hydrojet')
+      .registerRunListener(runSpa('onoff.hydrojet', 'setHydrojet'));
+
     // **** Flow cards: filter pump (actions + conditions) ****
     try {
       // Actions: these IDs must match your .homeycompose files
@@ -132,20 +203,17 @@ class SpaDriver extends Homey.Driver {
 
     if (!auth) {
       this.log('Failed to log in on all servers');
-      throw new Error('Login failed');
+      throw new Error(this.homey.__('pair.error.login_failed'));
     }
+
+    return auth;
   }
 
   onPair(session) {
-    // Step 1: user submits credentials
+    // Step 1: user submits credentials via login_credentials template
     session.setHandler('login', async (data) => {
       await this.loginHandler(data);
-      // Return mapped devices (with per-device store)
-      return this.devices.map(d => ({
-        name: d.name,
-        data: d.data,
-        store: d.store,
-      }));
+      return true;
     });
 
     // Step 2: show list to pick from (if your flow uses list view)
@@ -196,13 +264,15 @@ class SpaDriver extends Homey.Driver {
         }
       
         // 4) Create device with its own store
+        // capOrderVersion is pre-set so new devices skip the order migration in onInit
+        // (driver.compose.json already defines the correct initial capability order)
         await this.addDevice({
           name: dev.name || 'Lay-Z',
           data: {
             did: dev.data.did,
             product_name: dev.data.product_name || 'Airjet',
           },
-          store, // <- per-device credentials (unique token/baseUrl/appId)
+          store: { ...store, capOrderVersion: 6 },
         });
       }
       
@@ -210,21 +280,19 @@ class SpaDriver extends Homey.Driver {
     });
   }
   onRepair(session, device) {
-    session.setHandler('repair_login', async (data) => {
-      // Kjør loginHandler med brukernavn/passord fra repair-dialogen
+    session.setHandler('login', async (data) => {
       const auth = await this.loginHandler(data);
-  
-      // Oppdater device.store med ny token/baseUrl/appId
+
       if (typeof device.setStore === 'function') {
         await device.setStore({
-          token: auth.token,
-          uid: auth.uid,
-          expire_at: auth.expireAt,
-          baseUrl: auth.baseUrl,
-          appId: auth.appId,
+          token:      auth.token,
+          uid:        auth.uid,
+          expire_at:  auth.expireAt,
+          baseUrl:    auth.baseUrl,
+          appId:      auth.appId,
         });
       }
-  
+
       this.log('Device re-login successful for DID:', device.getData().did);
       return true;
     });

@@ -1,0 +1,11 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "AirJet Massage Low",
+    "de": "AirJet Massage Low"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "button",
+  "icon": "/assets/icons/massage.svg"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "pool_filter_error_triggered",
+  "title": {
+    "en": "Pool filter error occurred",
+    "de": "Pool-Filter-Fehler aufgetreten"
+  },
+  "titleFormatted": {
+    "en": "[[device]] pool filter error occurred",
+    "de": "[[device]] Pool-Filter-Fehler aufgetreten"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=pool-filter"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "error_message",
+      "type": "string",
+      "title": { "en": "Error message", "de": "Fehlermeldung" }
+    }
+  ]
+}

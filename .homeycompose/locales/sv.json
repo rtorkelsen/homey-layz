@@ -1,0 +1,52 @@
+{
+  "pair": {
+    "connect": {
+      "title":       "Anslut din Lay-Z-Spa",
+      "description": "Ange delningskoden från Bestway Smart Hub-appen för att lägga till din spa i Homey.",
+      "button":      "Anslut",
+      "steps": {
+        "1": "Öppna Bestway Smart Hub-appen",
+        "2": "Gå till din spa → ··· → Dela enhet",
+        "3": "Kopiera delningskoden (börjar med RW_Share_)",
+        "4": "Klistra in den nedan"
+      },
+      "error": {
+        "link_failed": "Anslutning misslyckades. Kontrollera delningskoden och försök igen.",
+        "no_devices":  "Inga enheter hittades efter länkning. Se till att din spa är konfigurerad i Bestway Smart Hub-appen."
+      }
+    },
+    "repair": {
+      "title":       "Återanslut din Lay-Z-Spa",
+      "description": "Ange en ny delningskod för att återupprätta anslutningen.",
+      "button":      "Återanslut"
+    },
+    "login": {
+      "title":             "Logga in på Bestway",
+      "description":       "Ange dina Bestway-kontouppgifter.",
+      "label_email":       "E-postadress",
+      "placeholder_email": "email@exempel.se",
+      "label_password":    "Lösenord",
+      "button":            "Logga in"
+    },
+    "relogin": {
+      "title":       "Uppdatera Bestway-inloggning",
+      "description": "Ange dina Bestway-inloggningsuppgifter för att återupprätta anslutningen.",
+      "button":      "Uppdatera"
+    },
+    "error": {
+      "login_failed":           "Inloggning misslyckades på alla servrar (EU, US, Global). Kontrollera din e-postadress och ditt lösenord.",
+      "wrong_password":         "Fel lösenord. Försök igen.",
+      "not_authenticated":      "Logga in först.",
+      "fetch_devices_failed":   "Det gick inte att hämta enheter från Bestway-molnet.",
+      "no_devices":             "Inga enheter hittades i ditt Bestway-konto. Se till att din spa är konfigurerad i Bestway Smart Hub-appen."
+    }
+  },
+  "error": {
+    "control_failed":          "Det gick inte att skicka kommando till spat. Kontrollera anslutningen.",
+    "credentials_missing":     "Inloggningsuppgifter saknas. Ta bort och lägg till enheten igen.",
+    "hydrojet_not_supported":  "HydroJet stöds inte av denna spa-modell.",
+    "lock_not_supported":      "Panellåset kan inte växlas via appen för denna spa-modell. Det kan bara ändras på den fysiska kontrollpanelen.",
+    "device_offline":          "Enheten är offline.",
+    "system_errors":           "Systemfel"
+  }
+}

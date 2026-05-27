@@ -1,0 +1,18 @@
+{
+  "id": "pool_filter_change_active",
+  "title": {
+    "en": "Pool filter change is !{{required|not required}}",
+    "de": "Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}"
+  },
+  "titleFormatted": {
+    "en": "[[device]] pool filter change is !{{required|not required}}",
+    "de": "[[device]] Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=pool-filter"
+    }
+  ]
+}

@@ -12,60 +12,45 @@
     "ru": "Lay-Z",
     "pl": "Lay-Z"
   },
-  "class": "thermostat",
+  "class": "other",
+  "platforms": ["local"],
+  "connectivity": ["cloud"],
   "capabilities": [
     "temp_now",
     "measure_temperature",
     "target_temperature",
-    "thermostat_mode",
-    "measure_power",
+    "bestway_temp_reached",
     "onoff",
+    "onoff.heating",
     "pump_onoff",
     "msg_onoff",
-    "heat_temp_reach",
-    "pump_state",
     "heat_state",
     "alarm_generic",
-    "massage_mode",
+    "bestway_error_message",
+    "bestway_locked",
+    "pump_state",
+    "measure_power",
+    "meter_power",
+    "airjet_low",
+    "airjet_high",
     "jet_onoff"
   ],
   "capabilitiesOptions": {
-    "thermostat_mode": {
-      "values": [
-        {
-          "id": "heat",
-          "title": {
-            "en": "Heater on",
-            "no": "Varme på",
-            "cs": "Ohřívač zapnutý",
-            "nl": "Verwarming aan",
-            "de": "Heizung an",
-            "da": "Varme tændt",
-            "sv": "Värmen är på",
-            "it": "Riscaldamento acceso",
-            "fr": "Chauffage activé",
-            "ru": "Нагреватель включен",
-            "pl": "Grzanie włączone"
-          }
-        },
-        {
-          "id": "off",
-          "title": {
-            "en": "Heater off",
-            "no": "Varme av",
-            "cs": "Ohřívač vypnutý",
-            "nl": "Verwarming uit",
-            "de": "Heizung aus",
-            "da": "Varme slukket",
-            "sv": "Värmen är av",
-            "it": "Riscaldamento spento",
-            "fr": "Chauffage désactivé",
-            "ru": "Нагреватель выключен",
-            "pl": "Grzanie wyłączone"
-          }
-        }
-      ],
-      "insights": true
+    "onoff.heating": {
+      "title": {
+        "en": "Heating",
+        "no": "Oppvarming",
+        "cs": "Topení",
+        "nl": "Verwarming",
+        "de": "Heizung",
+        "da": "Opvarmning",
+        "sv": "Uppvärmning",
+        "it": "Riscaldamento",
+        "fr": "Chauffage",
+        "ru": "Нагрев",
+        "pl": "Ogrzewanie"
+      },
+      "uiComponent": "button"
     },
     "target_temperature": {
       "min": 20,
@@ -114,26 +99,22 @@
       "getable": true,
       "setable": true
     },
-    "massage_mode": {
-      "insights": false
-    },
     "jet_onoff": {
       "title": {
-        "en": "Hydrojet",
-        "no": "Hydrojet",
-        "cs": "Hydro tryska",
-        "nl": "Hydrojet",
-        "de": "Hydrojet",
-        "da": "Hydrojet",
-        "sv": "Hydrojet",
-        "it": "Idrogetto",
-        "fr": "Hydrojet",
-        "ru": "Гидроджеты",
-        "pl": "Hydrojet"
+        "en": "Hydrojet Massage",
+        "no": "Hydrojet Massasje",
+        "cs": "Hydrojet Masáž",
+        "nl": "Hydrojet Massage",
+        "de": "Hydrojet Massage",
+        "da": "Hydrojet Massage",
+        "sv": "Hydrojet Massage",
+        "it": "Idrogetto Massaggio",
+        "fr": "Hydrojet Massage",
+        "ru": "Гидроджет-массаж",
+        "pl": "Hydrojet Masaż"
       }
     }
   },
-  "uiComponent": "thermostat",
   "images": {
     "large": "drivers/Lay-Z/assets/images/large.png",
     "small": "drivers/Lay-Z/assets/images/small.png"
@@ -146,25 +127,65 @@
     {
       "id": "list_devices",
       "template": "list_devices",
+      "title": {
+        "en": "Select your Lay-Z-Spa",
+        "no": "Velg din Lay-Z-Spa",
+        "cs": "Vyberte svůj Lay-Z-Spa",
+        "nl": "Selecteer je Lay-Z-Spa",
+        "de": "Lay-Z-Spa auswählen",
+        "da": "Vælg din Lay-Z-Spa",
+        "sv": "Välj din Lay-Z-Spa",
+        "it": "Seleziona il tuo Lay-Z-Spa",
+        "fr": "Sélectionnez votre Lay-Z-Spa",
+        "ru": "Выберите Lay-Z-Spa",
+        "pl": "Wybierz swój Lay-Z-Spa"
+      },
       "navigation": {
         "next": "add_devices"
       }
     },
     {
       "id": "add_devices",
-      "template": "add_devices"
+      "template": "add_devices",
+      "title": {
+        "en": "Add your Lay-Z-Spa",
+        "no": "Legg til din Lay-Z-Spa",
+        "cs": "Přidejte svůj Lay-Z-Spa",
+        "nl": "Voeg je Lay-Z-Spa toe",
+        "de": "Lay-Z-Spa hinzufügen",
+        "da": "Tilføj din Lay-Z-Spa",
+        "sv": "Lägg till din Lay-Z-Spa",
+        "it": "Aggiungi il tuo Lay-Z-Spa",
+        "fr": "Ajouter votre Lay-Z-Spa",
+        "ru": "Добавить Lay-Z-Spa",
+        "pl": "Dodaj swój Lay-Z-Spa"
+      }
     }
   ],
   "repair": [
-  {
-    "id": "repair_login",
-    "view": "repair_login.html",
-    "navigation": {
-      "next": null
+    {
+      "id": "repair_login",
+      "view": "repair_login.html"
     }
-  }
-],
+  ],
   "settings": [
+    {
+      "id": "poll_interval",
+      "type": "number",
+      "label": {
+        "en": "Poll interval (seconds)",
+        "de": "Abfrageintervall (Sekunden)"
+      },
+      "hint": {
+        "en": "How often the app fetches updates from the Gizwits cloud (10–300 seconds). Default: 60.",
+        "de": "Wie oft die App Updates aus der Gizwits-Cloud abruft (10–300 Sekunden). Standard: 60."
+      },
+      "value": 60,
+      "attr": {
+        "min": 10,
+        "max": 300
+      }
+    },
     {
       "type": "group",
       "label": {
@@ -242,149 +263,165 @@
             "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz pompy filtracyjnej."
           },
           "value": true
-        },
-        {
-          "id": "wave_control_enabled",
-          "type": "checkbox",
-          "label": {
-            "en": "Wave Control",
-            "no": "Aktiver boblestyring",
-            "cs": "Ovládání vln",
-            "nl": "Golfbesturing",
-            "de": "Wellensteuerung",
-            "da": "Boblekontrol",
-            "sv": "Bubbelkontroll",
-            "it": "Controllo onde",
-            "fr": "Contrôle des vagues",
-            "ru": "Управление волнами",
-            "pl": "Sterowanie falami"
-          },
-          "hint": {
-            "en": "Enable or disable the on/off control for the wave function.",
-            "no": "Aktiver eller deaktiver av/på-styring for boblefunksjonen.",
-            "cs": "Povolit nebo zakázat ovládání zapnutí/vypnutí funkce vln.",
-            "nl": "Schakel het in-/uitschakelen van de golf-functie in of uit.",
-            "de": "Aktivieren oder deaktivieren Sie die Ein-/Aus-Steuerung für die Wellenfunktion.",
-            "da": "Aktivér eller deaktiver tænd/sluk styring for boblefunktionen.",
-            "sv": "Aktivera eller inaktivera av/på-styrning för bubbelfunktionen.",
-            "it": "Abilita o disabilita il controllo di accensione/spegnimento per la funzione onde.",
-            "fr": "Activer ou désactiver le contrôle marche/arrêt pour la fonction vagues.",
-            "ru": "Включить или отключить управление включением/выключением для функции волн.",
-            "pl": "Włącz lub wyłącz sterowanie włącz/wyłącz funkcji fal."
-          },
-          "value": true
         }
       ]
     },
     {
       "type": "group",
       "label": {
-        "en": "Power Settings",
-        "no": "Strøminnstillinger",
-        "cs": "Nastavení výkonu",
-        "nl": "Stroominstellingen",
-        "de": "Stromeinstellungen",
-        "da": "Strømindstillinger",
-        "sv": "Ströminställningar",
-        "it": "Impostazioni di potenza",
-        "fr": "Paramètres d'alimentation",
-        "ru": "Настройки питания",
-        "pl": "Ustawienia zasilania"
+        "en": "Power sensor (estimated)",
+        "de": "Leistungssensor (Schätzwert)"
       },
       "children": [
         {
-          "id": "heater_power",
-          "type": "number",
+          "id": "power_sensor_enabled",
+          "type": "dropdown",
           "label": {
-            "en": "Heater Power",
-            "no": "Varmeelementeffekt",
-            "cs": "Výkon ohřívače",
-            "nl": "Verwarmingsvermogen",
-            "de": "Heizleistung",
-            "da": "Varmeeffekt",
-            "sv": "Värmeeffekt",
-            "it": "Potenza riscaldatore",
-            "fr": "Puissance du chauffage",
-            "ru": "Мощность нагревателя",
-            "pl": "Moc grzałki"
+            "en": "Enable power sensor",
+            "de": "Leistungssensor aktivieren"
           },
           "hint": {
-            "en": "Read user manual for correct value.",
-            "no": "Les brukermanual for korrekt verdi.",
-            "cs": "Přečtěte si uživatelskou příručku pro správnou hodnotu.",
-            "nl": "Raadpleeg de handleiding voor de juiste waarde.",
-            "de": "Lesen Sie das Benutzerhandbuch für den korrekten Wert.",
-            "da": "Læs brugermanualen for korrekt værdi.",
-            "sv": "Läs användarmanualen för rätt värde.",
-            "it": "Leggere il manuale utente per il valore corretto.",
-            "fr": "Consultez le manuel utilisateur pour la valeur correcte.",
-            "ru": "См. руководство пользователя для правильного значения.",
-            "pl": "Sprawdź instrukcję obsługi dla prawidłowej wartości."
+            "en": "When enabled, Homey estimates the spa's power consumption based on active components and the watt values below.",
+            "de": "Wenn aktiviert, schätzt Homey den Stromverbrauch des Spas anhand der aktiven Komponenten und der Wattwerte unten."
           },
-          "value": 2000,
-          "units": {
-            "en": "Watt",
-            "cs": "Watt",
-            "nl": "Watt",
-            "de": "Watt",
-            "da": "Watt",
-            "sv": "Watt",
-            "it": "Watt",
-            "fr": "Watt",
-            "ru": "Вт",
-            "pl": "Watt"
-          },
-          "attr": {
-            "min": 0,
-            "max": 3000
-          }
+          "value": "no",
+          "values": [
+            { "id": "yes", "label": { "en": "Yes", "de": "Ja" } },
+            { "id": "no",  "label": { "en": "No",  "de": "Nein" } }
+          ]
         },
         {
-          "id": "filter_pump_power",
+          "id": "power_standby_w",
           "type": "number",
-          "label": {
-            "en": "Filter Pump Power",
-            "no": "Filterpumpeeffekt",
-            "cs": "Výkon filtrační pumpy",
-            "nl": "Vermogen filterpomp",
-            "de": "Leistung der Filterpumpe",
-            "da": "Filterpumpeeffekt",
-            "sv": "Filterpumpseffekt",
-            "it": "Potenza pompa di filtraggio",
-            "fr": "Puissance de la pompe de filtration",
-            "ru": "Мощность фильтрационного насоса",
-            "pl": "Moc pompy filtracyjnej"
-          },
+          "label": { "en": "Standby (W)", "de": "Standby (W)" },
           "hint": {
-            "en": "Read user manual for correct value.",
-            "no": "Les brukermanual for korrekt verdi.",
-            "cs": "Přečtěte si uživatelskou příručku pro správnou hodnotu.",
-            "nl": "Raadpleeg de handleiding voor de juiste waarde.",
-            "de": "Lesen Sie das Benutzerhandbuch für den korrekten Wert.",
-            "da": "Læs brugermanualen for korrekt værdi.",
-            "sv": "Läs användarmanualen för rätt värde.",
-            "it": "Leggere il manuale utente per il valore corretto.",
-            "fr": "Consultez le manuel utilisateur pour la valeur correcte.",
-            "ru": "См. руководство пользователя для правильного значения.",
-            "pl": "Sprawdź instrukcję obsługi dla prawidłowej wartości."
+            "en": "Total power when the spa is on but nothing is running.",
+            "de": "Gesamtleistung wenn der Spa eingeschaltet aber nichts aktiv ist."
           },
-          "value": 50,
-          "units": {
-            "en": "Watt",
-            "cs": "Watt",
-            "nl": "Watt",
-            "de": "Watt",
-            "da": "Watt",
-            "sv": "Watt",
-            "it": "Watt",
-            "fr": "Watt",
-            "ru": "Вт",
-            "pl": "Watt"
+          "value": 2,
+          "attr": { "min": 0, "max": 100 }
+        },
+        {
+          "id": "power_filter_w",
+          "type": "number",
+          "label": { "en": "Filter only (W)", "de": "Nur Filter (W)" },
+          "hint": {
+            "en": "Total power when only the filter pump is running.",
+            "de": "Gesamtleistung wenn nur die Filterpumpe läuft."
           },
-          "attr": {
-            "min": 0,
-            "max": 200
-          }
+          "value": 125,
+          "attr": { "min": 0, "max": 2000 }
+        },
+        {
+          "id": "power_heating_w",
+          "type": "number",
+          "label": { "en": "Filter + Heating (W)", "de": "Filter + Heizung (W)" },
+          "hint": {
+            "en": "Total power when filter and heater are both running.",
+            "de": "Gesamtleistung wenn Filter und Heizung laufen."
+          },
+          "value": 2200,
+          "attr": { "min": 0, "max": 10000 }
+        },
+        {
+          "id": "power_airjet_low_w",
+          "type": "number",
+          "label": { "en": "AirJet Low / Wave (W)", "de": "AirJet Low / Wellen (W)" },
+          "hint": {
+            "en": "Total power when AirJet Low or wave bubbles are active. Note: on most models the heater switches off automatically when jets are running.",
+            "de": "Gesamtleistung wenn AirJet Low oder Luftdüsen aktiv sind. Hinweis: Bei den meisten Modellen schaltet die Heizung automatisch ab wenn die Düsen laufen."
+          },
+          "value": 1550,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_airjet_high_w",
+          "type": "number",
+          "label": { "en": "AirJet High (W)", "de": "AirJet High (W)" },
+          "hint": {
+            "en": "Total power when AirJet High is active (HydroJet models only).",
+            "de": "Gesamtleistung wenn AirJet High aktiv ist (nur HydroJet-Modelle)."
+          },
+          "value": 1960,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_hydrojet_w",
+          "type": "number",
+          "label": { "en": "HydroJet (W)", "de": "HydroJet (W)" },
+          "hint": {
+            "en": "Total power when only HydroJet massage is active (HydroJet models only).",
+            "de": "Gesamtleistung wenn nur HydroJet aktiv ist (nur HydroJet-Modelle)."
+          },
+          "value": 430,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_hydrojet_airjet_low_w",
+          "type": "number",
+          "label": { "en": "HydroJet + AirJet Low (W)", "de": "HydroJet + AirJet Low (W)" },
+          "hint": {
+            "en": "Total power when HydroJet and AirJet Low are both active (HydroJet models only).",
+            "de": "Gesamtleistung wenn HydroJet und AirJet Low gleichzeitig aktiv sind (nur HydroJet-Modelle)."
+          },
+          "value": 840,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_hydrojet_airjet_high_w",
+          "type": "number",
+          "label": { "en": "HydroJet + AirJet High (W)", "de": "HydroJet + AirJet High (W)" },
+          "hint": {
+            "en": "Total power when HydroJet and AirJet High are both active (HydroJet models only).",
+            "de": "Gesamtleistung wenn HydroJet und AirJet High gleichzeitig aktiv sind (nur HydroJet-Modelle)."
+          },
+          "value": 1260,
+          "attr": { "min": 0, "max": 5000 }
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Troubleshooting",
+        "de": "Fehlerbehebung"
+      },
+      "children": [
+        {
+          "id": "debug_last_sync",
+          "type": "label",
+          "label": { "en": "Last sync", "de": "Letzter Sync" },
+          "value": "–"
+        },
+        {
+          "id": "debug_status",
+          "type": "label",
+          "label": { "en": "Status", "de": "Status" },
+          "value": "–"
+        },
+        {
+          "id": "debug_product",
+          "type": "label",
+          "label": { "en": "Device model", "de": "Gerätemodell" },
+          "value": "–"
+        },
+        {
+          "id": "debug_region",
+          "type": "label",
+          "label": { "en": "Active region", "de": "Aktive Region" },
+          "value": "–"
+        },
+        {
+          "id": "debug_errors",
+          "type": "label",
+          "label": { "en": "Active error codes", "de": "Aktive Fehlercodes" },
+          "value": "–"
+        },
+        {
+          "id": "debug_raw",
+          "type": "label",
+          "label": { "en": "Raw device attributes", "de": "Rohe Gerätewerte" },
+          "value": "–"
         }
       ]
     }

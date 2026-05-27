@@ -1,0 +1,28 @@
+{
+  "id": "spa_temp_reached",
+  "title": {
+    "en": "Target temperature reached",
+    "de": "Zieltemperatur erreicht"
+  },
+  "titleFormatted": {
+    "en": "[[device]] target temperature reached",
+    "de": "[[device]] Zieltemperatur erreicht"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capability=bestway_temp_reached"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "temperature",
+      "type": "number",
+      "title": {
+        "en": "Temperature (°C)",
+        "de": "Temperatur (°C)"
+      }
+    }
+  ]
+}

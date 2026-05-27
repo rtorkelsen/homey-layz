@@ -1,0 +1,11 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Error Details",
+    "de": "Fehlerdetails"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/bestway_error_message.svg"
+}

@@ -13,6 +13,10 @@
     "ru": "Фильтрация выключена",
     "pl": "Filtracja jest wyłączona"
   },
+  "titleFormatted": {
+    "en": "[[device]] filtering is off",
+    "de": "[[device]] Filterung ist aus"
+  },
   "args": [
     {
       "name": "device",

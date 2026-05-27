@@ -1,0 +1,18 @@
+{
+  "id": "pool_filter_change_triggered",
+  "title": {
+    "en": "Pool filter change required",
+    "de": "Pool-Filter-Wechsel erforderlich"
+  },
+  "titleFormatted": {
+    "en": "[[device]] pool filter change required",
+    "de": "[[device]] Pool-Filter-Wechsel erforderlich"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=pool-filter"
+    }
+  ]
+}

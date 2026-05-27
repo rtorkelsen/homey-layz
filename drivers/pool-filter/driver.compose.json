@@ -1,0 +1,160 @@
+{
+  "name": {
+    "en": "Bestway Pool Filter Pump",
+    "de": "Bestway Pool-Filterpumpe"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff",
+    "bestway_filter_timer",
+    "bestway_filter_change",
+    "alarm_generic",
+    "bestway_error_message"
+  ],
+  "capabilitiesOptions": {
+    "alarm_generic": {
+      "title": { "en": "Error", "de": "Fehler" }
+    }
+  },
+  "platforms": ["local"],
+  "connectivity": ["cloud"],
+  "images": {
+    "small":  "/drivers/pool-filter/assets/images/small.png",
+    "large":  "/drivers/pool-filter/assets/images/large.png",
+    "xlarge": "/drivers/pool-filter/assets/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "login",
+      "view": "login.html"
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "title": {
+        "en": "Select your Pool Filter",
+        "de": "Pool-Filterpumpe auswählen"
+      },
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices",
+      "title": {
+        "en": "Add your Pool Filter",
+        "de": "Pool-Filterpumpe hinzufügen"
+      }
+    }
+  ],
+  "repair": [
+    {
+      "id": "repair_login",
+      "view": "repair_login.html"
+    }
+  ],
+  "settings": [
+    {
+      "id": "poll_interval",
+      "type": "number",
+      "label": {
+        "en": "Poll interval (seconds)",
+        "de": "Abfrageintervall (Sekunden)"
+      },
+      "hint": {
+        "en": "How often the app fetches updates from the Bestway cloud (10–300 seconds). Default: 60.",
+        "de": "Wie oft die App Updates aus der Bestway-Cloud abruft (10–300 Sekunden). Standard: 60."
+      },
+      "value": 60,
+      "attr": { "min": 10, "max": 300 }
+    },
+    {
+      "id": "region",
+      "type": "dropdown",
+      "label": {
+        "en": "Server region",
+        "de": "Server-Region"
+      },
+      "hint": {
+        "en": "Gizwits API region. Change only if login fails with the automatically detected region.",
+        "de": "Gizwits API-Region. Nur ändern, wenn die Anmeldung mit der automatisch erkannten Region fehlschlägt."
+      },
+      "value": "eu",
+      "values": [
+        { "id": "eu",     "label": { "en": "Europe (EU)", "de": "Europa (EU)" } },
+        { "id": "us",     "label": { "en": "United States", "de": "USA" } },
+        { "id": "global", "label": { "en": "Global", "de": "Global" } }
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Troubleshooting",
+        "de": "Fehlerbehebung"
+      },
+      "children": [
+        {
+          "id": "debug_last_sync",
+          "type": "label",
+          "label": { "en": "Last sync", "de": "Letzter Sync" },
+          "value": "–"
+        },
+        {
+          "id": "debug_status",
+          "type": "label",
+          "label": { "en": "Status", "de": "Status" },
+          "value": "–"
+        },
+        {
+          "id": "debug_product",
+          "type": "label",
+          "label": { "en": "Device model", "de": "Gerätemodell" },
+          "value": "–"
+        },
+        {
+          "id": "debug_region",
+          "type": "label",
+          "label": { "en": "Active region", "de": "Aktive Region" },
+          "value": "–"
+        },
+        {
+          "id": "debug_errors",
+          "type": "label",
+          "label": { "en": "Active error codes", "de": "Aktive Fehlercodes" },
+          "value": "–"
+        },
+        {
+          "id": "debug_fw_mcu_soft",
+          "type": "label",
+          "label": { "en": "MCU Firmware", "de": "MCU Firmware" },
+          "value": "–"
+        },
+        {
+          "id": "debug_fw_mcu_hard",
+          "type": "label",
+          "label": { "en": "MCU Hardware", "de": "MCU Hardware" },
+          "value": "–"
+        },
+        {
+          "id": "debug_fw_wifi_soft",
+          "type": "label",
+          "label": { "en": "Wi-Fi Firmware", "de": "WLAN Firmware" },
+          "value": "–"
+        },
+        {
+          "id": "debug_fw_wifi_hard",
+          "type": "label",
+          "label": { "en": "Wi-Fi Hardware", "de": "WLAN Hardware" },
+          "value": "–"
+        },
+        {
+          "id": "debug_raw",
+          "type": "label",
+          "label": { "en": "Raw device attributes", "de": "Rohe Gerätewerte" },
+          "value": "–"
+        }
+      ]
+    }
+  ]
+}

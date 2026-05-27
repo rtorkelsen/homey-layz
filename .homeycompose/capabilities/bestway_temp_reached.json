@@ -1,0 +1,11 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Target Temperature Reached",
+    "de": "Zieltemperatur erreicht"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/bestway_temp_reached.svg"
+}

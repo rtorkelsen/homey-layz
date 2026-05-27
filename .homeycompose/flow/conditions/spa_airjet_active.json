@@ -1,0 +1,18 @@
+{
+  "id": "spa_airjet_active",
+  "title": {
+    "en": "AirJet is !{{active|not active}}",
+    "de": "AirJet ist !{{aktiv|nicht aktiv}}"
+  },
+  "titleFormatted": {
+    "en": "[[device]] AirJet is !{{active|not active}}",
+    "de": "[[device]] AirJet ist !{{aktiv|nicht aktiv}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capability=bestway_temp_reached"
+    }
+  ]
+}

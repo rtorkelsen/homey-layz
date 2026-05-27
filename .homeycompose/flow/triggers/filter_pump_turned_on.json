@@ -13,6 +13,10 @@
     "ru": "Фильтрация была включена",
     "pl": "Filtracja została włączona"
   },
+  "titleFormatted": {
+    "en": "[[device]] filtering turned on",
+    "de": "[[device]] Filterung wurde eingeschaltet"
+  },
   "args": [
     {
       "name": "device",

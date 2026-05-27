@@ -1,0 +1,28 @@
+{
+  "id": "spa_error_triggered",
+  "title": {
+    "en": "Spa error occurred",
+    "de": "Spa-Fehler aufgetreten"
+  },
+  "titleFormatted": {
+    "en": "[[device]] spa error occurred",
+    "de": "[[device]] Spa-Fehler aufgetreten"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capability=bestway_temp_reached"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "error_message",
+      "type": "string",
+      "title": {
+        "en": "Error message",
+        "de": "Fehlermeldung"
+      }
+    }
+  ]
+}

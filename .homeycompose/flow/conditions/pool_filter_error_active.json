@@ -1,0 +1,18 @@
+{
+  "id": "pool_filter_error_active",
+  "title": {
+    "en": "Pool filter has !{{an error|no error}}",
+    "de": "Pool-Filter hat !{{einen Fehler|keinen Fehler}}"
+  },
+  "titleFormatted": {
+    "en": "[[device]] pool filter has !{{an error|no error}}",
+    "de": "[[device]] Pool-Filter hat !{{einen Fehler|keinen Fehler}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=pool-filter"
+    }
+  ]
+}
