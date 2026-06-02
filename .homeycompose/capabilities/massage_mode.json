@@ -65,6 +65,6 @@
       } 
     }
   ],
-  "uiComponent": "button",
+  "uiComponent": "picker",
   "icon": "/assets/icons/bobbles.svg"
 }

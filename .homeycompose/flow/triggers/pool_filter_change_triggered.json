@@ -1,0 +1,36 @@
+{
+  "id": "pool_filter_change_triggered",
+  "title": {
+    "en": "Pool filter change required",
+    "de": "Pool-Filter-Wechsel erforderlich",
+    "no": "Poolfilter-skifte nødvendig",
+    "cs": "Je nutná výměna poolfiltru",
+    "nl": "Zwembadfilterwissel vereist",
+    "da": "Poolfilter udskiftning påkrævet",
+    "sv": "Poolfilter byte krävs",
+    "it": "Sostituzione del filtro piscina necessaria",
+    "fr": "Remplacement du filtre de piscine requis",
+    "ru": "Требуется замена фильтра бассейна",
+    "pl": "Wymagana wymiana filtra basenowego"
+  },
+  "titleFormatted": {
+    "en": "[[device]] pool filter change required",
+    "de": "[[device]] Pool-Filter-Wechsel erforderlich",
+    "no": "[[device]] poolfilter-skifte nødvendig",
+    "cs": "[[device]] je nutná výměna poolfiltru",
+    "nl": "[[device]] zwembadfilterwissel vereist",
+    "da": "[[device]] poolfilter udskiftning påkrævet",
+    "sv": "[[device]] poolfilter byte krävs",
+    "it": "[[device]] sostituzione del filtro piscina necessaria",
+    "fr": "[[device]] remplacement du filtre de piscine requis",
+    "ru": "[[device]] требуется замена фильтра бассейна",
+    "pl": "[[device]] wymagana wymiana filtra basenowego"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=pool-filter"
+    }
+  ]
+}

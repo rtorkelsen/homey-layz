@@ -1,0 +1,52 @@
+{
+  "pair": {
+    "connect": {
+      "title":       "Lay-Z-Spa verbinden",
+      "description": "Gib den Freigabecode aus der Bestway Smart Hub App ein, um deinen Spa zu Homey hinzuzufügen.",
+      "button":      "Verbinden",
+      "steps": {
+        "1": "Bestway Smart Hub App öffnen",
+        "2": "Zum Spa gehen → ··· → Gerät freigeben",
+        "3": "Freigabecode kopieren (beginnt mit RW_Share_)",
+        "4": "Hier einfügen"
+      },
+      "error": {
+        "link_failed": "Verbindung fehlgeschlagen. Bitte Freigabecode prüfen und erneut versuchen.",
+        "no_devices":  "Keine Geräte gefunden. Stelle sicher, dass der Spa in der Bestway Smart Hub App eingerichtet ist."
+      }
+    },
+    "repair": {
+      "title":       "Lay-Z-Spa neu verknüpfen",
+      "description": "Gib einen neuen Freigabecode ein, um die Verbindung wiederherzustellen.",
+      "button":      "Neu verknüpfen"
+    },
+    "login": {
+      "title":             "Bei Bestway anmelden",
+      "description":       "Gib deine Bestway-Zugangsdaten ein.",
+      "label_email":       "E-Mail-Adresse",
+      "placeholder_email": "email@beispiel.de",
+      "label_password":    "Passwort",
+      "button":            "Anmelden"
+    },
+    "relogin": {
+      "title":       "Bestway-Zugangsdaten aktualisieren",
+      "description": "Gib deine Bestway-Zugangsdaten ein, um die Verbindung wiederherzustellen.",
+      "button":      "Aktualisieren"
+    },
+    "error": {
+      "login_failed":           "Anmeldung auf allen Servern fehlgeschlagen (EU, US, Global). Bitte E-Mail-Adresse und Passwort prüfen.",
+      "wrong_password":         "Falsches Passwort. Bitte erneut versuchen.",
+      "not_authenticated":      "Bitte zuerst einloggen.",
+      "fetch_devices_failed":   "Geräte konnten nicht aus der Bestway-Cloud geladen werden.",
+      "no_devices":             "Keine Geräte im Bestway-Konto gefunden. Stelle sicher, dass der Spa in der Bestway Smart Hub App eingerichtet ist."
+    }
+  },
+  "error": {
+    "control_failed":          "Befehl konnte nicht an den Spa gesendet werden. Bitte Verbindung prüfen.",
+    "credentials_missing":     "Anmeldedaten fehlen. Bitte Gerät entfernen und neu hinzufügen.",
+    "hydrojet_not_supported":  "HydroJet wird von diesem Spa-Modell nicht unterstützt.",
+    "lock_not_supported":      "Die Tastensperre kann bei diesem Spa-Modell nicht über die App geändert werden. Sie kann nur am Bedienfeld direkt geändert werden.",
+    "device_offline":          "Gerät ist offline.",
+    "system_errors":           "Systemfehler"
+  }
+}

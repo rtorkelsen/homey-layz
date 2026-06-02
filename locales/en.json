@@ -1,1 +1,52 @@
-{}
+{
+  "pair": {
+    "connect": {
+      "title": "Connect your Lay-Z-Spa",
+      "description": "Enter the share code from your Bestway Smart Hub app to add your spa to Homey.",
+      "button": "Connect",
+      "steps": {
+        "1": "Open the Bestway Smart Hub app",
+        "2": "Go to your spa → ··· → Share Device",
+        "3": "Copy the share code (starts with RW_Share_)",
+        "4": "Paste it below"
+      },
+      "error": {
+        "link_failed": "Could not connect. Please check the share code and try again.",
+        "no_devices": "No devices found after linking. Make sure your spa is set up in the Bestway Smart Hub app."
+      }
+    },
+    "repair": {
+      "title": "Re-link your Lay-Z-Spa",
+      "description": "Enter a new share code to restore the connection.",
+      "button": "Re-link"
+    },
+    "error": {
+      "login_failed": "Login failed on all servers (EU, US, Global). Please check your email address and password.",
+      "wrong_password": "Wrong password. Please try again.",
+      "not_authenticated": "Please log in first.",
+      "fetch_devices_failed": "Could not fetch devices from the Bestway cloud.",
+      "no_devices": "No devices found in your Bestway account. Make sure your spa is set up in the Bestway Smart Hub app."
+    },
+    "login": {
+      "title": "Sign in to Bestway",
+      "description": "Enter your Bestway account credentials.",
+      "label_email": "Email address",
+      "placeholder_email": "email@example.com",
+      "label_password": "Password",
+      "button": "Sign in"
+    },
+    "relogin": {
+      "title": "Update Bestway credentials",
+      "description": "Enter your Bestway credentials to restore the connection.",
+      "button": "Update"
+    }
+  },
+  "error": {
+    "control_failed": "Could not send command to the spa. Please check the connection.",
+    "credentials_missing": "Login credentials are missing. Please remove and re-add the device.",
+    "hydrojet_not_supported": "HydroJet is not supported by this spa model.",
+    "lock_not_supported": "Panel lock cannot be toggled via the app for this spa model. It can only be changed on the physical control panel.",
+    "device_offline": "Device is offline.",
+    "system_errors": "System error(s)"
+  }
+}

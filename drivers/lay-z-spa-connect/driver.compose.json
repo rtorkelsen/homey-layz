@@ -1,0 +1,235 @@
+{
+  "name": {
+    "en": "Lay-Z-Spa (Share Code)",
+    "de": "Lay-Z-Spa (Freigabecode)"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff",
+    "measure_power",
+    "meter_power",
+    "onoff.airjet_low",
+    "onoff.airjet_high",
+    "measure_temperature",
+    "target_temperature",
+    "onoff.hydrojet",
+    "onoff.filter",
+    "onoff.heating",
+    "bestway_locked",
+    "alarm_generic",
+    "bestway_error_message",
+    "bestway_temp_reached"
+  ],
+  "capabilitiesOptions": {
+    "target_temperature": {
+      "min": 20,
+      "max": 40,
+      "step": 1
+    },
+    "onoff.heating": {
+      "title": { "en": "Heating", "de": "Heizung" },
+      "uiComponent": "button"
+    },
+    "onoff.airjet_low": {
+      "title": { "en": "AirJet Massage Low", "de": "AirJet Massage Low" },
+      "uiComponent": "button"
+    },
+    "onoff.airjet_high": {
+      "title": { "en": "AirJet Massage High", "de": "AirJet Massage High" },
+      "uiComponent": "button"
+    },
+    "onoff.hydrojet": {
+      "title": { "en": "HydroJet Massage", "de": "HydroJet Massage" },
+      "uiComponent": "button"
+    },
+    "onoff.filter": {
+      "title": { "en": "Filter", "de": "Filter" },
+      "uiComponent": "button"
+    },
+    "alarm_generic": {
+      "title": { "en": "Error", "de": "Fehler" }
+    }
+  },
+  "platforms": ["local"],
+  "connectivity": ["cloud"],
+  "images": {
+    "small":  "/drivers/lay-z-spa-connect/assets/images/small.png",
+    "large":  "/drivers/lay-z-spa-connect/assets/images/large.png",
+    "xlarge": "/drivers/lay-z-spa-connect/assets/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "enter_code"
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "title": {
+        "en": "Select your Lay-Z-Spa",
+        "de": "Lay-Z-Spa auswählen"
+      },
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices",
+      "title": {
+        "en": "Add your Lay-Z-Spa",
+        "de": "Lay-Z-Spa hinzufügen"
+      }
+    }
+  ],
+  "repair": [
+    {
+      "id": "repair_share_code",
+      "title": {
+        "en": "Re-link your Lay-Z-Spa",
+        "de": "Lay-Z-Spa neu verknüpfen"
+      }
+    }
+  ],
+  "settings": [
+    {
+      "id": "poll_interval",
+      "type": "number",
+      "label": {
+        "en": "Poll interval (seconds)",
+        "de": "Abfrageintervall (Sekunden)"
+      },
+      "hint": {
+        "en": "How often the app fetches updates from the Bestway cloud (10–300 seconds). Default: 60.",
+        "de": "Wie oft die App Updates aus der Bestway-Cloud abruft (10–300 Sekunden). Standard: 60."
+      },
+      "value": 60,
+      "attr": { "min": 10, "max": 300 }
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Power sensor (estimated)",
+        "de": "Leistungssensor (Schätzwert)"
+      },
+      "children": [
+        {
+          "id": "power_sensor_enabled",
+          "type": "dropdown",
+          "label": { "en": "Enable power sensor", "de": "Leistungssensor aktivieren" },
+          "hint": {
+            "en": "When enabled, Homey estimates the spa's power consumption based on active components and the watt values below.",
+            "de": "Wenn aktiviert, schätzt Homey den Stromverbrauch des Spas anhand der aktiven Komponenten und der Wattwerte unten."
+          },
+          "value": "no",
+          "values": [
+            { "id": "yes", "label": { "en": "Yes", "de": "Ja" } },
+            { "id": "no",  "label": { "en": "No",  "de": "Nein" } }
+          ]
+        },
+        {
+          "id": "power_standby_w",
+          "type": "number",
+          "label": { "en": "Standby (W)", "de": "Standby (W)" },
+          "hint": { "en": "Total power when the spa is off or on but idle (nothing running).", "de": "Gesamtleistung wenn der Spa aus ist oder eingeschaltet aber nichts aktiv ist." },
+          "value": 2,
+          "attr": { "min": 0, "max": 100 }
+        },
+        {
+          "id": "power_filter_w",
+          "type": "number",
+          "label": { "en": "Filter only (W)", "de": "Nur Filter (W)" },
+          "hint": { "en": "Total power when only the filter pump is running.", "de": "Gesamtleistung wenn nur die Filterpumpe läuft." },
+          "value": 125,
+          "attr": { "min": 0, "max": 2000 }
+        },
+        {
+          "id": "power_heating_w",
+          "type": "number",
+          "label": { "en": "Filter + Heating (W)", "de": "Filter + Heizung (W)" },
+          "hint": { "en": "Total power when filter and heater are both running.", "de": "Gesamtleistung wenn Filter und Heizung laufen." },
+          "value": 2200,
+          "attr": { "min": 0, "max": 10000 }
+        },
+        {
+          "id": "power_airjet_low_w",
+          "type": "number",
+          "label": { "en": "AirJet Low (W)", "de": "AirJet Low (W)" },
+          "hint": { "en": "Total power when AirJet Low is active.", "de": "Gesamtleistung wenn AirJet Low aktiv ist." },
+          "value": 1550,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_airjet_high_w",
+          "type": "number",
+          "label": { "en": "AirJet High (W)", "de": "AirJet High (W)" },
+          "hint": { "en": "Total power when AirJet High is active.", "de": "Gesamtleistung wenn AirJet High aktiv ist." },
+          "value": 1960,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_hydrojet_w",
+          "type": "number",
+          "label": { "en": "HydroJet (W)", "de": "HydroJet (W)" },
+          "hint": { "en": "Total power when only HydroJet massage is active (HydroJet models only).", "de": "Gesamtleistung wenn nur HydroJet aktiv ist (nur HydroJet-Modelle)." },
+          "value": 430,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_hydrojet_airjet_low_w",
+          "type": "number",
+          "label": { "en": "HydroJet + AirJet Low (W)", "de": "HydroJet + AirJet Low (W)" },
+          "hint": { "en": "Total power when HydroJet and AirJet Low are both active (HydroJet models only).", "de": "Gesamtleistung wenn HydroJet und AirJet Low gleichzeitig aktiv sind (nur HydroJet-Modelle)." },
+          "value": 840,
+          "attr": { "min": 0, "max": 5000 }
+        },
+        {
+          "id": "power_hydrojet_airjet_high_w",
+          "type": "number",
+          "label": { "en": "HydroJet + AirJet High (W)", "de": "HydroJet + AirJet High (W)" },
+          "hint": { "en": "Total power when HydroJet and AirJet High are both active (HydroJet models only).", "de": "Gesamtleistung wenn HydroJet und AirJet High gleichzeitig aktiv sind (nur HydroJet-Modelle)." },
+          "value": 1260,
+          "attr": { "min": 0, "max": 5000 }
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Troubleshooting",
+        "de": "Fehlerbehebung"
+      },
+      "children": [
+        {
+          "id": "debug_last_sync",
+          "type": "label",
+          "label": { "en": "Last sync", "de": "Letzter Sync" },
+          "value": "–"
+        },
+        {
+          "id": "debug_status",
+          "type": "label",
+          "label": { "en": "Status", "de": "Status" },
+          "value": "–"
+        },
+        {
+          "id": "debug_region",
+          "type": "label",
+          "label": { "en": "Active region", "de": "Aktive Region" },
+          "value": "–"
+        },
+        {
+          "id": "debug_firmware",
+          "type": "label",
+          "label": { "en": "Firmware Version", "de": "Firmware-Version" },
+          "value": "–"
+        },
+        {
+          "id": "debug_raw",
+          "type": "label",
+          "label": { "en": "Raw device state", "de": "Roher Gerätestatus" },
+          "value": "–"
+        }
+      ]
+    }
+  ]
+}

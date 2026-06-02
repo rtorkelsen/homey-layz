@@ -1,0 +1,18 @@
+{
+  "id": "spa_locked",
+  "title": {
+    "en": "Panel lock is !{{active|not active}}",
+    "de": "Tastensperre ist !{{aktiv|nicht aktiv}}"
+  },
+  "titleFormatted": {
+    "en": "[[device]] panel lock is !{{active|not active}}",
+    "de": "[[device]] Tastensperre ist !{{aktiv|nicht aktiv}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capability=bestway_locked"
+    }
+  ]
+}

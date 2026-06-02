@@ -1,0 +1,18 @@
+{
+  "id": "spa_error_active",
+  "title": {
+    "en": "Spa has !{{an error|no error}}",
+    "de": "Spa hat !{{einen Fehler|keinen Fehler}}"
+  },
+  "titleFormatted": {
+    "en": "[[device]] spa has !{{an error|no error}}",
+    "de": "[[device]] Spa hat !{{einen Fehler|keinen Fehler}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capability=bestway_temp_reached"
+    }
+  ]
+}

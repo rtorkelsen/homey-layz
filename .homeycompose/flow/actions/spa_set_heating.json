@@ -1,0 +1,22 @@
+{
+  "id": "spa_set_heating",
+  "title": {
+    "en": "Turn heating on or off",
+    "de": "Heizung ein- oder ausschalten"
+  },
+  "titleFormatted": {
+    "en": "Turn heating [[onoff]]",
+    "de": "Heizung [[onoff]] schalten"
+  },
+  "args": [
+    {
+      "name": "onoff",
+      "type": "dropdown",
+      "title": { "en": "State", "de": "Zustand" },
+      "values": [
+        { "id": "true",  "label": { "en": "on",  "de": "ein" } },
+        { "id": "false", "label": { "en": "off", "de": "aus" } }
+      ]
+    }
+  ]
+}

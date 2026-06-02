@@ -1,0 +1,52 @@
+{
+  "pair": {
+    "connect": {
+      "title": "Verbind je Lay-Z-Spa",
+      "description": "Voer de deelcode in uit de Bestway Smart Hub-app om je spa aan Homey toe te voegen.",
+      "button": "Verbinden",
+      "steps": {
+        "1": "Open de Bestway Smart Hub-app",
+        "2": "Ga naar je spa → ··· → Apparaat delen",
+        "3": "Kopieer de deelcode (begint met RW_Share_)",
+        "4": "Plak hem hieronder"
+      },
+      "error": {
+        "link_failed": "Verbinding mislukt. Controleer de deelcode en probeer opnieuw.",
+        "no_devices": "Geen apparaten gevonden na koppeling. Zorg ervoor dat je spa is ingesteld in de Bestway Smart Hub-app."
+      }
+    },
+    "repair": {
+      "title": "Lay-Z-Spa opnieuw koppelen",
+      "description": "Voer een nieuwe deelcode in om de verbinding te herstellen.",
+      "button": "Opnieuw koppelen"
+    },
+    "error": {
+      "login_failed": "Aanmelden mislukt op alle servers (EU, VS, Globaal). Controleer je e-mailadres en wachtwoord.",
+      "wrong_password": "Onjuist wachtwoord. Probeer opnieuw.",
+      "not_authenticated": "Log eerst in.",
+      "fetch_devices_failed": "Apparaten konden niet worden opgehaald uit de Bestway-cloud.",
+      "no_devices": "Geen apparaten gevonden in je Bestway-account. Zorg ervoor dat je spa is ingesteld in de Bestway Smart Hub-app."
+    },
+    "login": {
+      "title": "Aanmelden bij Bestway",
+      "description": "Voer je Bestway-accountgegevens in.",
+      "label_email": "E-mailadres",
+      "placeholder_email": "email@voorbeeld.nl",
+      "label_password": "Wachtwoord",
+      "button": "Aanmelden"
+    },
+    "relogin": {
+      "title": "Bestway-inloggegevens bijwerken",
+      "description": "Voer je Bestway-inloggegevens in om de verbinding te herstellen.",
+      "button": "Bijwerken"
+    }
+  },
+  "error": {
+    "control_failed": "Opdracht kon niet naar de spa worden verzonden. Controleer de verbinding.",
+    "credentials_missing": "Aanmeldgegevens ontbreken. Verwijder het apparaat en voeg het opnieuw toe.",
+    "hydrojet_not_supported": "HydroJet wordt niet ondersteund door dit spa-model.",
+    "lock_not_supported": "Paneelvergrendeling kan niet worden in-/uitgeschakeld via de app voor dit spa-model. Dit kan alleen worden gewijzigd op het fysieke bedieningspaneel.",
+    "device_offline": "Apparaat is offline.",
+    "system_errors": "Systeemfout(en)"
+  }
+}

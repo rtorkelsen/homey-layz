@@ -1,0 +1,22 @@
+{
+  "id": "spa_set_airjet_high",
+  "title": {
+    "en": "Turn AirJet High on or off",
+    "de": "AirJet High ein- oder ausschalten"
+  },
+  "titleFormatted": {
+    "en": "Turn AirJet High [[onoff]]",
+    "de": "AirJet High [[onoff]] schalten"
+  },
+  "args": [
+    {
+      "name": "onoff",
+      "type": "dropdown",
+      "title": { "en": "State", "de": "Zustand" },
+      "values": [
+        { "id": "true",  "label": { "en": "on",  "de": "ein" } },
+        { "id": "false", "label": { "en": "off", "de": "aus" } }
+      ]
+    }
+  ]
+}

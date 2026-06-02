@@ -1,0 +1,43 @@
+{
+  "id": "pool_filter_error_triggered",
+  "title": {
+    "en": "Pool filter error occurred",
+    "de": "Pool-Filter-Fehler aufgetreten",
+    "no": "Poolfilter-feil oppstod",
+    "cs": "Došlo k chybě poolfiltru",
+    "nl": "Zwembadfilter fout opgetreden",
+    "da": "Poolfilterfejl opstod",
+    "sv": "Poolfilterfel uppstod",
+    "it": "Si è verificato un errore del filtro piscina",
+    "fr": "Erreur du filtre de piscine survenue",
+    "ru": "Произошла ошибка фильтра бассейна",
+    "pl": "Wystąpił błąd filtra basenowego"
+  },
+  "titleFormatted": {
+    "en": "[[device]] pool filter error occurred",
+    "de": "[[device]] Pool-Filter-Fehler aufgetreten",
+    "no": "[[device]] poolfilter-feil oppstod",
+    "cs": "[[device]] došlo k chybě poolfiltru",
+    "nl": "[[device]] zwembadfilter fout opgetreden",
+    "da": "[[device]] poolfilterfejl opstod",
+    "sv": "[[device]] poolfilterfel uppstod",
+    "it": "[[device]] si è verificato un errore del filtro piscina",
+    "fr": "[[device]] erreur du filtre de piscine survenue",
+    "ru": "[[device]] произошла ошибка фильтра бассейна",
+    "pl": "[[device]] wystąpił błąd filtra basenowego"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=pool-filter"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "error_message",
+      "type": "string",
+      "title": { "en": "Error message", "de": "Fehlermeldung" }
+    }
+  ]
+}

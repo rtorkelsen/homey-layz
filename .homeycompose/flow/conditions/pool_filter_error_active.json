@@ -1,0 +1,36 @@
+{
+  "id": "pool_filter_error_active",
+  "title": {
+    "en": "Pool filter has !{{an error|no error}}",
+    "de": "Pool-Filter hat !{{einen Fehler|keinen Fehler}}",
+    "no": "Poolfilter har !{{en feil|ingen feil}}",
+    "cs": "Poolfiltr !{{má chybu|nemá chybu}}",
+    "nl": "Zwembadfilter heeft !{{een fout|geen fout}}",
+    "da": "Poolfilteret har !{{en fejl|ingen fejl}}",
+    "sv": "Poolfiltret har !{{ett fel|inga fel}}",
+    "it": "Il filtro piscina ha !{{un errore|nessun errore}}",
+    "fr": "Le filtre de piscine a !{{une erreur|aucune erreur}}",
+    "ru": "Фильтр бассейна !{{имеет ошибку|не имеет ошибок}}",
+    "pl": "Filtr basenowy ma !{{błąd|brak błędów}}"
+  },
+  "titleFormatted": {
+    "en": "[[device]] pool filter has !{{an error|no error}}",
+    "de": "[[device]] Pool-Filter hat !{{einen Fehler|keinen Fehler}}",
+    "no": "[[device]] poolfilter har !{{en feil|ingen feil}}",
+    "cs": "[[device]] poolfiltr !{{má chybu|nemá chybu}}",
+    "nl": "[[device]] zwembadfilter heeft !{{een fout|geen fout}}",
+    "da": "[[device]] poolfilteret har !{{en fejl|ingen fejl}}",
+    "sv": "[[device]] poolfiltret har !{{ett fel|inga fel}}",
+    "it": "[[device]] il filtro piscina ha !{{un errore|nessun errore}}",
+    "fr": "[[device]] le filtre de piscine a !{{une erreur|aucune erreur}}",
+    "ru": "[[device]] фильтр бассейна !{{имеет ошибку|не имеет ошибок}}",
+    "pl": "[[device]] filtr basenowy ma !{{błąd|brak błędów}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=pool-filter"
+    }
+  ]
+}

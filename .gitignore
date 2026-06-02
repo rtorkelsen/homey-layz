@@ -9,6 +9,7 @@ yarn-error.log*
 
 # Homey-specific build directories
 .homeybuild/
+.claude/
 
 # Environmental files (do not expose sensitive data)
 .env

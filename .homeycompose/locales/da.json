@@ -1,0 +1,52 @@
+{
+  "pair": {
+    "connect": {
+      "title":       "Tilslut din Lay-Z-Spa",
+      "description": "Indtast delingskoden fra Bestway Smart Hub-appen for at tilføje din spa til Homey.",
+      "button":      "Tilslut",
+      "steps": {
+        "1": "Åbn Bestway Smart Hub-appen",
+        "2": "Gå til din spa → ··· → Del enhed",
+        "3": "Kopiér delingskoden (begynder med RW_Share_)",
+        "4": "Indsæt den herunder"
+      },
+      "error": {
+        "link_failed": "Tilslutning mislykkedes. Kontrollér delingskoden og prøv igen.",
+        "no_devices":  "Ingen enheder fundet efter tilkobling. Sørg for at din spa er konfigureret i Bestway Smart Hub-appen."
+      }
+    },
+    "repair": {
+      "title":       "Gentilslut din Lay-Z-Spa",
+      "description": "Indtast en ny delingskode for at gendanne forbindelsen.",
+      "button":      "Gentilslut"
+    },
+    "login": {
+      "title":             "Log ind på Bestway",
+      "description":       "Indtast dine Bestway-kontooplysninger.",
+      "label_email":       "E-mailadresse",
+      "placeholder_email": "email@eksempel.dk",
+      "label_password":    "Adgangskode",
+      "button":            "Log ind"
+    },
+    "relogin": {
+      "title":       "Opdater Bestway-loginoplysninger",
+      "description": "Indtast dine Bestway-loginoplysninger for at gendanne forbindelsen.",
+      "button":      "Opdater"
+    },
+    "error": {
+      "login_failed":           "Login mislykkedes på alle servere (EU, US, Global). Kontrollér e-mailadresse og adgangskode.",
+      "wrong_password":         "Forkert adgangskode. Prøv igen.",
+      "not_authenticated":      "Log ind først.",
+      "fetch_devices_failed":   "Kunne ikke hente enheder fra Bestway-skyen.",
+      "no_devices":             "Ingen enheder fundet i din Bestway-konto. Sørg for at din spa er konfigureret i Bestway Smart Hub-appen."
+    }
+  },
+  "error": {
+    "control_failed":          "Kunne ikke sende kommando til spa. Kontrollér forbindelsen.",
+    "credentials_missing":     "Loginoplysninger mangler. Fjern og tilføj enheden igen.",
+    "hydrojet_not_supported":  "HydroJet understøttes ikke af denne spa-model.",
+    "lock_not_supported":      "Panellåsen kan ikke skiftes via appen for denne spa-model. Den kan kun ændres på det fysiske kontrolpanel.",
+    "device_offline":          "Enheden er offline.",
+    "system_errors":           "Systemfejl"
+  }
+}

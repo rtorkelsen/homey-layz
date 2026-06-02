@@ -13,11 +13,15 @@
     "ru": "Фильтрация изменилась",
     "pl": "Filtracja została zmieniona"
   },
+  "titleFormatted": {
+    "en": "[[device]] filtering changed",
+    "de": "[[device]] Filterung geändert"
+  },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "driver_id=Lay-Z"
+      "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
     }
   ]
 }

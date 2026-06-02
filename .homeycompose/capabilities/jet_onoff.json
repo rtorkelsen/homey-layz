@@ -15,5 +15,6 @@
   },
   "getable": true,
   "setable": true,
-  "uiComponent": "button"
+  "uiComponent": "button",
+  "icon": "/assets/icons/bobbles.svg"
 }
