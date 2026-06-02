@@ -100,8 +100,8 @@ class SpaDriver extends Homey.Driver {
           if (card === actionOn)  return device.setFilterPump(true);
           if (card === actionOff) return device.setFilterPump(false);
   
-          // Toggle: read current capability and invert
-          const cur = !!device.getCapabilityValue('pump_onoff');
+          // Toggle: read current state — support both pump_onoff (Lay-Z) and onoff.filter (Connect)
+          const cur = !!(device.getCapabilityValue('pump_onoff') ?? device.getCapabilityValue('onoff.filter'));
           return device.setFilterPump(!cur);
         });
       });

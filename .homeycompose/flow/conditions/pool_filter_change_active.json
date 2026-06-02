@@ -2,11 +2,29 @@
   "id": "pool_filter_change_active",
   "title": {
     "en": "Pool filter change is !{{required|not required}}",
-    "de": "Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}"
+    "de": "Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}",
+    "no": "Poolfilter-skifte er !{{nødvendig|ikke nødvendig}}",
+    "cs": "Výměna poolfiltru !{{je nutná|není nutná}}",
+    "nl": "Zwembadfilterwissel is !{{vereist|niet vereist}}",
+    "da": "Poolfilter udskiftning er !{{påkrævet|ikke påkrævet}}",
+    "sv": "Poolfilter byte !{{krävs|krävs inte}}",
+    "it": "La sostituzione del filtro piscina è !{{necessaria|non necessaria}}",
+    "fr": "Le remplacement du filtre de piscine est !{{requis|non requis}}",
+    "ru": "Замена фильтра бассейна !{{требуется|не требуется}}",
+    "pl": "Wymiana filtra basenowego jest !{{wymagana|niewymagana}}"
   },
   "titleFormatted": {
     "en": "[[device]] pool filter change is !{{required|not required}}",
-    "de": "[[device]] Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}"
+    "de": "[[device]] Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}",
+    "no": "[[device]] poolfilter-skifte er !{{nødvendig|ikke nødvendig}}",
+    "cs": "[[device]] výměna poolfiltru !{{je nutná|není nutná}}",
+    "nl": "[[device]] zwembadfilterwissel is !{{vereist|niet vereist}}",
+    "da": "[[device]] poolfilter udskiftning er !{{påkrævet|ikke påkrævet}}",
+    "sv": "[[device]] poolfilter byte !{{krävs|krävs inte}}",
+    "it": "[[device]] la sostituzione del filtro piscina è !{{necessaria|non necessaria}}",
+    "fr": "[[device]] le remplacement du filtre de piscine est !{{requis|non requis}}",
+    "ru": "[[device]] замена фильтра бассейна !{{требуется|не требуется}}",
+    "pl": "[[device]] wymiana filtra basenowego jest !{{wymagana|niewymagana}}"
   },
   "args": [
     {

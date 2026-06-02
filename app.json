@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.utkikk.layz",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
@@ -84,7 +84,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -111,7 +111,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -138,7 +138,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -146,11 +146,29 @@
         "id": "pool_filter_change_triggered",
         "title": {
           "en": "Pool filter change required",
-          "de": "Pool-Filter-Wechsel erforderlich"
+          "de": "Pool-Filter-Wechsel erforderlich",
+          "no": "Poolfilter-skifte nødvendig",
+          "cs": "Je nutná výměna poolfiltru",
+          "nl": "Zwembadfilterwissel vereist",
+          "da": "Poolfilter udskiftning påkrævet",
+          "sv": "Poolfilter byte krävs",
+          "it": "Sostituzione del filtro piscina necessaria",
+          "fr": "Remplacement du filtre de piscine requis",
+          "ru": "Требуется замена фильтра бассейна",
+          "pl": "Wymagana wymiana filtra basenowego"
         },
         "titleFormatted": {
           "en": "[[device]] pool filter change required",
-          "de": "[[device]] Pool-Filter-Wechsel erforderlich"
+          "de": "[[device]] Pool-Filter-Wechsel erforderlich",
+          "no": "[[device]] poolfilter-skifte nødvendig",
+          "cs": "[[device]] je nutná výměna poolfiltru",
+          "nl": "[[device]] zwembadfilterwissel vereist",
+          "da": "[[device]] poolfilter udskiftning påkrævet",
+          "sv": "[[device]] poolfilter byte krävs",
+          "it": "[[device]] sostituzione del filtro piscina necessaria",
+          "fr": "[[device]] remplacement du filtre de piscine requis",
+          "ru": "[[device]] требуется замена фильтра бассейна",
+          "pl": "[[device]] wymagana wymiana filtra basenowego"
         },
         "args": [
           {
@@ -164,11 +182,29 @@
         "id": "pool_filter_error_triggered",
         "title": {
           "en": "Pool filter error occurred",
-          "de": "Pool-Filter-Fehler aufgetreten"
+          "de": "Pool-Filter-Fehler aufgetreten",
+          "no": "Poolfilter-feil oppstod",
+          "cs": "Došlo k chybě poolfiltru",
+          "nl": "Zwembadfilter fout opgetreden",
+          "da": "Poolfilterfejl opstod",
+          "sv": "Poolfilterfel uppstod",
+          "it": "Si è verificato un errore del filtro piscina",
+          "fr": "Erreur du filtre de piscine survenue",
+          "ru": "Произошла ошибка фильтра бассейна",
+          "pl": "Wystąpił błąd filtra basenowego"
         },
         "titleFormatted": {
           "en": "[[device]] pool filter error occurred",
-          "de": "[[device]] Pool-Filter-Fehler aufgetreten"
+          "de": "[[device]] Pool-Filter-Fehler aufgetreten",
+          "no": "[[device]] poolfilter-feil oppstod",
+          "cs": "[[device]] došlo k chybě poolfiltru",
+          "nl": "[[device]] zwembadfilter fout opgetreden",
+          "da": "[[device]] poolfilterfejl opstod",
+          "sv": "[[device]] poolfilterfel uppstod",
+          "it": "[[device]] si è verificato un errore del filtro piscina",
+          "fr": "[[device]] erreur du filtre de piscine survenue",
+          "ru": "[[device]] произошла ошибка фильтра бассейна",
+          "pl": "[[device]] wystąpił błąd filtra basenowego"
         },
         "args": [
           {
@@ -269,7 +305,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -296,7 +332,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -304,11 +340,29 @@
         "id": "pool_filter_change_active",
         "title": {
           "en": "Pool filter change is !{{required|not required}}",
-          "de": "Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}"
+          "de": "Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}",
+          "no": "Poolfilter-skifte er !{{nødvendig|ikke nødvendig}}",
+          "cs": "Výměna poolfiltru !{{je nutná|není nutná}}",
+          "nl": "Zwembadfilterwissel is !{{vereist|niet vereist}}",
+          "da": "Poolfilter udskiftning er !{{påkrævet|ikke påkrævet}}",
+          "sv": "Poolfilter byte !{{krävs|krävs inte}}",
+          "it": "La sostituzione del filtro piscina è !{{necessaria|non necessaria}}",
+          "fr": "Le remplacement du filtre de piscine est !{{requis|non requis}}",
+          "ru": "Замена фильтра бассейна !{{требуется|не требуется}}",
+          "pl": "Wymiana filtra basenowego jest !{{wymagana|niewymagana}}"
         },
         "titleFormatted": {
           "en": "[[device]] pool filter change is !{{required|not required}}",
-          "de": "[[device]] Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}"
+          "de": "[[device]] Pool-Filter-Wechsel ist !{{erforderlich|nicht erforderlich}}",
+          "no": "[[device]] poolfilter-skifte er !{{nødvendig|ikke nødvendig}}",
+          "cs": "[[device]] výměna poolfiltru !{{je nutná|není nutná}}",
+          "nl": "[[device]] zwembadfilterwissel is !{{vereist|niet vereist}}",
+          "da": "[[device]] poolfilter udskiftning er !{{påkrævet|ikke påkrævet}}",
+          "sv": "[[device]] poolfilter byte !{{krävs|krävs inte}}",
+          "it": "[[device]] la sostituzione del filtro piscina è !{{necessaria|non necessaria}}",
+          "fr": "[[device]] le remplacement du filtre de piscine est !{{requis|non requis}}",
+          "ru": "[[device]] замена фильтра бассейна !{{требуется|не требуется}}",
+          "pl": "[[device]] wymiana filtra basenowego jest !{{wymagana|niewymagana}}"
         },
         "args": [
           {
@@ -322,11 +376,29 @@
         "id": "pool_filter_error_active",
         "title": {
           "en": "Pool filter has !{{an error|no error}}",
-          "de": "Pool-Filter hat !{{einen Fehler|keinen Fehler}}"
+          "de": "Pool-Filter hat !{{einen Fehler|keinen Fehler}}",
+          "no": "Poolfilter har !{{en feil|ingen feil}}",
+          "cs": "Poolfiltr !{{má chybu|nemá chybu}}",
+          "nl": "Zwembadfilter heeft !{{een fout|geen fout}}",
+          "da": "Poolfilteret har !{{en fejl|ingen fejl}}",
+          "sv": "Poolfiltret har !{{ett fel|inga fel}}",
+          "it": "Il filtro piscina ha !{{un errore|nessun errore}}",
+          "fr": "Le filtre de piscine a !{{une erreur|aucune erreur}}",
+          "ru": "Фильтр бассейна !{{имеет ошибку|не имеет ошибок}}",
+          "pl": "Filtr basenowy ma !{{błąd|brak błędów}}"
         },
         "titleFormatted": {
           "en": "[[device]] pool filter has !{{an error|no error}}",
-          "de": "[[device]] Pool-Filter hat !{{einen Fehler|keinen Fehler}}"
+          "de": "[[device]] Pool-Filter hat !{{einen Fehler|keinen Fehler}}",
+          "no": "[[device]] poolfilter har !{{en feil|ingen feil}}",
+          "cs": "[[device]] poolfiltr !{{má chybu|nemá chybu}}",
+          "nl": "[[device]] zwembadfilter heeft !{{een fout|geen fout}}",
+          "da": "[[device]] poolfilteret har !{{en fejl|ingen fejl}}",
+          "sv": "[[device]] poolfiltret har !{{ett fel|inga fel}}",
+          "it": "[[device]] il filtro piscina ha !{{un errore|nessun errore}}",
+          "fr": "[[device]] le filtre de piscine a !{{une erreur|aucune erreur}}",
+          "ru": "[[device]] фильтр бассейна !{{имеет ошибку|не имеет ошибок}}",
+          "pl": "[[device]] filtr basenowy ma !{{błąd|brak błędów}}"
         },
         "args": [
           {
@@ -487,7 +559,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -510,7 +582,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -533,7 +605,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=Lay-Z"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },

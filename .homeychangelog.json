@@ -1,4 +1,8 @@
 {
+  "1.3.1": {
+    "en": "Fixed: filter pump flow cards (on/off/changed triggers, conditions, actions) now also work for the Lay-Z-Spa Share Code driver. Fixed: spa error flow card now uses explicit driver filter. Fixed: capability order migration skips reorder when already correct. Added: pool filter flow card translations for 9 additional languages (no, cs, nl, da, sv, it, fr, ru, pl).",
+    "de": "Behoben: Filterpumpen-Flow-Karten (Ein/Aus/Geändert-Trigger, Bedingungen, Aktionen) funktionieren jetzt auch für den Lay-Z-Spa Freigabecode-Treiber. Behoben: Spa-Fehler-Flow-Karte verwendet jetzt einen expliziten Treiber-Filter. Behoben: Capability-Reihenfolge-Migration überspringt die Neuordnung, wenn die Reihenfolge bereits korrekt ist. Hinzugefügt: Pool-Filter-Flow-Karten in 9 weiteren Sprachen (no, cs, nl, da, sv, it, fr, ru, pl)."
+  },
   "1.0.0": {
     "en": "First release in production"
   },
@@ -54,5 +58,4 @@
     "en": "New: Bestway Pool Filter Pump driver with flow cards (on/off, timer, filter change, error). New: Lay-Z-Spa Share Code driver (no account needed). New: custom login & repair views for all drivers, fully localised in 11 languages. Fixed: capability display order (Filter Pump now appears directly after Heating). Fixed: Last Sync timestamp now shows local time. Fixed: Hydrojet Massage and Filter renamed in all languages.",
     "de": "Neu: Treiber für Bestway Poolfilter-Pumpe mit Flow-Karten (Ein/Aus, Timer, Filterwechsel, Fehler). Neu: Lay-Z-Spa Treiber über Freigabecode (kein Konto erforderlich). Neu: Eigene Anmelde- und Reparatur-Ansichten für alle Treiber, vollständig in 11 Sprachen übersetzt. Behoben: Reihenfolge der Gerätefunktionen (Filterpumpe erscheint jetzt direkt nach Heizung). Behoben: Letzter Sync zeigt nun die lokale Uhrzeit. Behoben: Hydrojet Massage und Filter in allen Sprachen umbenannt."
   }
-
 }

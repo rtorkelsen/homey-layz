@@ -176,7 +176,22 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
 
       if (state.filter_state !== undefined) {
-        await this._setCapability('onoff.filter', state.filter_state === 1);
+        const prevFilter = this._prevFilterOn;
+        const filterOn   = state.filter_state === 1;
+        await this._setCapability('onoff.filter', filterOn);
+
+        if (prevFilter !== undefined && prevFilter !== filterOn) {
+          try { await this.homey.flow.getDeviceTriggerCard('filter_pump_changed').trigger(this, {}, {}); }
+          catch (e) { this.error('Trigger filter_pump_changed failed', e); }
+          if (filterOn) {
+            try { await this.homey.flow.getDeviceTriggerCard('filter_pump_turned_on').trigger(this, {}, {}); }
+            catch (e) { this.error('Trigger filter_pump_turned_on failed', e); }
+          } else {
+            try { await this.homey.flow.getDeviceTriggerCard('filter_pump_turned_off').trigger(this, {}, {}); }
+            catch (e) { this.error('Trigger filter_pump_turned_off failed', e); }
+          }
+        }
+        this._prevFilterOn = filterOn;
       }
 
       if (state.wave_state !== undefined) {
@@ -307,6 +322,11 @@ class LaZSpaConnectDevice extends Homey.Device {
   async _onCapabilityFilter(value) {
     this.log('Set onoff.filter →', value);
     await this._sendControl({ filter_state: value ? 1 : 0 });
+  }
+
+  // Used by Flow action cards (filter_pump_turn_on/off/toggle)
+  async setFilterPump(value) {
+    return this.triggerCapabilityListener('onoff.filter', !!value);
   }
 
   async _onCapabilityAirjetLow(value) {

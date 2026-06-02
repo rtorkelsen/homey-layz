@@ -21,7 +21,7 @@
     {
       "name": "device",
       "type": "device",
-      "filter": "driver_id=Lay-Z"
+      "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
     }
   ]
 }

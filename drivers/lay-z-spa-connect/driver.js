@@ -19,6 +19,10 @@ class LaZSpaConnectDriver extends Homey.Driver {
     this._triggerTempReached    = this.homey.flow.getDeviceTriggerCard('spa_temp_reached');
     this._triggerErrorTriggered = this.homey.flow.getDeviceTriggerCard('spa_error_triggered');
 
+    this._triggerFilterPumpChanged   = this.homey.flow.getDeviceTriggerCard('filter_pump_changed');
+    this._triggerFilterPumpTurnedOn  = this.homey.flow.getDeviceTriggerCard('filter_pump_turned_on');
+    this._triggerFilterPumpTurnedOff = this.homey.flow.getDeviceTriggerCard('filter_pump_turned_off');
+
     // Registering conditions here ensures they work for Connect devices even if the
     // V01 driver initialises after this one. The last registration always wins safely.
 
@@ -85,6 +89,29 @@ class LaZSpaConnectDriver extends Homey.Driver {
 
     this.homey.flow.getActionCard('spa_set_hydrojet')
       .registerRunListener(runSpa('onoff.hydrojet', 'setHydrojet'));
+
+    // Filter pump conditions — cover Connect devices (pump_onoff not present; use onoff.filter)
+    this.homey.flow.getConditionCard('filter_pump_is_on')
+      .registerRunListener(async ({ device }) => {
+        return !!(device?.getCapabilityValue('pump_onoff') ?? device?.getCapabilityValue('onoff.filter'));
+      });
+    this.homey.flow.getConditionCard('filter_pump_is_off')
+      .registerRunListener(async ({ device }) => {
+        return !(device?.getCapabilityValue('pump_onoff') ?? device?.getCapabilityValue('onoff.filter'));
+      });
+
+    // Filter pump actions — cover Connect devices via setFilterPump()
+    const fpAction = (turnOn) => async ({ device }) => {
+      if (!device || typeof device.setFilterPump !== 'function') return false;
+      return device.setFilterPump(turnOn);
+    };
+    this.homey.flow.getActionCard('filter_pump_turn_on').registerRunListener(fpAction(true));
+    this.homey.flow.getActionCard('filter_pump_turn_off').registerRunListener(fpAction(false));
+    this.homey.flow.getActionCard('filter_pump_toggle').registerRunListener(async ({ device }) => {
+      if (!device || typeof device.setFilterPump !== 'function') return false;
+      const cur = !!(device.getCapabilityValue('pump_onoff') ?? device.getCapabilityValue('onoff.filter'));
+      return device.setFilterPump(!cur);
+    });
   }
 
   async onRepair(session, device) {
