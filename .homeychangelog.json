@@ -60,5 +60,8 @@
   },
   "1.3.2": {
     "en": "Adds support for V02 / Bestway Smart Hub devices, additional drivers and extended flow cards."
+  },
+  "1.3.3": {
+    "en": "Adds support for V02 / Bestway Smart Hub devices, additional drivers and extended flow cards."
   }
 }
