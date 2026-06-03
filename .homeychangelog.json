@@ -1,5 +1,5 @@
 {
-  "1.3.4": {
+  "1.3.6": {
     "en": "Fixed: heating on/off button (onoff.heating) was missing on existing devices after migration. Also ensures bestway_temp_reached and bestway_error_message capabilities are always present on existing devices.",
     "de": "Behoben: Heizung Ein/Aus-Taste (onoff.heating) fehlte auf bestehenden Geräten nach der Migration. Stellt außerdem sicher, dass bestway_temp_reached und bestway_error_message immer vorhanden sind."
   },
