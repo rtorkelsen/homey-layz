@@ -1,4 +1,8 @@
 {
+  "1.3.4": {
+    "en": "Fixed: heating on/off button (onoff.heating) was missing on existing devices after migration. Also ensures bestway_temp_reached and bestway_error_message capabilities are always present on existing devices.",
+    "de": "Behoben: Heizung Ein/Aus-Taste (onoff.heating) fehlte auf bestehenden Geräten nach der Migration. Stellt außerdem sicher, dass bestway_temp_reached und bestway_error_message immer vorhanden sind."
+  },
   "1.3.1": {
     "en": "Fixed: filter pump flow cards (on/off/changed triggers, conditions, actions) now also work for the Lay-Z-Spa Share Code driver. Fixed: spa error flow card now uses explicit driver filter. Fixed: capability order migration skips reorder when already correct. Added: pool filter flow card translations for 9 additional languages (no, cs, nl, da, sv, it, fr, ru, pl).",
     "de": "Behoben: Filterpumpen-Flow-Karten (Ein/Aus/Geändert-Trigger, Bedingungen, Aktionen) funktionieren jetzt auch für den Lay-Z-Spa Freigabecode-Treiber. Behoben: Spa-Fehler-Flow-Karte verwendet jetzt einen expliziten Treiber-Filter. Behoben: Capability-Reihenfolge-Migration überspringt die Neuordnung, wenn die Reihenfolge bereits korrekt ist. Hinzugefügt: Pool-Filter-Flow-Karten in 9 weiteren Sprachen (no, cs, nl, da, sv, it, fr, ru, pl)."
