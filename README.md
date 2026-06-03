@@ -119,7 +119,13 @@ The app supports 11 languages: English, German, Norwegian, Czech, Dutch, Danish,
 
 ## Changelog
 
-### 1.3.4
+### 1.3.7
+- Fixed: `spa_error_triggered` and `spa_error_active` flow cards now use explicit driver filter instead of a capability proxy
+- Fixed: filter pump conditions (`is on` / `is off`) now correctly handle Share Code devices
+- Improved: Lay-Z driver infers device availability from poll result — halves API calls per poll cycle
+- Improved: filter pump trigger cards now have localised `titleFormatted` for all 11 supported languages
+
+### 1.3.6
 - Fixed: heating on/off button missing on existing devices after capability migration
 - Fixed: `bestway_temp_reached` and `bestway_error_message` now always ensured present on existing devices
 

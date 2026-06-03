@@ -1,4 +1,8 @@
 {
+  "1.3.7": {
+    "en": "Fixed: spa_error_triggered and spa_error_active flow cards now use explicit driver_id filter. Fixed: filter pump conditions (is on/is off) now correctly handle Share Code devices in the Lay-Z driver. Improved: Lay-Z driver infers device availability from poll result — halves API calls per poll cycle. Improved: filter pump trigger cards now have localised titleFormatted for all 11 supported languages.",
+    "de": "Behoben: spa_error_triggered und spa_error_active Flow-Karten verwenden nun einen expliziten driver_id-Filter. Behoben: Filterpumpen-Bedingungen (an/aus) funktionieren im Lay-Z-Treiber jetzt korrekt auch für Share-Code-Geräte. Verbessert: Lay-Z-Treiber leitet Geräteverfügbarkeit aus dem Poll-Ergebnis ab – halbiert die API-Aufrufe pro Poll-Zyklus. Verbessert: Filterpumpen-Trigger-Karten haben jetzt lokalisierte titleFormatted-Texte in allen 11 Sprachen."
+  },
   "1.3.6": {
     "en": "Fixed: heating on/off button (onoff.heating) was missing on existing devices after migration. Also ensures bestway_temp_reached and bestway_error_message capabilities are always present on existing devices.",
     "de": "Behoben: Heizung Ein/Aus-Taste (onoff.heating) fehlte auf bestehenden Geräten nach der Migration. Stellt außerdem sicher, dass bestway_temp_reached und bestway_error_message immer vorhanden sind."

@@ -15,7 +15,16 @@
   },
   "titleFormatted": {
     "en": "[[device]] filtering turned on",
-    "de": "[[device]] Filterung wurde eingeschaltet"
+    "no": "[[device]] filtrering ble slått på",
+    "cs": "[[device]] filtrace byla zapnuta",
+    "nl": "[[device]] filteren werd ingeschakeld",
+    "de": "[[device]] Filterung wurde eingeschaltet",
+    "da": "[[device]] filtrering blev tændt",
+    "sv": "[[device]] filtrering slogs på",
+    "it": "[[device]] il filtraggio è stato acceso",
+    "fr": "[[device]] la filtration a été allumée",
+    "ru": "[[device]] фильтрация была включена",
+    "pl": "[[device]] filtracja została włączona"
   },
   "args": [
     {

@@ -110,8 +110,11 @@ class SpaDriver extends Homey.Driver {
       const condOn  = this.homey.flow.getConditionCard('filter_pump_is_on');
       const condOff = this.homey.flow.getConditionCard('filter_pump_is_off');
   
-      condOn.registerRunListener(async ({ device }) => !!device?.getCapabilityValue('pump_onoff'));
-      condOff.registerRunListener(async ({ device }) => !device?.getCapabilityValue('pump_onoff'));
+      // Support both Lay-Z (pump_onoff) and Connect (onoff.filter) devices
+      condOn.registerRunListener(async ({ device }) =>
+        !!(device?.getCapabilityValue('pump_onoff') ?? device?.getCapabilityValue('onoff.filter')));
+      condOff.registerRunListener(async ({ device }) =>
+        !(device?.getCapabilityValue('pump_onoff') ?? device?.getCapabilityValue('onoff.filter')));
   
       this.log('Flow cards for filter pump registered');
     } catch (e) {
