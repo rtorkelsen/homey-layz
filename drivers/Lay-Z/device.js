@@ -306,6 +306,7 @@ class SpaDevice extends Homey.Device {
 
     // *** Common capabilities (shared by all models) ****
     await this.enableCapability('onoff', this.getSetting('power_control_enabled'));
+    await this.enableCapability('onoff.heating', true);
     await this.enableCapability('pump_onoff', this.getSetting('filter_pump_control_enabled'));
     await this.enableCapability('pump_state', true);
     await this.enableCapability('heat_state', true);
@@ -313,6 +314,8 @@ class SpaDevice extends Homey.Device {
     await this.enableCapability('measure_power', true);
     await this.enableCapability('measure_temperature', true);
     await this.enableCapability('target_temperature', true);
+    await this.enableCapability('bestway_temp_reached', true);
+    await this.enableCapability('bestway_error_message', true);
     await this.enableCapability('alarm_generic', true);
   
     // *** Model-specific capabilities ***

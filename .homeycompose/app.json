@@ -1,6 +1,6 @@
 {
   "id": "com.utkikk.layz",
-  "version": "1.3.1",
+  "version": "1.3.4",
   "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
@@ -54,7 +54,6 @@
       }
     ]
   },
-
   "author": {
     "name": "Ruben Torkelsen",
     "email": "layz@utkikk.com"
