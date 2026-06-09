@@ -1,6 +1,6 @@
 {
   "id": "com.utkikk.layz",
-  "version": "1.3.5",
+  "version": "1.3.8",
   "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
@@ -57,5 +57,11 @@
   "author": {
     "name": "Ruben Torkelsen",
     "email": "layz@utkikk.com"
+  },
+  "homeyCommunityTopicId": 155679,
+  "source": "https://github.com/rtorkelsen/homey-layz",
+  "support": "https://community.homey.app/t/app-pro-lay-z-control-your-bestway-spa-pool-filter-from-homey/155679",
+  "bugs": {
+    "url": "https://github.com/rtorkelsen/homey-layz/issues"
   }
 }

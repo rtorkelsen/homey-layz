@@ -15,7 +15,16 @@
   },
   "titleFormatted": {
     "en": "[[device]] filtering changed",
-    "de": "[[device]] Filterung geändert"
+    "no": "[[device]] filtrering endret seg",
+    "cs": "[[device]] filtrace se změnila",
+    "nl": "[[device]] filteren gewijzigd",
+    "de": "[[device]] Filterung geändert",
+    "da": "[[device]] filtrering ændret",
+    "sv": "[[device]] filtrering ändrades",
+    "it": "[[device]] filtraggio cambiato",
+    "fr": "[[device]] filtration modifiée",
+    "ru": "[[device]] фильтрация изменилась",
+    "pl": "[[device]] filtracja została zmieniona"
   },
   "args": [
     {
