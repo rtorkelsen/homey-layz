@@ -35,7 +35,14 @@ class LaZSpaConnectDevice extends Homey.Device {
 
     this._initClient();
 
-    for (const cap of ['measure_power', 'meter_power', 'alarm_generic', 'bestway_error_message', 'bestway_temp_reached', 'bestway_locked']) {
+    // Migration: add any capabilities that may be missing on older devices.
+    // onoff.heating was present in driver.compose.json from 1.3.0 but could
+    // be absent on devices that were originally paired with a build that omitted it.
+    for (const cap of [
+      'measure_power', 'meter_power',
+      'alarm_generic', 'bestway_error_message', 'bestway_temp_reached', 'bestway_locked',
+      'onoff.heating',
+    ]) {
       if (!this.hasCapability(cap)) {
         this.log(`Migrating: adding capability "${cap}"`);
         await this.addCapability(cap).catch(err =>
@@ -327,6 +334,11 @@ class LaZSpaConnectDevice extends Homey.Device {
   // Used by Flow action cards (filter_pump_turn_on/off/toggle)
   async setFilterPump(value) {
     return this.triggerCapabilityListener('onoff.filter', !!value);
+  }
+
+  // Used by the global spa_set_heating Flow action card
+  async setHeating(value) {
+    return this._onCapabilityHeating(!!value);
   }
 
   async _onCapabilityAirjetLow(value) {
