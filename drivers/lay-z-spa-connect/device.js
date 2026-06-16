@@ -234,20 +234,29 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
       this._prevTempReached = tempReached;
 
-      const rawError = (state.warning !== undefined && state.warning !== '' && state.warning !== null)
-        ? state.warning
-        : (state.error_code ?? state.fault_code ?? state.fault_state);
-      const hasError = rawError !== undefined && rawError !== null
-        && rawError !== 0 && rawError !== false && rawError !== '';
+      // warning is a boolean flag (0/1); error_code carries the actual code (E01, "1", etc.)
+      // Do NOT use warning as the error code — it causes warning=1 to be fabricated into "E01".
+      const warningActive = state.warning !== undefined && state.warning !== null
+        && state.warning !== '' && state.warning !== 0 && state.warning !== false && state.warning !== '0';
+      const errorCode = state.error_code ?? state.fault_code ?? state.fault_state;
+      const hasErrorCode = errorCode !== undefined && errorCode !== null
+        && errorCode !== 0 && errorCode !== false && errorCode !== '';
+      const hasError = warningActive || hasErrorCode;
       await this._setCapability('alarm_generic', hasError);
 
       if (hasError) {
-        const codeNum = typeof rawError === 'number' ? rawError : parseInt(rawError, 10);
-        const eKey    = `E${String(codeNum).padStart(2, '0')}`;
-        const entry   = ERROR_DESCRIPTIONS[eKey];
-        const lang    = this.homey.i18n.getLanguage();
-        const desc    = entry ? (entry[lang] ?? entry.en) : String(rawError);
-        await this._setCapability('bestway_error_message', `${eKey}: ${desc}`);
+        if (hasErrorCode) {
+          const raw     = String(errorCode).replace(/^E/i, '');
+          const codeNum = parseInt(raw, 10);
+          const eKey    = `E${String(codeNum).padStart(2, '0')}`;
+          const entry   = ERROR_DESCRIPTIONS[eKey];
+          const lang    = this.homey.i18n.getLanguage();
+          const desc    = entry ? (entry[lang] ?? entry.en) : String(errorCode);
+          await this._setCapability('bestway_error_message', `${eKey}: ${desc}`);
+        } else {
+          // warning flag active but no specific error code from device
+          await this._setCapability('bestway_error_message', 'Device warning (no error code)');
+        }
       } else {
         await this._setCapability('bestway_error_message', '–');
       }

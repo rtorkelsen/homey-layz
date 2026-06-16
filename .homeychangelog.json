@@ -1,4 +1,8 @@
 {
+  "1.3.9": {
+    "en": "Fixed: Share Code devices with warning=1 but no error_code were incorrectly showing 'E01: Flow sensor error' — the app now correctly separates the warning flag from the error code field, and shows 'Device warning (no error code)' instead of a fabricated E-code.",
+    "de": "Behoben: Share-Code-Geräte mit warning=1 aber leerem error_code zeigten fälschlicherweise 'E01: Durchflusssensor-Fehler' — die App trennt nun korrekt das Warn-Flag vom Fehlercode-Feld und zeigt stattdessen 'Device warning (no error code)'."
+  },
   "1.3.8": {
     "en": "Fixed: heating on/off button (onoff.heating) missing on existing Share Code devices — the capability is now added automatically on first start after update. Fixed: global 'Turn heating on or off' flow action now uses a direct method call on Share Code devices instead of the capability trigger fallback.",
     "de": "Behoben: Heizung Ein/Aus-Taste (onoff.heating) fehlte auf bestehenden Share-Code-Geräten — die Funktion wird nun beim ersten Start nach dem Update automatisch hinzugefügt. Behoben: Die globale Flow-Aktion 'Heizung ein- oder ausschalten' verwendet auf Share-Code-Geräten jetzt einen direkten Methodenaufruf statt des Capability-Trigger-Fallbacks."
