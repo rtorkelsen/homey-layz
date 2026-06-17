@@ -413,7 +413,21 @@ class SpaDevice extends Homey.Device {
       // Update common capabilities (read)
       await this.safeSetCapabilityValue('target_temperature', n.tempSet);
       await this.safeSetCapabilityValue('measure_temperature', n.tempNow);
+
+      // Fire Flow triggers when heating state changes
+      const prevHeating = this._prevHeatingOn;
       await this.safeSetCapabilityValue('onoff.heating', n.heatOn);
+      if (prevHeating !== undefined && prevHeating !== n.heatOn) {
+        if (n.heatOn) {
+          try { await this.homey.flow.getDeviceTriggerCard('heating_turned_on').trigger(this, {}, {}); }
+          catch (e) { this.error('Trigger heating_turned_on failed', e); }
+        } else {
+          try { await this.homey.flow.getDeviceTriggerCard('heating_turned_off').trigger(this, {}, {}); }
+          catch (e) { this.error('Trigger heating_turned_off failed', e); }
+        }
+      }
+      this._prevHeatingOn = n.heatOn;
+
       await this.safeSetCapabilityValue('temp_now', n.tempNow);
 
       await this.safeSetCapabilityValue('onoff', n.powerOn);

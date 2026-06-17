@@ -179,7 +179,19 @@ class LaZSpaConnectDevice extends Homey.Device {
 
       // heater_state: 0=off, 1=starting, 3=actively heating, 4=target reached (idle)
       if (state.heater_state !== undefined) {
-        await this._setCapability('onoff.heating', state.heater_state > 0);
+        const prevHeating = this._prevHeatingOn;
+        const heatingOn   = state.heater_state > 0;
+        await this._setCapability('onoff.heating', heatingOn);
+        if (prevHeating !== undefined && prevHeating !== heatingOn) {
+          if (heatingOn) {
+            try { await this.homey.flow.getDeviceTriggerCard('heating_turned_on').trigger(this, {}, {}); }
+            catch (e) { this.error('Trigger heating_turned_on failed', e); }
+          } else {
+            try { await this.homey.flow.getDeviceTriggerCard('heating_turned_off').trigger(this, {}, {}); }
+            catch (e) { this.error('Trigger heating_turned_off failed', e); }
+          }
+        }
+        this._prevHeatingOn = heatingOn;
       }
 
       if (state.filter_state !== undefined) {
