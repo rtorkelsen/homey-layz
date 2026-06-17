@@ -2,17 +2,17 @@
 
 Control your **Bestway Lay-Z-Spa** (Airjet / Hydrojet Pro) and **Bestway Pool Filter Pump** directly from Homey. Monitor water temperature, control heating, jets and filter pump, and automate everything with Homey Flow.
 
+> **App version:** 1.3.9 · **Homey SDK:** 3 · **Platform:** Homey Pro (≥ 12.0)
+
 ---
 
 ## Supported Devices
 
-| Driver | Device |
-|--------|--------|
-| **Lay-Z** | Bestway Lay-Z-Spa (Airjet & Hydrojet Pro) — via Gizwits cloud account |
-| **Lay-Z-Spa (Share Code)** | Lay-Z-Spa — via share code (no account needed) |
-| **Bestway Pool Filter Pump** | Bestway pool filter pumps — via Gizwits cloud account |
-
-> **Requirements:** Homey Pro (local platform) with Homey firmware ≥ 12.0.
+| Driver | Pairing method | Models |
+|--------|----------------|--------|
+| **Lay-Z** | Bestway / Gizwits cloud account | Lay-Z-Spa Airjet, Hydrojet Pro |
+| **Lay-Z-Spa (Share Code)** | Share code — no account needed | Lay-Z-Spa Airjet, Hydrojet Pro |
+| **Bestway Pool Filter Pump** | Bestway / Gizwits cloud account | Bestway pool filter pumps |
 
 ---
 
@@ -22,20 +22,21 @@ Control your **Bestway Lay-Z-Spa** (Airjet / Hydrojet Pro) and **Bestway Pool Fi
 
 | Capability | Description |
 |------------|-------------|
-| Current temperature | Live water temperature |
+| Current temperature | Live water temperature reading |
 | Target temperature | Set desired water temperature |
-| Temperature reached | Indicator when target temp is reached |
-| Power on/off | Turn the spa on or off |
-| Heating on/off | Control the heater |
-| Filter pump | Control the filter pump independently |
+| Temperature reached | Indicator — target temp has been reached |
+| Power on/off | Turn the spa unit on or off |
+| Heating on/off | Control the heater independently |
+| Filter pump on/off | Control the filter pump independently |
 | Bubble / Wave (Airjet) | Toggle bubble massage |
 | Airjet Low / High (Hydrojet) | Two-level massage intensity |
 | Hydrojet Massage | Toggle the Hydrojet massage function |
-| Locked | Child lock indicator |
-| Alarm | Active error indicator |
-| Error message | Plain-text error description |
-| Pump state / Heat state | Status indicators |
-| Power (W) / Energy (kWh) | Estimated power consumption & meter |
+| Locked | Child lock status indicator |
+| Alarm | Active system error indicator |
+| Error message | Plain-text error code description |
+| Pump state / Heat state | Read-only status indicators |
+| Power (W) | Estimated current power consumption |
+| Energy (kWh) | Accumulated energy meter |
 
 ### Bestway Pool Filter Pump
 
@@ -43,7 +44,7 @@ Control your **Bestway Lay-Z-Spa** (Airjet / Hydrojet Pro) and **Bestway Pool Fi
 |------------|-------------|
 | Power on/off | Turn the filter pump on or off |
 | Timer | Set the auto-off timer (0–24 h) |
-| Filter change | Indicator when cartridge needs replacing |
+| Filter change | Indicator when cartridge replacement is due |
 | Alarm | Active error indicator |
 | Error message | Plain-text error description (E01–E08) |
 
@@ -51,75 +52,161 @@ Control your **Bestway Lay-Z-Spa** (Airjet / Hydrojet Pro) and **Bestway Pool Fi
 
 ## Flow Cards
 
-### Lay-Z-Spa (Lay-Z & Share Code drivers)
+### Lay-Z-Spa — Triggers
 
-**Triggers**
-- Temperature reached (token: temperature)
-- Error triggered (token: error message)
-- Filtering turned on / turned off / changed
+| Card | Token |
+|------|-------|
+| Target temperature reached | `temperature` (°C) |
+| Spa error occurred | `error_message` |
+| Filtering turned on | — |
+| Filtering turned off | — |
+| Filtering changed | — |
 
-**Conditions**
-- Temperature is above / below threshold
-- Temperature reached
-- Airjet is active
-- Error is active
-- Spa is locked
-- Filtering is on / off
+### Lay-Z-Spa — Conditions
 
-**Actions**
-- Set filter on/off
-- Set heating on/off
-- Set Airjet Low on/off
-- Set Airjet High on/off
-- Set Hydrojet on/off
-- Turn filter pump on / off / toggle
+| Card |
+|------|
+| Temperature is above [value] |
+| Temperature is below [value] |
+| Temperature reached |
+| Airjet is active |
+| Spa has an error |
+| Spa is locked |
+| Filtering is on |
+| Filtering is off |
 
-### Pool Filter Pump
+### Lay-Z-Spa — Actions
 
-**Triggers**
-- Filter pump turned on / turned off / changed
-- Filter change required
-- Error triggered (token: error message)
+| Card | Note |
+|------|------|
+| Turn filter on or off | Applies to all connected spa devices |
+| Turn heating on or off | Applies to all connected spa devices |
+| Turn Airjet Low on or off | Applies to all connected spa devices |
+| Turn Airjet High on or off | Applies to all connected spa devices |
+| Turn Hydrojet on or off | Applies to all connected spa devices |
+| Turn filtering on | Per device |
+| Turn filtering off | Per device |
+| Toggle filtering | Per device |
 
-**Conditions**
-- Filter pump is on / is off
-- Filter change is active
-- Error is active
+> All filter pump flow cards work for both the **Lay-Z** (account) driver and the **Lay-Z-Spa (Share Code)** driver.
+
+### Pool Filter Pump — Triggers
+
+| Card | Token |
+|------|-------|
+| Filter pump turned on | — |
+| Filter pump turned off | — |
+| Filter pump changed | — |
+| Filter change required | — |
+| Pool filter error occurred | `error_message` |
+
+### Pool Filter Pump — Conditions
+
+| Card |
+|------|
+| Filter pump is on |
+| Filter pump is off |
+| Filter change is active |
+| Error is active |
 
 ---
 
 ## Pairing
 
-**Via account (Lay-Z driver):**
+### Via Bestway account (Lay-Z driver)
+
 1. Open the Homey app → **Devices** → **+** → search for **Lay-Z**
 2. Select the **Lay-Z** driver
-3. Enter your **Bestway account credentials** (email + password)
+3. Enter your **Bestway / Gizwits account credentials** (email + password)
 4. Select the device from the list and tap **Add**
 
-**Via share code (no account needed):**
-1. In the Bestway app: open your spa → Share → copy the share code
-2. In Homey: **Devices** → **+** → search for **Lay-Z** → select **Lay-Z-Spa (Share Code)**
-3. Enter the share code and tap **Add**
+### Via share code — no account needed (Share Code driver)
 
-To update credentials later (e.g. after a password change), long-press the device card → **Settings** → **Repair**.
+1. In the Bestway app: open your spa → **Share** → copy the share code
+2. In Homey: **Devices** → **+** → search for **Lay-Z** → select **Lay-Z-Spa (Share Code)**
+3. Paste the share code and tap **Add**
+
+### Updating credentials after a password change
+
+Long-press the device card → **Settings** → **Repair** → enter the new credentials.
+
+---
+
+## Settings
+
+Each device exposes the following settings:
+
+| Setting | Description |
+|---------|-------------|
+| Poll interval | How often Homey fetches state from the cloud (10–300 s, default 60 s) |
+| Enable power on/off control | Show or hide the main power toggle |
+| Filter Pump Control | Show or hide the filter pump toggle |
+| Power sensor (estimated) | Enable estimated power / energy tracking |
+| Watt values | Per-component watt values for the power estimate |
+| Troubleshooting labels | Last sync time, status, raw attributes (read-only) |
 
 ---
 
 ## Supported Regions
 
-Login is attempted automatically against the US, EU, and global Gizwits servers. No manual region selection is needed during pairing.
+Login is attempted automatically against the **US**, **EU**, and **global** Gizwits servers. No manual region selection is needed during pairing.
 
 ---
 
 ## Languages
 
-The app supports 11 languages: English, German, Norwegian, Czech, Dutch, Danish, Swedish, Italian, French, Russian, Polish.
+The app supports **11 languages**: English, German, Norwegian, Czech, Dutch, Danish, Swedish, Italian, French, Russian, Polish.
+
+---
+
+## Installation
+
+The app is available on the Homey App Store (TEST channel):
+
+👉 [Install Lay-Z on Homey](https://homey.app/de-ch/app/com.utkikk.layz/Lay-Z/)
+
+> **Note:** Extended features (Share Code driver, Pool Filter Pump, full flow card set) are currently available in the **TEST** version only.
+
+---
+
+## Community & Support
+
+- 💬 [Homey Community Thread](https://community.homey.app/t/app-pro-lay-z-control-your-bestway-spa-pool-filter-from-homey/155679)
+- 🐛 [Report a bug on GitHub](https://github.com/rtorkelsen/homey-layz/issues)
+
+---
+
+## Credits
+
+The new **Lay-Z-Spa (Share Code)** driver and **Bestway Pool Filter Pump** driver were built using [ha-bestway](https://github.com/cdpuk/ha-bestway) as the primary API reference — a Home Assistant integration for Bestway devices. Many thanks to the ha-bestway contributors.
+
+---
+
+## Support the Project
+
+If this app saves you time or adds value to your smart home, consider a small donation:
+
+- ☕ [Donate to Ruben (paypal.me/rtorkelsen)](https://paypal.me/rtorkelsen) — original app author
+- ☕ [Donate to Andi (paypal.me/andiwirz)](https://paypal.me/andiwirz) — Share Code & Pool Filter driver
 
 ---
 
 ## Changelog
 
-### 1.3.4
+### 1.3.9
+- Fixed: Share Code devices with `warning=1` but no `error_code` were incorrectly showing **E01: Flow sensor error** — the `warning` field is now treated as a boolean flag only; the error description is derived from `error_code` / `fault_code` exclusively
+
+### 1.3.8
+- Fixed: heating on/off button missing on existing **Share Code** devices — `onoff.heating` is now added automatically on first start after update
+- Fixed: global "Turn heating on or off" flow action now uses a direct method call on Share Code devices
+
+### 1.3.7
+- Fixed: `spa_error_triggered` and `spa_error_active` flow cards now use explicit driver filter instead of a capability proxy
+- Fixed: filter pump conditions (`is on` / `is off`) now correctly handle Share Code devices
+- Improved: Lay-Z driver infers device availability from poll result — halves API calls per poll cycle
+- Improved: filter pump trigger cards now have localised `titleFormatted` for all 11 supported languages
+
+### 1.3.6
 - Fixed: heating on/off button missing on existing devices after capability migration
 - Fixed: `bestway_temp_reached` and `bestway_error_message` now always ensured present on existing devices
 
@@ -162,6 +249,6 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 ## Contributors
 
-- [Ruben Torkelsen](https://github.com/rtorkelsen)
+- [Ruben Torkelsen](https://github.com/rtorkelsen) — original author & maintainer
 - [Einar Hagen](https://github.com/einarand)
-- [Andi Wirz](https://github.com/andiwirz)
+- [Andi Wirz](https://github.com/andiwirz) — Share Code & Pool Filter driver, flow card expansion

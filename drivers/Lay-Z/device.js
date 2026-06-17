@@ -303,6 +303,7 @@ class SpaDevice extends Homey.Device {
     this._prevAlarmActive = false;
     this._energyLastTs    = null;
     this._energyLastWatts = 0;
+    this._pollFailCount   = 0;
 
     // *** Common capabilities (shared by all models) ****
     await this.enableCapability('onoff', this.getSetting('power_control_enabled'));
@@ -487,6 +488,10 @@ class SpaDevice extends Homey.Device {
       // Debug labels
       this._updateDebugLabels(attr, n, null);
 
+      // Success: reset fail count and ensure device is marked available
+      this._pollFailCount = 0;
+      if (!this.getAvailable()) await this.setAvailable().catch(() => {});
+
     } catch (error) {
       if (error?.response) {
         this.error(`Server responded with status code: ${error.response.status}`, error.message);
@@ -496,6 +501,12 @@ class SpaDevice extends Homey.Device {
         this.error('Failed to update device status', error?.message ? error.message : String(error));
       }
       this._updateDebugLabels(null, null, error?.message || String(error));
+
+      // Mark unavailable after 3 consecutive failures (same pattern as Connect driver)
+      this._pollFailCount++;
+      if (this._pollFailCount >= 3) {
+        await this.setUnavailable(this.homey.__('error.device_offline')).catch(() => {});
+      }
     }
   }
 
@@ -754,8 +765,9 @@ class SpaDevice extends Homey.Device {
   _startPolling() {
     if (this.updateInterval) clearInterval(this.updateInterval);
     const intervalSec = this.getSetting('poll_interval') || 60;
+    // Only call updateDeviceStatus on each poll tick — availability is inferred
+    // from success/failure inside updateDeviceStatus (no extra API call needed).
     this.updateInterval = setInterval(async () => {
-      await this.updateOnlineStatus();
       await this.updateDeviceStatus();
     }, intervalSec * 1000);
   }

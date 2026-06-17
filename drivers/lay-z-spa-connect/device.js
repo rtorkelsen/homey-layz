@@ -35,7 +35,14 @@ class LaZSpaConnectDevice extends Homey.Device {
 
     this._initClient();
 
-    for (const cap of ['measure_power', 'meter_power', 'alarm_generic', 'bestway_error_message', 'bestway_temp_reached', 'bestway_locked']) {
+    // Migration: add any capabilities that may be missing on older devices.
+    // onoff.heating was present in driver.compose.json from 1.3.0 but could
+    // be absent on devices that were originally paired with a build that omitted it.
+    for (const cap of [
+      'measure_power', 'meter_power',
+      'alarm_generic', 'bestway_error_message', 'bestway_temp_reached', 'bestway_locked',
+      'onoff.heating',
+    ]) {
       if (!this.hasCapability(cap)) {
         this.log(`Migrating: adding capability "${cap}"`);
         await this.addCapability(cap).catch(err =>
@@ -227,20 +234,29 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
       this._prevTempReached = tempReached;
 
-      const rawError = (state.warning !== undefined && state.warning !== '' && state.warning !== null)
-        ? state.warning
-        : (state.error_code ?? state.fault_code ?? state.fault_state);
-      const hasError = rawError !== undefined && rawError !== null
-        && rawError !== 0 && rawError !== false && rawError !== '';
+      // warning is a boolean flag (0/1); error_code carries the actual code (E01, "1", etc.)
+      // Do NOT use warning as the error code — it causes warning=1 to be fabricated into "E01".
+      const warningActive = state.warning !== undefined && state.warning !== null
+        && state.warning !== '' && state.warning !== 0 && state.warning !== false && state.warning !== '0';
+      const errorCode = state.error_code ?? state.fault_code ?? state.fault_state;
+      const hasErrorCode = errorCode !== undefined && errorCode !== null
+        && errorCode !== 0 && errorCode !== false && errorCode !== '';
+      const hasError = warningActive || hasErrorCode;
       await this._setCapability('alarm_generic', hasError);
 
       if (hasError) {
-        const codeNum = typeof rawError === 'number' ? rawError : parseInt(rawError, 10);
-        const eKey    = `E${String(codeNum).padStart(2, '0')}`;
-        const entry   = ERROR_DESCRIPTIONS[eKey];
-        const lang    = this.homey.i18n.getLanguage();
-        const desc    = entry ? (entry[lang] ?? entry.en) : String(rawError);
-        await this._setCapability('bestway_error_message', `${eKey}: ${desc}`);
+        if (hasErrorCode) {
+          const raw     = String(errorCode).replace(/^E/i, '');
+          const codeNum = parseInt(raw, 10);
+          const eKey    = `E${String(codeNum).padStart(2, '0')}`;
+          const entry   = ERROR_DESCRIPTIONS[eKey];
+          const lang    = this.homey.i18n.getLanguage();
+          const desc    = entry ? (entry[lang] ?? entry.en) : String(errorCode);
+          await this._setCapability('bestway_error_message', `${eKey}: ${desc}`);
+        } else {
+          // warning flag active but no specific error code from device
+          await this._setCapability('bestway_error_message', 'Device warning (no error code)');
+        }
       } else {
         await this._setCapability('bestway_error_message', '–');
       }
@@ -327,6 +343,11 @@ class LaZSpaConnectDevice extends Homey.Device {
   // Used by Flow action cards (filter_pump_turn_on/off/toggle)
   async setFilterPump(value) {
     return this.triggerCapabilityListener('onoff.filter', !!value);
+  }
+
+  // Used by the global spa_set_heating Flow action card
+  async setHeating(value) {
+    return this._onCapabilityHeating(!!value);
   }
 
   async _onCapabilityAirjetLow(value) {
