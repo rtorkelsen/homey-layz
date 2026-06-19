@@ -15,7 +15,16 @@
   },
   "titleFormatted": {
     "en": "[[device]] filtering is on",
-    "de": "[[device]] Filterung ist an"
+    "no": "[[device]] filtrering er på",
+    "cs": "[[device]] filtrace je zapnutá",
+    "nl": "[[device]] filteren is aan",
+    "de": "[[device]] Filterung ist an",
+    "da": "[[device]] filtrering er tændt",
+    "sv": "[[device]] filtrering är på",
+    "it": "[[device]] il filtraggio è acceso",
+    "fr": "[[device]] la filtration est allumée",
+    "ru": "[[device]] фильтрация включена",
+    "pl": "[[device]] filtracja jest włączona"
   },
   "args": [
     {

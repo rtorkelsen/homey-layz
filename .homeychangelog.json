@@ -1,7 +1,7 @@
 {
   "1.3.10": {
-    "en": "Added: flow triggers 'Heating turned on' and 'Heating turned off' for both the Lay-Z (account) and Lay-Z-Spa (Share Code) drivers.",
-    "de": "Neu: Flow-Trigger 'Heizung wurde eingeschaltet' und 'Heizung wurde ausgeschaltet' für beide Treiber (Konto und Share-Code)."
+    "en": "Added: flow triggers 'Heating turned on' and 'Heating turned off' for both the Lay-Z (account) and Lay-Z-Spa (Share Code) drivers. Fixed: flow card formatting — removed [[temperature]] placeholder and °C from title fields (only belongs in titleFormatted); added missing titleFormatted translations for filter pump conditions. Temperature labels no longer hardcode °C (supports both °C and °F).",
+    "de": "Neu: Flow-Trigger 'Heizung wurde eingeschaltet' und 'Heizung wurde ausgeschaltet' für beide Treiber (Konto und Share-Code). Behoben: Flow-Karten-Formatierung — [[temperature]]-Platzhalter und °C aus title-Feldern entfernt (gehört nur in titleFormatted); fehlende titleFormatted-Übersetzungen für Filterpumpen-Bedingungen ergänzt. Temperatur-Beschriftungen verwenden nicht mehr fest °C (unterstützt °C und °F)."
   },
   "1.3.9": {
     "en": "Fixed: Share Code devices with warning=1 but no error_code were incorrectly showing 'E01: Flow sensor error' — the app now correctly separates the warning flag from the error code field, and shows 'Device warning (no error code)' instead of a fabricated E-code.",

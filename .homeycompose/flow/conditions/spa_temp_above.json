@@ -1,12 +1,12 @@
 {
   "id": "spa_temp_above",
   "title": {
-    "en": "Water temperature is !{{above|not above}} [[temperature]] °C",
-    "de": "Wassertemperatur ist !{{über|nicht über}} [[temperature]] °C"
+    "en": "Water temperature is !{{above|not above}}",
+    "de": "Wassertemperatur ist !{{über|nicht über}}"
   },
   "titleFormatted": {
-    "en": "[[device]] water temperature is !{{above|not above}} [[temperature]] °C",
-    "de": "[[device]] Wassertemperatur ist !{{über|nicht über}} [[temperature]] °C"
+    "en": "[[device]] water temperature is !{{above|not above}} [[temperature]]",
+    "de": "[[device]] Wassertemperatur ist !{{über|nicht über}} [[temperature]]"
   },
   "args": [
     {
@@ -18,8 +18,8 @@
       "name": "temperature",
       "type": "number",
       "title": {
-        "en": "Temperature (°C)",
-        "de": "Temperatur (°C)"
+        "en": "Temperature",
+        "de": "Temperatur"
       },
       "min": 0,
       "max": 50,
