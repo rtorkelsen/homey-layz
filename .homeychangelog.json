@@ -1,4 +1,8 @@
 {
+  "1.3.10": {
+    "en": "Added: flow triggers 'Heating turned on' and 'Heating turned off' for both the Lay-Z (account) and Lay-Z-Spa (Share Code) drivers.",
+    "de": "Neu: Flow-Trigger 'Heizung wurde eingeschaltet' und 'Heizung wurde ausgeschaltet' für beide Treiber (Konto und Share-Code)."
+  },
   "1.3.9": {
     "en": "Fixed: Share Code devices with warning=1 but no error_code were incorrectly showing 'E01: Flow sensor error' — the app now correctly separates the warning flag from the error code field, and shows 'Device warning (no error code)' instead of a fabricated E-code.",
     "de": "Behoben: Share-Code-Geräte mit warning=1 aber leerem error_code zeigten fälschlicherweise 'E01: Durchflusssensor-Fehler' — die App trennt nun korrekt das Warn-Flag vom Fehlercode-Feld und zeigt stattdessen 'Device warning (no error code)'."
