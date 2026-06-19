@@ -125,18 +125,17 @@
       spinner.style.display  = 'block';
       btn.disabled           = true;
 
-      Homey.emit('link_code', { code }, function(err) {
-        spinner.style.display = 'none';
-
-        if (err) {
+      Homey.emit('link_code', { code })
+        .then(() => {
+          spinner.style.display = 'none';
+          Homey.done();
+        })
+        .catch((err) => {
+          spinner.style.display = 'none';
           errorEl.textContent   = err.message || t('pair.connect.error.link_failed', 'Could not connect. Please check the share code and try again.');
           errorEl.style.display = 'block';
           btn.disabled          = false;
-          return;
-        }
-
-        Homey.done();
-      });
+        });
     }
 
     document.getElementById('shareCode').addEventListener('keydown', function(e) {
