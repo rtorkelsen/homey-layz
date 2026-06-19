@@ -196,9 +196,10 @@ If this app saves you time or adds value to your smart home, consider a small do
 ## Changelog
 
 ### 1.3.10
-- Added: flow triggers **"Heating turned on"** and **"Heating turned off"** for both the Lay-Z (account) and Lay-Z-Spa (Share Code) drivers
-- Fixed: flow card formatting — removed `[[temperature]]` placeholder and `°C` from `title` fields (only belongs in `titleFormatted`); added missing `titleFormatted` translations for filter pump conditions
-- Fixed: temperature labels no longer hardcode `°C` — supports both Celsius and Fahrenheit
+- Added: flow triggers **"Heating turned on"** and **"Heating turned off"** for both drivers
+- Fixed: crash in Share Code driver (`rawError is not defined`) caused by the 1.3.9 error-code refactor — devices went unavailable after 3 failed polls
+- Fixed: `warning=1` without `error_code` no longer fabricates **E01: Flow sensor error** (shows generic warning instead)
+- Fixed: flow card formatting — removed `[[temperature]]` and `°C` from `title` fields; added missing `titleFormatted` translations
 
 ### 1.3.9
 - Fixed: Share Code devices with `warning=1` but no `error_code` were incorrectly showing **E01: Flow sensor error** — the `warning` field is now treated as a boolean flag only; the error description is derived from `error_code` / `fault_code` exclusively
