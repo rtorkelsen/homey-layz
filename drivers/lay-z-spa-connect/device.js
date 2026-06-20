@@ -274,7 +274,8 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
 
       if (hasError && !this._prevAlarmActive) {
-        this._fireTriggerError(String(rawError));
+        const errorMsg = hasErrorCode ? String(errorCode) : String(state.warning);
+        this._fireTriggerError(errorMsg);
       }
       this._prevAlarmActive = hasError;
 

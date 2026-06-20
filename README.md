@@ -196,7 +196,13 @@ If this app saves you time or adds value to your smart home, consider a small do
 ## Changelog
 
 ### 1.3.10
-- Added: flow triggers **"Heating turned on"** and **"Heating turned off"** for both the Lay-Z (account) and Lay-Z-Spa (Share Code) drivers
+- Added: flow triggers **"Heating turned on"** and **"Heating turned off"** for both drivers
+- Added: **Lay-Z** (account) driver auto-refreshes expired Gizwits tokens — no more manual repair for routine token expiry
+- Fixed: crash in Share Code driver (`rawError is not defined`) — devices went unavailable after 3 failed polls
+- Fixed: repair view missing for **Lay-Z** and **Pool Filter** drivers (`repair_login.html` was never created)
+- Fixed: all pair/repair views updated to SDK v3 Promise-based `Homey.emit()`
+- Fixed: `warning=1` without `error_code` no longer fabricates **E01: Flow sensor error**
+- Fixed: flow card formatting — removed `[[temperature]]` and `°C` from `title` fields; added missing `titleFormatted` translations
 
 ### 1.3.9
 - Fixed: Share Code devices with `warning=1` but no `error_code` were incorrectly showing **E01: Flow sensor error** — the `warning` field is now treated as a boolean flag only; the error description is derived from `error_code` / `fault_code` exclusively

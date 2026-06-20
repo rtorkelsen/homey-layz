@@ -121,18 +121,17 @@
       spinner.style.display = 'block';
       btn.disabled          = true;
 
-      Homey.emit('login', { username, password }, function(err) {
-        spinner.style.display = 'none';
-
-        if (err) {
+      Homey.emit('login', { username, password })
+        .then(() => {
+          spinner.style.display = 'none';
+          Homey.nextView();
+        })
+        .catch((err) => {
+          spinner.style.display = 'none';
           errorEl.textContent   = err.message || t('pair.error.login_failed', 'Login failed. Please check your credentials.');
           errorEl.style.display = 'block';
           btn.disabled          = false;
-          return;
-        }
-
-        Homey.nextView();
-      });
+        });
     }
 
     document.getElementById('password').addEventListener('keydown', function(e) {

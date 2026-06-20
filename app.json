@@ -379,8 +379,8 @@
             "name": "temperature",
             "type": "number",
             "title": {
-              "en": "Temperature (°C)",
-              "de": "Temperatur (°C)"
+              "en": "Temperature",
+              "de": "Temperatur"
             }
           }
         ]
@@ -404,7 +404,16 @@
         },
         "titleFormatted": {
           "en": "[[device]] filtering is off",
-          "de": "[[device]] Filterung ist aus"
+          "no": "[[device]] filtrering er av",
+          "cs": "[[device]] filtrace je vypnutá",
+          "nl": "[[device]] filteren is uit",
+          "de": "[[device]] Filterung ist aus",
+          "da": "[[device]] filtrering er slukket",
+          "sv": "[[device]] filtrering är av",
+          "it": "[[device]] il filtraggio è spento",
+          "fr": "[[device]] la filtration est éteinte",
+          "ru": "[[device]] фильтрация выключена",
+          "pl": "[[device]] filtracja jest wyłączona"
         },
         "args": [
           {
@@ -431,7 +440,16 @@
         },
         "titleFormatted": {
           "en": "[[device]] filtering is on",
-          "de": "[[device]] Filterung ist an"
+          "no": "[[device]] filtrering er på",
+          "cs": "[[device]] filtrace je zapnutá",
+          "nl": "[[device]] filteren is aan",
+          "de": "[[device]] Filterung ist an",
+          "da": "[[device]] filtrering er tændt",
+          "sv": "[[device]] filtrering är på",
+          "it": "[[device]] il filtraggio è acceso",
+          "fr": "[[device]] la filtration est allumée",
+          "ru": "[[device]] фильтрация включена",
+          "pl": "[[device]] filtracja jest włączona"
         },
         "args": [
           {
@@ -570,12 +588,12 @@
       {
         "id": "spa_temp_above",
         "title": {
-          "en": "Water temperature is !{{above|not above}} [[temperature]] °C",
-          "de": "Wassertemperatur ist !{{über|nicht über}} [[temperature]] °C"
+          "en": "Water temperature is !{{above|not above}}",
+          "de": "Wassertemperatur ist !{{über|nicht über}}"
         },
         "titleFormatted": {
-          "en": "[[device]] water temperature is !{{above|not above}} [[temperature]] °C",
-          "de": "[[device]] Wassertemperatur ist !{{über|nicht über}} [[temperature]] °C"
+          "en": "[[device]] water temperature is !{{above|not above}} [[temperature]]",
+          "de": "[[device]] Wassertemperatur ist !{{über|nicht über}} [[temperature]]"
         },
         "args": [
           {
@@ -587,8 +605,8 @@
             "name": "temperature",
             "type": "number",
             "title": {
-              "en": "Temperature (°C)",
-              "de": "Temperatur (°C)"
+              "en": "Temperature",
+              "de": "Temperatur"
             },
             "min": 0,
             "max": 50,
@@ -599,12 +617,12 @@
       {
         "id": "spa_temp_below",
         "title": {
-          "en": "Water temperature is !{{below|not below}} [[temperature]] °C",
-          "de": "Wassertemperatur ist !{{unter|nicht unter}} [[temperature]] °C"
+          "en": "Water temperature is !{{below|not below}}",
+          "de": "Wassertemperatur ist !{{unter|nicht unter}}"
         },
         "titleFormatted": {
-          "en": "[[device]] water temperature is !{{below|not below}} [[temperature]] °C",
-          "de": "[[device]] Wassertemperatur ist !{{unter|nicht unter}} [[temperature]] °C"
+          "en": "[[device]] water temperature is !{{below|not below}} [[temperature]]",
+          "de": "[[device]] Wassertemperatur ist !{{unter|nicht unter}} [[temperature]]"
         },
         "args": [
           {
@@ -616,8 +634,8 @@
             "name": "temperature",
             "type": "number",
             "title": {
-              "en": "Temperature (°C)",
-              "de": "Temperatur (°C)"
+              "en": "Temperature",
+              "de": "Temperatur"
             },
             "min": 0,
             "max": 50,
