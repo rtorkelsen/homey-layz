@@ -199,9 +199,10 @@ class SpaDevice extends Homey.Device {
 
   
     // *** Default request headers (Application-Id is required by Gizwits) ****
-    this._userToken = store.token;
-    this.baseUrl    = store.baseUrl;
-    const appId     = store.appId;
+    this._userToken          = store.token;
+    this._tokenRefreshPromise = null;
+    this.baseUrl             = store.baseUrl;
+    const appId              = store.appId;
 
     if (!this._userToken || !this.baseUrl || !appId) {
       this.error('Missing per-device credentials in store. Please re-pair this device.');
@@ -524,25 +525,68 @@ class SpaDevice extends Homey.Device {
     }
   }
 
+  async _getValidToken() {
+    const nowSec = Math.floor(Date.now() / 1000);
+    const expiry = this.getStoreValue('expire_at') ?? 0;
+
+    if (this._userToken && expiry > nowSec + 300) return this._userToken;
+
+    if (this._tokenRefreshPromise) return this._tokenRefreshPromise;
+
+    const username = this.getStoreValue('username');
+    const password = this.getStoreValue('password');
+    if (!username || !password) {
+      this.error('No stored credentials — cannot auto-refresh token. Please repair.');
+      if (this._userToken) return this._userToken;
+      throw new Error('Token expired and no credentials stored');
+    }
+
+    this.log('Token expired or about to expire — auto-refreshing…');
+    this._tokenRefreshPromise = this._refreshToken(username, password)
+      .finally(() => { this._tokenRefreshPromise = null; });
+
+    return this._tokenRefreshPromise;
+  }
+
+  async _refreshToken(username, password) {
+    const appId = this.headers['X-Gizwits-Application-Id'];
+
+    const response = await axios.post(`${this.baseUrl}/app/login`, {
+      username, password, lang: 'en',
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Gizwits-Application-Id': appId,
+      },
+    });
+
+    const { token, uid, expire_at: expireAt } = response.data;
+
+    await this.setStoreValue('token', token);
+    await this.setStoreValue('uid', uid);
+    await this.setStoreValue('expire_at', expireAt);
+    this._userToken = token;
+
+    this.log('Token auto-refreshed successfully, expires:', expireAt);
+    return token;
+  }
+
   async fetchDeviceData() {
-    if (!this._userToken) throw new Error('No token in device store');
+    const token = await this._getValidToken();
     return await this.makeAxiosCall(
       'get',
       `${this.baseUrl}/app/devdata/${this.getData().did}/latest`,
       null,
-      this._userToken
+      token
     );
   }
 
   async updateOnlineStatus() {
     this.log('updateOnlineStatus started');
-    if (!this._userToken) {
-      this.log('No token in device store; cannot query /app/bindings');
-      return;
-    }
     try {
+      const token = await this._getValidToken();
       const response = await axios.get(`${this.baseUrl}/app/bindings`, {
-        headers: { ...this.headers, 'X-Gizwits-User-token': this._userToken },
+        headers: { ...this.headers, 'X-Gizwits-User-token': token },
       });
       // Log response
       try {
@@ -624,7 +668,10 @@ class SpaDevice extends Homey.Device {
       } catch (e) {
         this.log('Failed to stringify error for logging');
       }
-      // Return null to keep callers resilient
+      if (respBody?.error_code === 9004) {
+        this.log('Token invalid (9004) — marking for refresh on next call');
+        this.setStoreValue('expire_at', 0).catch(() => {});
+      }
       return null;
     }
   }
@@ -636,128 +683,68 @@ class SpaDevice extends Homey.Device {
       .catch(e => this.error(`Failed to update ${capability}`, e));
   }
 
-  // Capability: target temperature
+  async _sendControl(key, value) {
+    const token = await this._getValidToken();
+    const body = this.adapter.encode(key, value);
+    this.log(`Control payload (${key}):`, JSON.stringify(body));
+    await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, token);
+    await this.updateDeviceStatus();
+  }
+
   async onCapabilityTargetTemperature(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('tempSet', value);
-      this.log('Control payload (tempSet):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to set target temperature', error);
-    }
+    try { await this._sendControl('tempSet', value); }
+    catch (error) { this.error('Failed to set target temperature', error); }
   }
 
-  // Capability: on/off (main power)
   async onCapabilityOnoff(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('power', value);
-      this.log('Control payload (power):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to change on/off status', error);
-    }
+    try { await this._sendControl('power', value); }
+    catch (error) { this.error('Failed to change on/off status', error); }
   }
 
-  // Capability: heating on/off button
   async onCapabilityHeating(value) {
     return this.setHeatPower(value ? 1 : 0);
   }
 
   async setHeatPower(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('heat', value);
-      this.log('Control payload (heat):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to set heating power status', error);
-    }
+    try { await this._sendControl('heat', value); }
+    catch (error) { this.error('Failed to set heating power status', error); }
   }
 
-  // Capability: filter pump
   async onCapabilityPumpOnoff(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('filter', value);
-      this.log('Control payload (filter):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to toggle filter pump', error);
-    }
+    try { await this._sendControl('filter', value); }
+    catch (error) { this.error('Failed to toggle filter pump', error); }
   }
 
-  // Helper used by Flow actions to set the filter pump
- async setFilterPump(value) {
+  async setFilterPump(value) {
     return this.onCapabilityPumpOnoff(!!value);
   }
-  
 
-  // Capability: legacy wave/bubbles toggle (0/1)
   async onCapabilityMsgOnoff(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('wave', value);
-      this.log('Control payload (wave):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to toggle massage function', error);
-    }
+    try { await this._sendControl('wave', value); }
+    catch (error) { this.error('Failed to toggle massage function', error); }
   }
 
-  // Capability: AirJet Low button (Hydrojet)
   async onCapabilityAirjetLow(value) {
     return this.onCapabilityMassageMode(value ? 'low' : 'off');
   }
 
-  // Capability: AirJet High button (Hydrojet)
   async onCapabilityAirjetHigh(value) {
     return this.onCapabilityMassageMode(value ? 'high' : 'off');
   }
 
-  // Capability: Hydrojet massage mode (off/low/high) → wave 0/42/100
   async onCapabilityMassageMode(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('waveLevel', value);
-      this.log('Control payload (massage_mode):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to set massage mode', error);
-    }
+    try { await this._sendControl('waveLevel', value); }
+    catch (error) { this.error('Failed to set massage mode', error); }
   }
 
-  // Capability: Hydrojet main jet 0/1
   async onCapabilityJetOnoff(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('jet', value);
-      this.log('Control payload (jet_onoff):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to toggle hydrojet', error);
-    }
+    try { await this._sendControl('jet', value); }
+    catch (error) { this.error('Failed to toggle hydrojet', error); }
   }
 
-  // Capability: lock/unlock the control panel
   async onCapabilityBestwayLocked(value) {
-    try {
-      if (!this._userToken) throw new Error('No token in device store');
-      const body = this.adapter.encode('lock', value);
-      this.log('Control payload (lock):', JSON.stringify(body));
-      await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, this._userToken);
-      await this.updateDeviceStatus();
-    } catch (error) {
-      this.error('Failed to set lock state', error);
-    }
+    try { await this._sendControl('lock', value); }
+    catch (error) { this.error('Failed to set lock state', error); }
   }
 
   // Helpers for spa flow action cards

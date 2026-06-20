@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      padding: 32px 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    p.desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #444;
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      margin-bottom: 16px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input:focus {
+      border-color: #0063A6;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0063A6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .error {
+      margin-top: 12px;
+      color: #c0392b;
+      font-size: 13px;
+      display: none;
+    }
+
+    .spinner {
+      display: none;
+      text-align: center;
+      color: #888;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="title"></h2>
+  <p class="desc" id="description"></p>
+
+  <label id="labelEmail" for="email"></label>
+  <input type="email" id="email" autocomplete="email" />
+
+  <label id="labelPassword" for="password"></label>
+  <input type="password" id="password" autocomplete="current-password" />
+
+  <button id="loginBtn" onclick="doLogin()"></button>
+
+  <p class="error" id="errorMsg"></p>
+  <p class="spinner" id="spinner">…</p>
+
+  <script>
+    function t(key, fallback) {
+      try { return Homey.__(key) || fallback; } catch(e) { return fallback; }
+    }
+
+    document.getElementById('title').textContent         = t('pair.repair.title',             'Re-authenticate');
+    document.getElementById('description').textContent   = t('pair.repair.description',        'Your session has expired. Please sign in again.');
+    document.getElementById('labelEmail').textContent    = t('pair.login.label_email',        'Email address');
+    document.getElementById('email').placeholder         = t('pair.login.placeholder_email',  'email@example.com');
+    document.getElementById('labelPassword').textContent = t('pair.login.label_password',     'Password');
+    document.getElementById('loginBtn').textContent      = t('pair.repair.button',            'Sign in');
+
+    function doLogin() {
+      const username = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorEl  = document.getElementById('errorMsg');
+      const btn      = document.getElementById('loginBtn');
+      const spinner  = document.getElementById('spinner');
+
+      errorEl.style.display = 'none';
+      spinner.style.display = 'block';
+      btn.disabled          = true;
+
+      Homey.emit('login', { username, password })
+        .then(() => {
+          spinner.style.display = 'none';
+          Homey.done();
+        })
+        .catch((err) => {
+          spinner.style.display = 'none';
+          errorEl.textContent   = err.message || t('pair.error.login_failed', 'Login failed. Please check your credentials.');
+          errorEl.style.display = 'block';
+          btn.disabled          = false;
+        });
+    }
+
+    document.getElementById('password').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doLogin();
+    });
+  </script>
+
+</body>
+</html>

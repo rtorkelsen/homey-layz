@@ -192,6 +192,8 @@ class SpaDriver extends Homey.Driver {
             expire_at: expireAt,
             baseUrl: server.baseUrl,
             appId: server.appId,
+            username: data.username,
+            password: data.password,
           },
           // keep original API fields in case we need them later
           _raw: d,
@@ -286,15 +288,16 @@ class SpaDriver extends Homey.Driver {
     session.setHandler('login', async (data) => {
       const auth = await this.loginHandler(data);
 
-      if (typeof device.setStore === 'function') {
-        await device.setStore({
-          token:      auth.token,
-          uid:        auth.uid,
-          expire_at:  auth.expireAt,
-          baseUrl:    auth.baseUrl,
-          appId:      auth.appId,
-        });
-      }
+      await device.setStoreValue('token',     auth.token);
+      await device.setStoreValue('uid',       auth.uid);
+      await device.setStoreValue('expire_at', auth.expireAt);
+      await device.setStoreValue('baseUrl',   auth.baseUrl);
+      await device.setStoreValue('appId',     auth.appId);
+      await device.setStoreValue('username',  data.username);
+      await device.setStoreValue('password',  data.password);
+
+      device._userToken = auth.token;
+      device.setAvailable().catch(err => this.log('Repair: setAvailable failed:', err.message));
 
       this.log('Device re-login successful for DID:', device.getData().did);
       return true;
