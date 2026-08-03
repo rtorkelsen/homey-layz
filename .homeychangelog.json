@@ -1,4 +1,8 @@
 {
+  "1.3.15": {
+    "en": "Fixed: removed redundant runtime setCapabilityOptions call — target_temperature min/max/step are now defined statically in the driver manifest, eliminating a source of capability update events.",
+    "de": "Behoben: Redundanten setCapabilityOptions-Aufruf entfernt — min/max/step für target_temperature sind jetzt statisch im Treiber-Manifest definiert, wodurch eine Quelle unnötiger Capability-Update-Events entfällt."
+  },
   "1.3.14": {
     "en": "Fixed: flow cards briefly showing as unavailable on every data refresh. Fixed: flow card run listeners were registered twice (causing warnings and unstable behaviour). Fixed: product name 'Hydrojet' was not recognised as the HydroJet adapter, causing unnecessary capability changes on first poll. Fixed: spa_temp_reached trigger fired repeatedly when temperature oscillated near the setpoint (hysteresis added). Fixed: temperature value in spa_temp_reached trigger was in °F instead of °C on Fahrenheit devices.",
     "de": "Behoben: Flow-Karten erschienen bei jedem Daten-Update kurz als nicht verfügbar. Behoben: Run-Listener für Flow-Karten wurden doppelt registriert (Warnungen und instabiles Verhalten). Behoben: Produktname 'Hydrojet' wurde nicht als HydroJet-Adapter erkannt und verursachte unnötige Capability-Änderungen beim ersten Poll. Behoben: spa_temp_reached-Trigger feuerte wiederholt, wenn die Temperatur am Sollwert oszillierte (Hysterese hinzugefügt). Behoben: Temperaturwert im spa_temp_reached-Trigger war bei Fahrenheit-Geräten in °F statt °C."

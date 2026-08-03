@@ -317,10 +317,6 @@ class SpaDevice extends Homey.Device {
     await this.enableCapability('measure_power', true);
     await this.enableCapability('measure_temperature', true);
     await this.enableCapability('target_temperature', true);
-    await this.setCapabilityOptions('target_temperature', {
-      units: { en: '°C', no: '°C', cs: '°C', nl: '°C', de: '°C', da: '°C', sv: '°C', it: '°C', fr: '°C', ru: '°C', pl: '°C' },
-      min: 20, max: 40, step: 1, decimals: 0,
-    });
     await this.enableCapability('bestway_temp_reached', true);
     await this.enableCapability('bestway_error_message', true);
     await this.enableCapability('alarm_generic', true);
