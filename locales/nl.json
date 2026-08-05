@@ -2,17 +2,17 @@
   "pair": {
     "connect": {
       "title": "Verbind je Lay-Z-Spa",
-      "description": "Voer de deelcode in uit de Bestway Smart Hub-app om je spa aan Homey toe te voegen.",
+      "description": "Haal de deelcode op uit de Bestway Connect- of Smart Hub-app om je spa aan Homey toe te voegen.",
       "button": "Verbinden",
       "steps": {
-        "1": "Open de Bestway Smart Hub-app",
-        "2": "Ga naar je spa → ··· → Apparaat delen",
-        "3": "Kopieer de deelcode (begint met RW_Share_)",
-        "4": "Plak hem hieronder"
+        "1": "Open de Bestway Connect-app (of Bestway Smart Hub voor oudere spa's)",
+        "2": "Ga naar je spa → Instellingen → Apparaat delen",
+        "3": "Zie je alleen een QR-code? Scan deze met een QR-scanner-app om de tekstcode te tonen (begint met RW_Share_)",
+        "4": "Kopieer de code en plak hem hieronder"
       },
       "error": {
         "link_failed": "Verbinding mislukt. Controleer de deelcode en probeer opnieuw.",
-        "no_devices": "Geen apparaten gevonden na koppeling. Zorg ervoor dat je spa is ingesteld in de Bestway Smart Hub-app."
+        "no_devices": "Geen apparaten gevonden na koppeling. Zorg ervoor dat je spa is ingesteld in de Bestway Connect- of Smart Hub-app."
       }
     },
     "repair": {

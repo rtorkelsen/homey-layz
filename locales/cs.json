@@ -2,17 +2,17 @@
   "pair": {
     "connect": {
       "title": "Připojit Lay-Z-Spa",
-      "description": "Zadejte sdílecí kód z aplikace Bestway Smart Hub pro přidání vašeho spa do Homey.",
+      "description": "Získejte sdílecí kód z aplikace Bestway Connect nebo Smart Hub pro přidání vašeho spa do Homey.",
       "button": "Připojit",
       "steps": {
-        "1": "Otevřete aplikaci Bestway Smart Hub",
-        "2": "Přejděte na vaše spa → ··· → Sdílet zařízení",
-        "3": "Zkopírujte sdílecí kód (začíná RW_Share_)",
-        "4": "Vložte ho níže"
+        "1": "Otevřete aplikaci Bestway Connect (nebo Bestway Smart Hub u starších spa)",
+        "2": "Přejděte na vaše spa → Nastavení → Sdílet zařízení",
+        "3": "Vidíte jen QR kód? Naskenujte ho libovolnou aplikací pro čtení QR kódů, abyste zobrazili textový kód (začíná RW_Share_)",
+        "4": "Zkopírujte kód a vložte ho níže"
       },
       "error": {
         "link_failed": "Připojení se nezdařilo. Zkontrolujte sdílecí kód a zkuste to znovu.",
-        "no_devices": "Po připojení nebylo nalezeno žádné zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Smart Hub."
+        "no_devices": "Po připojení nebylo nalezeno žádné zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Connect nebo Smart Hub."
       }
     },
     "repair": {

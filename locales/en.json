@@ -2,17 +2,17 @@
   "pair": {
     "connect": {
       "title": "Connect your Lay-Z-Spa",
-      "description": "Enter the share code from your Bestway Smart Hub app to add your spa to Homey.",
+      "description": "Get the share code from the Bestway Connect or Smart Hub app to add your spa to Homey.",
       "button": "Connect",
       "steps": {
-        "1": "Open the Bestway Smart Hub app",
-        "2": "Go to your spa → ··· → Share Device",
-        "3": "Copy the share code (starts with RW_Share_)",
-        "4": "Paste it below"
+        "1": "Open the Bestway Connect app (or Bestway Smart Hub for older spas)",
+        "2": "Go to your spa → Settings → Device Sharing",
+        "3": "Only see a QR code? Scan it with any QR scanner app to reveal the text code (starts with RW_Share_)",
+        "4": "Copy the code and paste it below"
       },
       "error": {
         "link_failed": "Could not connect. Please check the share code and try again.",
-        "no_devices": "No devices found after linking. Make sure your spa is set up in the Bestway Smart Hub app."
+        "no_devices": "No devices found after linking. Make sure your spa is set up in the Bestway Connect or Smart Hub app."
       }
     },
     "repair": {
