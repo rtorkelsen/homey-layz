@@ -29,8 +29,12 @@ class PoolFilterDevice extends Homey.Device {
     this._pollTimer           = null;
     this._pollFailCount       = 0;
     this._tokenRefreshPromise = null;
-    this._prevAlarmActive     = false;
-    this._prevChangeRequired  = false;
+    // undefined (not false): suppresses a spurious trigger fire on the very
+    // first poll after Homey restarts if the alarm/change-required state was
+    // already active — the same "flapping on restart" pattern fixed
+    // elsewhere in this app (Lay-Z / Connect drivers).
+    this._prevAlarmActive     = undefined;
+    this._prevChangeRequired  = undefined;
 
     await this.setSettings({ region: this._resolveRegion() }).catch(() => {});
 
@@ -151,7 +155,7 @@ class PoolFilterDevice extends Homey.Device {
       const changeRequired = !!attrs.filter;
       await this._setCapability('bestway_filter_change', changeRequired);
 
-      if (changeRequired && !this._prevChangeRequired) {
+      if (this._prevChangeRequired !== undefined && changeRequired && !this._prevChangeRequired) {
         this.driver._triggerChangeTriggered
           .trigger(this)
           .catch(e => this.error('Flow trigger pool_filter_change_triggered failed:', e));
@@ -172,7 +176,7 @@ class PoolFilterDevice extends Homey.Device {
         activeCodes.length > 0 ? activeCodes.join(' | ') : '–',
       );
 
-      if (activeCodes.length > 0 && !this._prevAlarmActive) {
+      if (this._prevAlarmActive !== undefined && activeCodes.length > 0 && !this._prevAlarmActive) {
         this.driver._triggerErrorTriggered
           .trigger(this, { error_message: activeCodes.join(' | ') })
           .catch(e => this.error('Flow trigger pool_filter_error_triggered failed:', e));

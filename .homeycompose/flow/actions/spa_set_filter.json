@@ -3,20 +3,80 @@
   "deprecated": true,
   "title": {
     "en": "Turn filter on or off",
-    "de": "Filter ein- oder ausschalten"
+    "de": "Filter ein- oder ausschalten",
+    "no": "Slå filter av eller på",
+    "cs": "Zapnout nebo vypnout filtr",
+    "nl": "Filter aan of uit zetten",
+    "da": "Tænd eller sluk for filteret",
+    "sv": "Slå på eller av filtret",
+    "it": "Accendi o spegni il filtro",
+    "fr": "Allumer ou éteindre le filtre",
+    "ru": "Включить или выключить фильтр",
+    "pl": "Włącz lub wyłącz filtr"
   },
   "titleFormatted": {
     "en": "Turn filter [[onoff]]",
-    "de": "Filter [[onoff]] schalten"
+    "de": "Filter [[onoff]] schalten",
+    "no": "Slå filter [[onoff]]",
+    "cs": "Filtr [[onoff]]",
+    "nl": "Filter [[onoff]]",
+    "da": "Slå filteret [[onoff]]",
+    "sv": "Slå filtret [[onoff]]",
+    "it": "Filtro [[onoff]]",
+    "fr": "Filtre [[onoff]]",
+    "ru": "Фильтр [[onoff]]",
+    "pl": "Filtr [[onoff]]"
   },
   "args": [
     {
       "name": "onoff",
       "type": "dropdown",
-      "title": { "en": "State", "de": "Zustand" },
+      "title": {
+        "en": "State",
+        "de": "Zustand",
+        "no": "Tilstand",
+        "cs": "Stav",
+        "nl": "Toestand",
+        "da": "Tilstand",
+        "sv": "Tillstånd",
+        "it": "Stato",
+        "fr": "État",
+        "ru": "Состояние",
+        "pl": "Stan"
+      },
       "values": [
-        { "id": "true",  "label": { "en": "on",  "de": "ein" } },
-        { "id": "false", "label": { "en": "off", "de": "aus" } }
+        {
+          "id": "true",
+          "label": {
+            "en": "on",
+            "de": "ein",
+            "no": "på",
+            "cs": "zapnout",
+            "nl": "aan",
+            "da": "til",
+            "sv": "på",
+            "it": "acceso",
+            "fr": "allumé",
+            "ru": "вкл",
+            "pl": "wł"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "off",
+            "de": "aus",
+            "no": "av",
+            "cs": "vypnout",
+            "nl": "uit",
+            "da": "fra",
+            "sv": "av",
+            "it": "spento",
+            "fr": "éteint",
+            "ru": "выкл",
+            "pl": "wył"
+          }
+        }
       ]
     }
   ]

@@ -3,20 +3,80 @@
   "deprecated": true,
   "title": {
     "en": "Turn AirJet Low on or off",
-    "de": "AirJet Low ein- oder ausschalten"
+    "de": "AirJet Low ein- oder ausschalten",
+    "no": "Slå AirJet Low av eller på",
+    "cs": "Zapnout nebo vypnout AirJet Low",
+    "nl": "AirJet Low aan of uit zetten",
+    "da": "Tænd eller sluk AirJet Low",
+    "sv": "Slå AirJet Low av eller på",
+    "it": "Accendi o spegni AirJet Low",
+    "fr": "Allumer ou éteindre l'AirJet Low",
+    "ru": "Включить или выключить AirJet Low",
+    "pl": "Włącz lub wyłącz AirJet Low"
   },
   "titleFormatted": {
     "en": "Turn AirJet Low [[onoff]]",
-    "de": "AirJet Low [[onoff]] schalten"
+    "de": "AirJet Low [[onoff]] schalten",
+    "no": "Slå AirJet Low [[onoff]]",
+    "cs": "AirJet Low [[onoff]]",
+    "nl": "AirJet Low [[onoff]]",
+    "da": "Slå AirJet Low [[onoff]]",
+    "sv": "Slå AirJet Low [[onoff]]",
+    "it": "AirJet Low [[onoff]]",
+    "fr": "AirJet Low [[onoff]]",
+    "ru": "AirJet Low [[onoff]]",
+    "pl": "AirJet Low [[onoff]]"
   },
   "args": [
     {
       "name": "onoff",
       "type": "dropdown",
-      "title": { "en": "State", "de": "Zustand" },
+      "title": {
+        "en": "State",
+        "de": "Zustand",
+        "no": "Tilstand",
+        "cs": "Stav",
+        "nl": "Toestand",
+        "da": "Tilstand",
+        "sv": "Tillstånd",
+        "it": "Stato",
+        "fr": "État",
+        "ru": "Состояние",
+        "pl": "Stan"
+      },
       "values": [
-        { "id": "true",  "label": { "en": "on",  "de": "ein" } },
-        { "id": "false", "label": { "en": "off", "de": "aus" } }
+        {
+          "id": "true",
+          "label": {
+            "en": "on",
+            "de": "ein",
+            "no": "på",
+            "cs": "zapnout",
+            "nl": "aan",
+            "da": "til",
+            "sv": "på",
+            "it": "acceso",
+            "fr": "allumé",
+            "ru": "вкл",
+            "pl": "wł"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "off",
+            "de": "aus",
+            "no": "av",
+            "cs": "vypnout",
+            "nl": "uit",
+            "da": "fra",
+            "sv": "av",
+            "it": "spento",
+            "fr": "éteint",
+            "ru": "выкл",
+            "pl": "wył"
+          }
+        }
       ]
     }
   ]

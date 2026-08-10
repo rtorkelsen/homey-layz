@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.utkikk.layz",
-  "version": "1.3.18",
+  "version": "1.3.19",
   "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
@@ -92,6 +92,10 @@
     "url": "https://github.com/rtorkelsen/homey-layz/issues"
   },
   "changelog": {
+    "1.3.19": {
+      "en": "Fixed: the 5 deprecated app-level spa action cards (still used by existing flows) were missing translations for 9 languages — only English and German were shown regardless of app language. Fixed: Pool Filter driver could fire the \"Filter change required\" / \"Error occurred\" triggers a second time on Homey restart if that state was already active, instead of only on the actual transition.",
+      "de": "Behoben: Die 5 veralteten App-Level-Spa-Aktionskarten (weiterhin in bestehenden Flows aktiv) hatten in 9 Sprachen keine Übersetzung — unabhängig von der App-Sprache wurde nur Englisch oder Deutsch angezeigt. Behoben: Der Poolfilter-Treiber konnte die Trigger \"Filterwechsel erforderlich\" / \"Fehler aufgetreten\" bei einem Homey-Neustart erneut auslösen, wenn dieser Zustand bereits aktiv war, statt nur beim tatsächlichen Übergang."
+    },
     "1.3.18": {
       "en": "Added: support for the new Bestway \"Smart Home\" backend used by 2025+ UltraFit devices via the Bestway Connect app. Since ~July 2026, the \"Share Device\" QR code for these devices no longer produces an RW_Share_ text code but a share link instead (e.g. smart-spa-eu-app.bestwaycorp.com/...?shareId=...), which the app previously rejected outright. Pairing now automatically detects and routes to the correct backend, whether you paste a legacy RW_Share_ code or a new share link/id. Existing devices are unaffected.",
       "de": "Hinzugefügt: Unterstützung für das neue Bestway-\"Smart Home\"-Backend, das von 2025+ UltraFit-Geräten über die Bestway Connect App genutzt wird. Seit ca. Juli 2026 erzeugt der \"Gerät freigeben\"-QR-Code für diese Geräte keinen RW_Share_-Textcode mehr, sondern einen Freigabe-Link (z.B. smart-spa-eu-app.bestwaycorp.com/...?shareId=...), den die App bisher rundweg abgelehnt hat. Die Kopplung erkennt jetzt automatisch das richtige Backend, egal ob ein alter RW_Share_-Code oder ein neuer Freigabe-Link/-ID eingefügt wird. Bestehende Geräte sind nicht betroffen."
@@ -1418,11 +1422,29 @@
         "deprecated": true,
         "title": {
           "en": "Turn AirJet High on or off",
-          "de": "AirJet High ein- oder ausschalten"
+          "de": "AirJet High ein- oder ausschalten",
+          "no": "Slå AirJet High av eller på",
+          "cs": "Zapnout nebo vypnout AirJet High",
+          "nl": "AirJet High aan of uit zetten",
+          "da": "Tænd eller sluk AirJet High",
+          "sv": "Slå AirJet High av eller på",
+          "it": "Accendi o spegni AirJet High",
+          "fr": "Allumer ou éteindre l'AirJet High",
+          "ru": "Включить или выключить AirJet High",
+          "pl": "Włącz lub wyłącz AirJet High"
         },
         "titleFormatted": {
           "en": "Turn AirJet High [[onoff]]",
-          "de": "AirJet High [[onoff]] schalten"
+          "de": "AirJet High [[onoff]] schalten",
+          "no": "Slå AirJet High [[onoff]]",
+          "cs": "AirJet High [[onoff]]",
+          "nl": "AirJet High [[onoff]]",
+          "da": "Slå AirJet High [[onoff]]",
+          "sv": "Slå AirJet High [[onoff]]",
+          "it": "AirJet High [[onoff]]",
+          "fr": "AirJet High [[onoff]]",
+          "ru": "AirJet High [[onoff]]",
+          "pl": "AirJet High [[onoff]]"
         },
         "args": [
           {
@@ -1430,21 +1452,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -1456,11 +1505,29 @@
         "deprecated": true,
         "title": {
           "en": "Turn AirJet Low on or off",
-          "de": "AirJet Low ein- oder ausschalten"
+          "de": "AirJet Low ein- oder ausschalten",
+          "no": "Slå AirJet Low av eller på",
+          "cs": "Zapnout nebo vypnout AirJet Low",
+          "nl": "AirJet Low aan of uit zetten",
+          "da": "Tænd eller sluk AirJet Low",
+          "sv": "Slå AirJet Low av eller på",
+          "it": "Accendi o spegni AirJet Low",
+          "fr": "Allumer ou éteindre l'AirJet Low",
+          "ru": "Включить или выключить AirJet Low",
+          "pl": "Włącz lub wyłącz AirJet Low"
         },
         "titleFormatted": {
           "en": "Turn AirJet Low [[onoff]]",
-          "de": "AirJet Low [[onoff]] schalten"
+          "de": "AirJet Low [[onoff]] schalten",
+          "no": "Slå AirJet Low [[onoff]]",
+          "cs": "AirJet Low [[onoff]]",
+          "nl": "AirJet Low [[onoff]]",
+          "da": "Slå AirJet Low [[onoff]]",
+          "sv": "Slå AirJet Low [[onoff]]",
+          "it": "AirJet Low [[onoff]]",
+          "fr": "AirJet Low [[onoff]]",
+          "ru": "AirJet Low [[onoff]]",
+          "pl": "AirJet Low [[onoff]]"
         },
         "args": [
           {
@@ -1468,21 +1535,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -1494,11 +1588,29 @@
         "deprecated": true,
         "title": {
           "en": "Turn filter on or off",
-          "de": "Filter ein- oder ausschalten"
+          "de": "Filter ein- oder ausschalten",
+          "no": "Slå filter av eller på",
+          "cs": "Zapnout nebo vypnout filtr",
+          "nl": "Filter aan of uit zetten",
+          "da": "Tænd eller sluk for filteret",
+          "sv": "Slå på eller av filtret",
+          "it": "Accendi o spegni il filtro",
+          "fr": "Allumer ou éteindre le filtre",
+          "ru": "Включить или выключить фильтр",
+          "pl": "Włącz lub wyłącz filtr"
         },
         "titleFormatted": {
           "en": "Turn filter [[onoff]]",
-          "de": "Filter [[onoff]] schalten"
+          "de": "Filter [[onoff]] schalten",
+          "no": "Slå filter [[onoff]]",
+          "cs": "Filtr [[onoff]]",
+          "nl": "Filter [[onoff]]",
+          "da": "Slå filteret [[onoff]]",
+          "sv": "Slå filtret [[onoff]]",
+          "it": "Filtro [[onoff]]",
+          "fr": "Filtre [[onoff]]",
+          "ru": "Фильтр [[onoff]]",
+          "pl": "Filtr [[onoff]]"
         },
         "args": [
           {
@@ -1506,21 +1618,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -1532,11 +1671,29 @@
         "deprecated": true,
         "title": {
           "en": "Turn heating on or off",
-          "de": "Heizung ein- oder ausschalten"
+          "de": "Heizung ein- oder ausschalten",
+          "no": "Slå oppvarming av eller på",
+          "cs": "Zapnout nebo vypnout topení",
+          "nl": "Verwarming aan of uit zetten",
+          "da": "Tænd eller sluk for varmen",
+          "sv": "Slå på eller av uppvärmning",
+          "it": "Accendi o spegni il riscaldamento",
+          "fr": "Allumer ou éteindre le chauffage",
+          "ru": "Включить или выключить нагрев",
+          "pl": "Włącz lub wyłącz ogrzewanie"
         },
         "titleFormatted": {
           "en": "Turn heating [[onoff]]",
-          "de": "Heizung [[onoff]] schalten"
+          "de": "Heizung [[onoff]] schalten",
+          "no": "Slå oppvarming [[onoff]]",
+          "cs": "Topení [[onoff]]",
+          "nl": "Verwarming [[onoff]]",
+          "da": "Slå varmen [[onoff]]",
+          "sv": "Slå uppvärmning [[onoff]]",
+          "it": "Riscaldamento [[onoff]]",
+          "fr": "Chauffage [[onoff]]",
+          "ru": "Нагрев [[onoff]]",
+          "pl": "Ogrzewanie [[onoff]]"
         },
         "args": [
           {
@@ -1544,21 +1701,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -1570,15 +1754,42 @@
         "deprecated": true,
         "title": {
           "en": "Turn HydroJet on or off",
-          "de": "HydroJet ein- oder ausschalten"
+          "de": "HydroJet ein- oder ausschalten",
+          "no": "Slå HydroJet av eller på",
+          "cs": "Zapnout nebo vypnout HydroJet",
+          "nl": "HydroJet aan of uit zetten",
+          "da": "Tænd eller sluk HydroJet",
+          "sv": "Slå HydroJet av eller på",
+          "it": "Accendi o spegni HydroJet",
+          "fr": "Allumer ou éteindre le HydroJet",
+          "ru": "Включить или выключить HydroJet",
+          "pl": "Włącz lub wyłącz HydroJet"
         },
         "titleFormatted": {
           "en": "Turn HydroJet [[onoff]]",
-          "de": "HydroJet [[onoff]] schalten"
+          "de": "HydroJet [[onoff]] schalten",
+          "no": "Slå HydroJet [[onoff]]",
+          "cs": "HydroJet [[onoff]]",
+          "nl": "HydroJet [[onoff]]",
+          "da": "Slå HydroJet [[onoff]]",
+          "sv": "Slå HydroJet [[onoff]]",
+          "it": "HydroJet [[onoff]]",
+          "fr": "HydroJet [[onoff]]",
+          "ru": "HydroJet [[onoff]]",
+          "pl": "HydroJet [[onoff]]"
         },
         "hint": {
           "en": "Only available on HydroJet spa models.",
-          "de": "Nur für HydroJet-Spa-Modelle verfügbar."
+          "de": "Nur für HydroJet-Spa-Modelle verfügbar.",
+          "no": "Kun tilgjengelig på HydroJet-spa-modeller.",
+          "cs": "Dostupné pouze pro modely spa HydroJet.",
+          "nl": "Alleen beschikbaar op HydroJet spa-modellen.",
+          "da": "Kun tilgængelig på HydroJet spa-modeller.",
+          "sv": "Endast tillgänglig på HydroJet spa-modeller.",
+          "it": "Disponibile solo sui modelli spa HydroJet.",
+          "fr": "Disponible uniquement sur les modèles de spa HydroJet.",
+          "ru": "Доступно только на моделях спа HydroJet.",
+          "pl": "Dostępne tylko na modelach spa HydroJet."
         },
         "args": [
           {
@@ -1586,21 +1797,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]

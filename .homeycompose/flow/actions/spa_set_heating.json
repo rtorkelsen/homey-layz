@@ -3,20 +3,80 @@
   "deprecated": true,
   "title": {
     "en": "Turn heating on or off",
-    "de": "Heizung ein- oder ausschalten"
+    "de": "Heizung ein- oder ausschalten",
+    "no": "Slå oppvarming av eller på",
+    "cs": "Zapnout nebo vypnout topení",
+    "nl": "Verwarming aan of uit zetten",
+    "da": "Tænd eller sluk for varmen",
+    "sv": "Slå på eller av uppvärmning",
+    "it": "Accendi o spegni il riscaldamento",
+    "fr": "Allumer ou éteindre le chauffage",
+    "ru": "Включить или выключить нагрев",
+    "pl": "Włącz lub wyłącz ogrzewanie"
   },
   "titleFormatted": {
     "en": "Turn heating [[onoff]]",
-    "de": "Heizung [[onoff]] schalten"
+    "de": "Heizung [[onoff]] schalten",
+    "no": "Slå oppvarming [[onoff]]",
+    "cs": "Topení [[onoff]]",
+    "nl": "Verwarming [[onoff]]",
+    "da": "Slå varmen [[onoff]]",
+    "sv": "Slå uppvärmning [[onoff]]",
+    "it": "Riscaldamento [[onoff]]",
+    "fr": "Chauffage [[onoff]]",
+    "ru": "Нагрев [[onoff]]",
+    "pl": "Ogrzewanie [[onoff]]"
   },
   "args": [
     {
       "name": "onoff",
       "type": "dropdown",
-      "title": { "en": "State", "de": "Zustand" },
+      "title": {
+        "en": "State",
+        "de": "Zustand",
+        "no": "Tilstand",
+        "cs": "Stav",
+        "nl": "Toestand",
+        "da": "Tilstand",
+        "sv": "Tillstånd",
+        "it": "Stato",
+        "fr": "État",
+        "ru": "Состояние",
+        "pl": "Stan"
+      },
       "values": [
-        { "id": "true",  "label": { "en": "on",  "de": "ein" } },
-        { "id": "false", "label": { "en": "off", "de": "aus" } }
+        {
+          "id": "true",
+          "label": {
+            "en": "on",
+            "de": "ein",
+            "no": "på",
+            "cs": "zapnout",
+            "nl": "aan",
+            "da": "til",
+            "sv": "på",
+            "it": "acceso",
+            "fr": "allumé",
+            "ru": "вкл",
+            "pl": "wł"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "off",
+            "de": "aus",
+            "no": "av",
+            "cs": "vypnout",
+            "nl": "uit",
+            "da": "fra",
+            "sv": "av",
+            "it": "spento",
+            "fr": "éteint",
+            "ru": "выкл",
+            "pl": "wył"
+          }
+        }
       ]
     }
   ]
