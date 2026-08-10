@@ -218,6 +218,12 @@
           "value": "–"
         },
         {
+          "id": "debug_backend",
+          "type": "label",
+          "label": { "en": "Backend", "de": "Backend" },
+          "value": "–"
+        },
+        {
           "id": "debug_firmware",
           "type": "label",
           "label": { "en": "Firmware Version", "de": "Firmware-Version" },

@@ -90,7 +90,7 @@
 
   <div class="steps" id="steps"></div>
 
-  <input type="text" id="shareCode" placeholder="RW_Share_..." autocomplete="off" spellcheck="false" />
+  <input type="text" id="shareCode" placeholder="RW_Share_... / shareId=..." autocomplete="off" spellcheck="false" />
 
   <button id="connectBtn" onclick="connect()"></button>
 
@@ -110,8 +110,8 @@
     const steps = [
       t('pair.connect.steps.1', 'Open the Bestway Connect app (or Bestway Smart Hub for older spas)'),
       t('pair.connect.steps.2', 'Go to your spa → Settings → Device Sharing'),
-      t('pair.connect.steps.3', 'Only see a QR code? Scan it with any QR scanner app to reveal the text code (starts with RW_Share_)'),
-      t('pair.connect.steps.4', 'Copy the code and paste it below'),
+      t('pair.connect.steps.3', 'Only see a QR code? Scan it with any QR scanner app to reveal the text (a code or a link)'),
+      t('pair.connect.steps.4', 'Copy it and paste it below'),
     ];
     stepsEl.innerHTML = steps.map((s, i) => `${i + 1}. ${s}`).join('<br>');
 

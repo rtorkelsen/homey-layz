@@ -7,12 +7,13 @@
       "steps": {
         "1": "Otevřete aplikaci Bestway Connect (nebo Bestway Smart Hub u starších spa)",
         "2": "Přejděte na vaše spa → Nastavení → Sdílet zařízení",
-        "3": "Vidíte jen QR kód? Naskenujte ho libovolnou aplikací pro čtení QR kódů, abyste zobrazili textový kód (začíná RW_Share_)",
-        "4": "Zkopírujte kód a vložte ho níže"
+        "3": "Vidíte jen QR kód? Naskenujte ho libovolnou aplikací pro čtení QR kódů, abyste zobrazili text (kód nebo odkaz)",
+        "4": "Zkopírujte ho a vložte níže"
       },
       "error": {
-        "link_failed": "Připojení se nezdařilo. Zkontrolujte sdílecí kód a zkuste to znovu.",
-        "no_devices":  "Po připojení nebylo nalezeno žádné zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Connect nebo Smart Hub."
+        "link_failed":  "Připojení se nezdařilo. Zkontrolujte sdílecí kód a zkuste to znovu.",
+        "no_devices":   "Po připojení nebylo nalezeno žádné zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Connect nebo Smart Hub.",
+        "invalid_code": "Toto nevypadá jako platný sdílecí kód nebo odkaz. Zkopírujte ho prosím znovu a zkuste to ještě jednou."
       }
     },
     "repair": {

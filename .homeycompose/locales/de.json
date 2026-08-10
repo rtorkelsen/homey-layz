@@ -7,12 +7,13 @@
       "steps": {
         "1": "Bestway Connect App öffnen (oder Bestway Smart Hub bei älteren Spas)",
         "2": "Zum Spa gehen → Einstellungen → Gerät freigeben",
-        "3": "Nur ein QR-Code sichtbar? Mit einer QR-Scanner-App scannen, um den Textcode anzuzeigen (beginnt mit RW_Share_)",
-        "4": "Code kopieren und hier einfügen"
+        "3": "Nur ein QR-Code sichtbar? Mit einer QR-Scanner-App scannen, um den Text anzuzeigen (Code oder Link)",
+        "4": "Kopieren und hier einfügen"
       },
       "error": {
-        "link_failed": "Verbindung fehlgeschlagen. Bitte Freigabecode prüfen und erneut versuchen.",
-        "no_devices":  "Keine Geräte gefunden. Stelle sicher, dass der Spa in der Bestway Connect oder Smart Hub App eingerichtet ist."
+        "link_failed":  "Verbindung fehlgeschlagen. Bitte Freigabecode prüfen und erneut versuchen.",
+        "no_devices":   "Keine Geräte gefunden. Stelle sicher, dass der Spa in der Bestway Connect oder Smart Hub App eingerichtet ist.",
+        "invalid_code": "Das sieht nicht wie ein gültiger Freigabecode oder Link aus. Bitte erneut kopieren und nochmal versuchen."
       }
     },
     "repair": {

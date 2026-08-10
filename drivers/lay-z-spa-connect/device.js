@@ -2,6 +2,7 @@
 
 const Homey = require('homey');
 const { BestwaySmarthubClient, SmarthubError } = require('../../lib/BestwaySmarthubClient');
+const { BestwaySmartHomeClient, SmartHomeError } = require('../../lib/BestwaySmartHomeClient');
 
 const DEFAULT_POLL_INTERVAL_S = 60;
 const MAX_POLL_INTERVAL_S     = 300;
@@ -92,10 +93,21 @@ class LaZSpaConnectDevice extends Homey.Device {
   }
 
   _initClient() {
-    this._client = new BestwaySmarthubClient({
-      region:    this.getStoreValue('region') ?? 'eu',
-      visitorId: this.getStoreValue('visitorId'),
-    });
+    // Devices paired before this backend existed have no 'backend' store
+    // value — default to the legacy SmartHub client for those.
+    const backend = this.getStoreValue('backend') ?? 'smarthub';
+
+    if (backend === 'smart_home') {
+      this._client = new BestwaySmartHomeClient({
+        region:  this.getStoreValue('region') ?? 'eu',
+        phoneId: this.getStoreValue('phoneId'),
+      });
+    } else {
+      this._client = new BestwaySmarthubClient({
+        region:    this.getStoreValue('region') ?? 'eu',
+        visitorId: this.getStoreValue('visitorId'),
+      });
+    }
     this._client._token = this.getStoreValue('token') ?? null;
   }
 
@@ -304,9 +316,11 @@ class LaZSpaConnectDevice extends Homey.Device {
       if (!this.getAvailable()) this.setAvailable().catch(err => this.log('setAvailable failed:', err.message));
 
     } catch (err) {
-      const code = err instanceof SmarthubError ? err.code : null;
+      const code = (err instanceof SmarthubError || err instanceof SmartHomeError) ? err.code : null;
+      const codeStr = code !== null && code !== undefined ? String(code) : null;
 
-      if (code === 401 || (err.message && err.message.toLowerCase().includes('token'))) {
+      if (codeStr === '401' || codeStr === '403' || codeStr === '505'
+        || (err.message && err.message.toLowerCase().includes('token'))) {
         this.log('Token appears invalid — will re-authenticate on next poll.');
         await this._invalidateToken();
       }
@@ -377,9 +391,18 @@ class LaZSpaConnectDevice extends Homey.Device {
     return this._onCapabilityHeating(!!value);
   }
 
+  // Smart Home (Gizwits AEP / UltraFit) pumps report bubbles as on/off only
+  // (wave_state 0/1) rather than the SmartHub backend's 0/50/100 low/high
+  // scale — see BestwaySmartHomeClient.js. Low and High therefore both just
+  // toggle bubbles on for these devices; there is no distinct "high" write
+  // value confirmed for this hardware.
+  _airjetOnValue() {
+    return (this.getStoreValue('backend') ?? 'smarthub') === 'smart_home' ? 1 : 50;
+  }
+
   async _onCapabilityAirjetLow(value) {
     this.log('Set onoff.airjet_low →', value);
-    await this._sendControl({ wave_state: value ? 50 : 0 });
+    await this._sendControl({ wave_state: value ? this._airjetOnValue() : 0 });
     if (value) {
       await this.setCapabilityValue('onoff.airjet_high', false)
         .catch(e => this.error('set onoff.airjet_high:', e));
@@ -388,7 +411,8 @@ class LaZSpaConnectDevice extends Homey.Device {
 
   async _onCapabilityAirjetHigh(value) {
     this.log('Set onoff.airjet_high →', value);
-    await this._sendControl({ wave_state: value ? 100 : 0 });
+    const backend = this.getStoreValue('backend') ?? 'smarthub';
+    await this._sendControl({ wave_state: value ? (backend === 'smart_home' ? 1 : 100) : 0 });
     if (value) {
       await this.setCapabilityValue('onoff.airjet_low', false)
         .catch(e => this.error('set onoff.airjet_low:', e));
@@ -454,6 +478,7 @@ class LaZSpaConnectDevice extends Homey.Device {
       debug_last_sync: timestamp,
       debug_status:    error ? `Error: ${error}` : 'OK ✓',
       debug_region:    this.getStoreValue('region') ?? '–',
+      debug_backend:   this.getStoreValue('backend') ?? 'smarthub',
     };
 
     if (state) {

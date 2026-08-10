@@ -1,6 +1,6 @@
 {
   "id": "com.utkikk.layz",
-  "version": "1.3.17",
+  "version": "1.3.18",
   "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
@@ -91,6 +91,10 @@
     "url": "https://github.com/rtorkelsen/homey-layz/issues"
   },
   "changelog": {
+    "1.3.18": {
+      "en": "Added: support for the new Bestway \"Smart Home\" backend used by 2025+ UltraFit devices via the Bestway Connect app. Since ~July 2026, the \"Share Device\" QR code for these devices no longer produces an RW_Share_ text code but a share link instead (e.g. smart-spa-eu-app.bestwaycorp.com/...?shareId=...), which the app previously rejected outright. Pairing now automatically detects and routes to the correct backend, whether you paste a legacy RW_Share_ code or a new share link/id. Existing devices are unaffected.",
+      "de": "Hinzugefügt: Unterstützung für das neue Bestway-\"Smart Home\"-Backend, das von 2025+ UltraFit-Geräten über die Bestway Connect App genutzt wird. Seit ca. Juli 2026 erzeugt der \"Gerät freigeben\"-QR-Code für diese Geräte keinen RW_Share_-Textcode mehr, sondern einen Freigabe-Link (z.B. smart-spa-eu-app.bestwaycorp.com/...?shareId=...), den die App bisher rundweg abgelehnt hat. Die Kopplung erkennt jetzt automatisch das richtige Backend, egal ob ein alter RW_Share_-Code oder ein neuer Freigabe-Link/-ID eingefügt wird. Bestehende Geräte sind nicht betroffen."
+    },
     "1.3.17": {
       "en": "Fixed: pairing instructions for the Lay-Z-Spa Connect driver updated for newer Bestway app versions that only display a QR code (no visible text share code) — now explains scanning the QR code with any QR scanner app to reveal the RW_Share_ code, and mentions the Bestway Connect app alongside Smart Hub. Updated in all 11 supported languages.",
       "de": "Behoben: Kopplungsanleitung für den Lay-Z-Spa Connect Treiber an neuere Bestway-App-Versionen angepasst, die nur noch einen QR-Code anzeigen (keinen sichtbaren Text-Freigabecode) — erklärt jetzt, den QR-Code mit einer beliebigen QR-Scanner-App zu scannen, um den RW_Share_-Code anzuzeigen, und erwähnt die Bestway Connect App neben Smart Hub. Aktualisiert in allen 11 unterstützten Sprachen."

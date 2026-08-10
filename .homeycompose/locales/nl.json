@@ -7,12 +7,13 @@
       "steps": {
         "1": "Open de Bestway Connect-app (of Bestway Smart Hub voor oudere spa's)",
         "2": "Ga naar je spa → Instellingen → Apparaat delen",
-        "3": "Zie je alleen een QR-code? Scan deze met een QR-scanner-app om de tekstcode te tonen (begint met RW_Share_)",
-        "4": "Kopieer de code en plak hem hieronder"
+        "3": "Zie je alleen een QR-code? Scan deze met een QR-scanner-app om de tekst te tonen (een code of een link)",
+        "4": "Kopieer hem en plak hem hieronder"
       },
       "error": {
-        "link_failed": "Verbinding mislukt. Controleer de deelcode en probeer opnieuw.",
-        "no_devices":  "Geen apparaten gevonden na koppeling. Zorg ervoor dat je spa is ingesteld in de Bestway Connect- of Smart Hub-app."
+        "link_failed":  "Verbinding mislukt. Controleer de deelcode en probeer opnieuw.",
+        "no_devices":   "Geen apparaten gevonden na koppeling. Zorg ervoor dat je spa is ingesteld in de Bestway Connect- of Smart Hub-app.",
+        "invalid_code": "Dit lijkt geen geldige deelcode of link. Kopieer hem opnieuw en probeer het nog eens."
       }
     },
     "repair": {

@@ -7,12 +7,13 @@
       "steps": {
         "1": "Apri l'app Bestway Connect (o Bestway Smart Hub per spa più datate)",
         "2": "Vai alla tua spa → Impostazioni → Condividi dispositivo",
-        "3": "Vedi solo un codice QR? Scansionalo con un'app per QR code per mostrare il codice testuale (inizia con RW_Share_)",
-        "4": "Copia il codice e incollalo qui sotto"
+        "3": "Vedi solo un codice QR? Scansionalo con un'app per QR code per mostrare il testo (un codice o un link)",
+        "4": "Copialo e incollalo qui sotto"
       },
       "error": {
-        "link_failed": "Connessione non riuscita. Controlla il codice di condivisione e riprova.",
-        "no_devices":  "Nessun dispositivo trovato dopo il collegamento. Assicurati che la tua spa sia configurata nell'app Bestway Connect o Smart Hub."
+        "link_failed":  "Connessione non riuscita. Controlla il codice di condivisione e riprova.",
+        "no_devices":   "Nessun dispositivo trovato dopo il collegamento. Assicurati che la tua spa sia configurata nell'app Bestway Connect o Smart Hub.",
+        "invalid_code": "Questo non sembra un codice o link di condivisione valido. Copialo di nuovo e riprova."
       }
     },
     "repair": {

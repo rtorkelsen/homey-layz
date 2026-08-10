@@ -7,12 +7,13 @@
       "steps": {
         "1": "Åbn Bestway Connect-appen (eller Bestway Smart Hub til ældre spaer)",
         "2": "Gå til din spa → Indstillinger → Del enhed",
-        "3": "Ser du kun en QR-kode? Scan den med en QR-scanner-app for at se tekstkoden (begynder med RW_Share_)",
-        "4": "Kopiér koden og indsæt den herunder"
+        "3": "Ser du kun en QR-kode? Scan den med en QR-scanner-app for at se teksten (en kode eller et link)",
+        "4": "Kopiér den og indsæt den herunder"
       },
       "error": {
         "link_failed": "Tilslutning mislykkedes. Kontrollér delingskoden og prøv igen.",
-        "no_devices": "Ingen enheder fundet efter tilkobling. Sørg for at din spa er konfigureret i Bestway Connect- eller Smart Hub-appen."
+        "no_devices": "Ingen enheder fundet efter tilkobling. Sørg for at din spa er konfigureret i Bestway Connect- eller Smart Hub-appen.",
+        "invalid_code": "Dette ligner ikke en gyldig delingskode eller et link. Kopiér den igen, og prøv en gang til."
       }
     },
     "repair": {
