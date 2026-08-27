@@ -31,6 +31,11 @@ class LaZSpaConnectDevice extends Homey.Device {
     this._prevTempReached = undefined;
     this._prevAlarmActive = undefined;
 
+    // Attribute dialect this device's shadow speaks ('aws' | 'gizwits').
+    // Restored from the store so a control command issued before the first
+    // poll completes is still encoded correctly; re-detected on every poll.
+    this._dialect = this.getStoreValue('dialect') ?? 'aws';
+
     this._energyLastTs    = Date.now();
     this._energyLastWatts = this.getCapabilityValue('measure_power') ?? 0;
 
@@ -167,15 +172,91 @@ class LaZSpaConnectDevice extends Homey.Device {
     await this.setCapabilityValue(cap, value).catch(e => this.error(`set ${cap}:`, e));
   }
 
+  /**
+   * Detect which attribute dialect this device's shadow speaks.
+   *
+   * Most V02 devices report AWS-IoT style names (power_state, water_temperature,
+   * …). Some devices — observed on a Hydrojet whose SmartHub shadow simply
+   * proxies the underlying Gizwits attributes — report the classic V01 names
+   * instead (power, Tnow, Tset, heat, filter, wave, jet, bit2, E01…E32).
+   *
+   * Without this check every branch in _syncStatus() silently skips and the
+   * device shows no values at all.
+   *
+   * @returns {'gizwits'|'aws'}
+   */
+  _detectDialect(state) {
+    const looksGizwits = state?.Tnow !== undefined
+      || state?.Tset !== undefined
+      || (state?.power !== undefined && state?.power_state === undefined);
+    return looksGizwits ? 'gizwits' : 'aws';
+  }
+
+  /**
+   * Translate a Gizwits-dialect shadow into the AWS-IoT field names the rest
+   * of _syncStatus() reads. AWS-dialect payloads pass through untouched.
+   *
+   * Value-scale differences are normalised here too — most importantly
+   * `filter`, which is 0/2 on Gizwits but 0/1 on AWS.
+   */
+  _normalizeState(state) {
+    if (this._detectDialect(state) !== 'gizwits') return state;
+
+    const out = { ...state };
+
+    if (state.power !== undefined)  out.power_state = state.power === 1 ? 1 : 0;
+    if (typeof state.Tnow === 'number') out.water_temperature   = state.Tnow;
+    if (typeof state.Tset === 'number') out.temperature_setting = state.Tset;
+    if (state.Tunit !== undefined)  out.temperature_unit = state.Tunit;
+    // heat: 0=off, 1=starting, 3=heating, 4=target reached — same scale as heater_state
+    if (state.heat !== undefined)   out.heater_state = state.heat;
+    // filter is 0/2 here (2 = ON) but the AWS branch compares against 1
+    if (state.filter !== undefined) out.filter_state = state.filter === 0 ? 0 : 1;
+    if (state.wave !== undefined)   out.wave_state = state.wave;
+    if (state.jet !== undefined)    out.hydrojet_state = state.jet;
+    if (state.bit2 !== undefined)   out.locked = state.bit2;
+
+    // E32 is the device's "target temperature reached" signal, not a fault.
+    // It lags behind a setpoint change though — observed still set to 1
+    // immediately after the target was raised well above the current water
+    // temperature — so only trust it when the temperatures don't contradict
+    // it. Leaving it unset falls through to the heater-state / temperature
+    // comparison below, which carries the hysteresis.
+    const contradicted = typeof state.Tnow === 'number'
+      && typeof state.Tset === 'number'
+      && state.Tnow < state.Tset;
+    if (state.E32 === 1 && !contradicted) out.temp_reach_state = 1;
+
+    // E01..E31 are real faults. Report the first active one; the caller turns
+    // "E07" into a localised description.
+    for (let i = 1; i <= 31; i++) {
+      const key = `E${String(i).padStart(2, '0')}`;
+      if (state[key] === 1) {
+        out.error_code = key;
+        break;
+      }
+    }
+
+    return out;
+  }
+
   async _syncStatus() {
     try {
       await this._ensureToken();
 
       const deviceId  = this.getData().id;
       const productId = this.getStoreValue('productId');
-      const state     = await this._client.getDeviceStatus(deviceId, productId);
+      const raw       = await this._client.getDeviceStatus(deviceId, productId);
 
-      this.log('Connect status:', JSON.stringify(state));
+      this.log('Connect status:', JSON.stringify(raw));
+
+      const dialect = this._detectDialect(raw);
+      if (dialect !== this._dialect) {
+        this.log(`Connect attribute dialect detected: ${dialect}`);
+        this._dialect = dialect;
+        this.setStoreValue('dialect', dialect).catch(() => {});
+      }
+      const state = this._normalizeState(raw);
 
       if (state.power_state !== undefined) {
         await this._setCapability('onoff', state.power_state === 1);
@@ -189,7 +270,10 @@ class LaZSpaConnectDevice extends Homey.Device {
         await this._setCapability('target_temperature', state.temperature_setting);
       }
 
-      // heater_state: 0=off, 1=starting, 3=actively heating, 4=target reached (idle)
+      // heater_state: 0=off, anything above 0 = heater engaged. Known values are
+      // 1=starting, 3/5=actively heating, 4=target reached (idle) — the exact
+      // set varies by model, so treat any non-zero value as "on" rather than
+      // matching against a fixed list.
       if (state.heater_state !== undefined) {
         const prevHeating = this._prevHeatingOn;
         const heatingOn   = state.heater_state > 0;
@@ -310,7 +394,9 @@ class LaZSpaConnectDevice extends Homey.Device {
         this.setSettings({ debug_firmware: String(fw) }).catch(() => {});
       }
 
-      this._updateDebugSettings(state);
+      // Show the untranslated payload in the troubleshooting label — that is
+      // what is actually useful when diagnosing a device's attribute dialect.
+      this._updateDebugSettings(raw);
       this._updateEnergyApproximation();
       this._pollFailCount = 0;
       if (!this.getAvailable()) this.setAvailable().catch(err => this.log('setAvailable failed:', err.message));
@@ -381,14 +467,36 @@ class LaZSpaConnectDevice extends Homey.Device {
     await this._sendControl({ filter_state: value ? 1 : 0 });
   }
 
-  // Used by Flow action cards (filter_pump_turn_on/off/toggle)
+  // ── Flow action card helpers ────────────────────────────────────────────
+  //
+  // The device-level spa action cards (spa_filter, spa_heating, spa_airjet_low,
+  // spa_airjet_high, spa_hydrojet) are shared with the Lay-Z driver and call
+  // these methods straight on the device, so both drivers must expose the same
+  // set of names — a missing one makes the card fail with a TypeError.
+  // triggerCapabilityListener both sends the command and updates the UI state.
+
   async setFilterPump(value) {
     return this.triggerCapabilityListener('onoff.filter', !!value);
   }
 
-  // Used by the global spa_set_heating Flow action card
+  async setFilter(value) {
+    return this.triggerCapabilityListener('onoff.filter', !!value);
+  }
+
   async setHeating(value) {
-    return this._onCapabilityHeating(!!value);
+    return this.triggerCapabilityListener('onoff.heating', !!value);
+  }
+
+  async setAirjetLow(value) {
+    return this.triggerCapabilityListener('onoff.airjet_low', !!value);
+  }
+
+  async setAirjetHigh(value) {
+    return this.triggerCapabilityListener('onoff.airjet_high', !!value);
+  }
+
+  async setHydrojet(value) {
+    return this.triggerCapabilityListener('onoff.hydrojet', !!value);
   }
 
   // Smart Home (Gizwits AEP / UltraFit) pumps report bubbles as on/off only
@@ -478,7 +586,7 @@ class LaZSpaConnectDevice extends Homey.Device {
       debug_last_sync: timestamp,
       debug_status:    error ? `Error: ${error}` : 'OK ✓',
       debug_region:    this.getStoreValue('region') ?? '–',
-      debug_backend:   this.getStoreValue('backend') ?? 'smarthub',
+      debug_backend:   `${this.getStoreValue('backend') ?? 'smarthub'} (${this._dialect ?? 'aws'})`,
     };
 
     if (state) {
@@ -492,16 +600,50 @@ class LaZSpaConnectDevice extends Homey.Device {
     );
   }
 
+  /**
+   * Translate an AWS-style control payload into the dialect this device speaks.
+   *
+   * The capability handlers always build AWS-style updates (power_state,
+   * heater_state, …); devices whose shadow reports classic Gizwits attributes
+   * only accept those names — and a different scale for `filter` and `wave`.
+   */
+  _encodeControl(updates) {
+    if (this._dialect !== 'gizwits') return updates;
+
+    const out = {};
+    for (const [key, value] of Object.entries(updates)) {
+      switch (key) {
+        case 'power_state':         out.power  = value ? 1 : 0; break;
+        // Values here must be the states the device actually *reports*, not
+        // command values — this writes a shadow "desired" state, which the
+        // device matches against its own reported state. Sending heat=1 (a
+        // command value the Gizwits /app/control endpoint accepts) is silently
+        // ignored here; 3 is the reported ON state. Same reason filter is 2.
+        case 'heater_state':        out.heat   = value ? 3 : 0; break;
+        case 'filter_state':        out.filter = value ? 2 : 0; break;
+        case 'hydrojet_state':      out.jet    = value ? 1 : 0; break;
+        case 'temperature_setting': out.Tset   = value; break;
+        // Bubble levels as reported by these models: 0 = off, 40 = low, 100 = high
+        case 'wave_state':          out.wave   = value === 0 ? 0 : (value >= 100 ? 100 : 40); break;
+        // Read attribute is bit2, but the write attribute is 'locked'
+        case 'locked':              out.locked = value ? 1 : 0; break;
+        default:                    out[key]   = value; break;
+      }
+    }
+    return out;
+  }
+
   async _sendControl(updates) {
     let lastErr;
+    const payload = this._encodeControl(updates);
 
     for (let attempt = 1; attempt <= CONTROL_MAX_ATTEMPTS; attempt++) {
       try {
         await this._ensureToken();
         const deviceId  = this.getData().id;
         const productId = this.getStoreValue('productId');
-        this.log(`Connect control (attempt ${attempt}) →`, JSON.stringify(updates));
-        await this._client.control(deviceId, productId, updates);
+        this.log(`Connect control (attempt ${attempt}) →`, JSON.stringify(payload));
+        await this._client.control(deviceId, productId, payload);
         return;
       } catch (err) {
         lastErr = err;

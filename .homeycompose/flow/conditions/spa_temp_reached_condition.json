@@ -30,7 +30,7 @@
     {
       "name": "device",
       "type": "device",
-      "filter": "capability=bestway_temp_reached"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     }
   ]
 }

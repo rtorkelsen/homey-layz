@@ -2,7 +2,7 @@
 
 Control your **Bestway Lay-Z-Spa** (Airjet / Hydrojet Pro) and **Bestway Pool Filter Pump** directly from Homey. Monitor water temperature, control heating, jets and filter pump, and automate everything with Homey Flow.
 
-> **App version:** 1.3.19 · **Homey SDK:** 3 · **Platform:** Homey Pro (≥ 12.0)
+> **App version:** 1.3.20 · **Homey SDK:** 3 · **Platform:** Homey Pro (≥ 12.0)
 
 ---
 
@@ -189,9 +189,9 @@ You can install this app directly from source using the Homey CLI — useful for
    npm install -g homey
    ```
 
-2. **Clone this repository** (or download and unzip the [source ZIP](https://github.com/rtorkelsen/homey-layz/archive/refs/heads/main.zip)):
+2. **Clone this repository** (or download and unzip the [source ZIP](https://github.com/andiwirz/homey-layz/archive/refs/heads/main.zip)):
    ```bash
-   git clone https://github.com/rtorkelsen/homey-layz.git
+   git clone https://github.com/andiwirz/homey-layz.git
    cd homey-layz
    ```
 

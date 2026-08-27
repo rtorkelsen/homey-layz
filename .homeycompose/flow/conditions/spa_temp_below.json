@@ -14,23 +14,23 @@
     "pl": "Temperatura wody jest !{{poniżej|nie poniżej}}"
   },
   "titleFormatted": {
-    "en": "[[device]] water temperature is !{{below|not below}} [[temperature]]",
-    "de": "[[device]] Wassertemperatur ist !{{unter|nicht unter}} [[temperature]]",
-    "no": "[[device]] vanntemperatur er !{{under|ikke under}} [[temperature]]",
-    "cs": "[[device]] teplota vody je !{{pod|ne pod}} [[temperature]]",
-    "nl": "[[device]] watertemperatuur is !{{onder|niet onder}} [[temperature]]",
-    "da": "[[device]] vandtemperatur er !{{under|ikke under}} [[temperature]]",
-    "sv": "[[device]] vattentemperatur är !{{under|inte under}} [[temperature]]",
-    "it": "[[device]] temperatura dell'acqua è !{{sotto|non sotto}} [[temperature]]",
-    "fr": "[[device]] température de l'eau est !{{en dessous|pas en dessous}} [[temperature]]",
-    "ru": "[[device]] температура воды !{{ниже|не ниже}} [[temperature]]",
-    "pl": "[[device]] temperatura wody jest !{{poniżej|nie poniżej}} [[temperature]]"
+    "en": "Water temperature is !{{below|not below}} [[temperature]]",
+    "de": "Wassertemperatur ist !{{unter|nicht unter}} [[temperature]]",
+    "no": "Vanntemperatur er !{{under|ikke under}} [[temperature]]",
+    "cs": "Teplota vody je !{{pod|ne pod}} [[temperature]]",
+    "nl": "Watertemperatuur is !{{onder|niet onder}} [[temperature]]",
+    "da": "Vandtemperatur er !{{under|ikke under}} [[temperature]]",
+    "sv": "Vattentemperatur är !{{under|inte under}} [[temperature]]",
+    "it": "Temperatura dell'acqua è !{{sotto|non sotto}} [[temperature]]",
+    "fr": "Température de l'eau est !{{en dessous|pas en dessous}} [[temperature]]",
+    "ru": "Температура воды !{{ниже|не ниже}} [[temperature]]",
+    "pl": "Temperatura wody jest !{{poniżej|nie poniżej}} [[temperature]]"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capability=bestway_temp_reached"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     },
     {
       "name": "temperature",
