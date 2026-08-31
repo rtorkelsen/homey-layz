@@ -6,11 +6,11 @@ const axios = require('axios');
 /**
  * Read a capability without assuming the device has it.
  *
- * The spa condition/action cards span two drivers whose capability names
- * differ (airjet_low vs onoff.airjet_low, pump_onoff vs onoff.filter), so a
- * listener routinely probes capabilities that are absent on the device it was
- * handed. Returns undefined instead of letting an "invalid capability" error
- * escape and fail the whole Flow card.
+ * The spa condition/action cards are shared by both spa drivers, and a device
+ * only carries the capabilities its model actually supports (the Lay-Z driver
+ * prunes HydroJet controls on AirJet spas, and drops pump_onoff entirely when
+ * filter pump control is switched off). Returns undefined instead of letting
+ * an "invalid capability" error escape and fail the whole Flow card.
  */
 function capVal(device, capability) {
   if (!device || typeof device.hasCapability !== 'function') return undefined;
@@ -20,6 +20,18 @@ function capVal(device, capability) {
   } catch (e) {
     return undefined;
   }
+}
+
+/**
+ * Is the filter pump running?
+ *
+ * pump_onoff is the control; the Lay-Z driver removes it entirely when the
+ * user switches filter pump control off in the device settings, so fall back
+ * to the read-only pump_state — otherwise the filter Flow cards go blind on
+ * exactly those devices while the app is still displaying the correct state.
+ */
+function filterIsOn(device) {
+  return !!(capVal(device, 'pump_onoff') ?? capVal(device, 'pump_state'));
 }
 
 class SpaDriver extends Homey.Driver {
@@ -58,11 +70,11 @@ class SpaDriver extends Homey.Driver {
       .registerRunListener((args) => {
         const d = args.device;
         // Connect devices use onoff.airjet_*; Lay-Z devices use airjet_* or msg_onoff
-        return capVal(d, 'onoff.airjet_low')  === true
-            || capVal(d, 'onoff.airjet_high') === true
-            || capVal(d, 'airjet_low')        === true
-            || capVal(d, 'airjet_high')       === true
-            || capVal(d, 'msg_onoff')         === true;
+        // Both spa drivers share these capabilities; msg_onoff is the AirJet-only
+        // single-level bubble toggle on the Lay-Z driver.
+        return capVal(d, 'airjet_low')  === true
+            || capVal(d, 'airjet_high') === true
+            || capVal(d, 'msg_onoff')   === true;
       });
 
     this.homey.flow.getConditionCard('spa_locked')
@@ -85,7 +97,7 @@ class SpaDriver extends Homey.Driver {
     };
 
     this.homey.flow.getActionCard('spa_set_filter')
-      .registerRunListener(runSpa('onoff.filter', 'setFilter'));
+      .registerRunListener(runSpa('pump_onoff', 'setFilter'));
 
     this.homey.flow.getActionCard('spa_set_heating')
       .registerRunListener(runSpa('onoff.heating', 'setHeating'));
@@ -97,7 +109,7 @@ class SpaDriver extends Homey.Driver {
       .registerRunListener(runSpa('airjet_high', 'setAirjetHigh'));
 
     this.homey.flow.getActionCard('spa_set_hydrojet')
-      .registerRunListener(runSpa('onoff.hydrojet', 'setHydrojet'));
+      .registerRunListener(runSpa('jet_onoff', 'setHydrojet'));
 
     // **** New driver-level spa action cards (device-specific) ****
     // These cards are shared by the Lay-Z and Connect drivers, so the helper
@@ -133,9 +145,7 @@ class SpaDriver extends Homey.Driver {
           if (card === actionOn)  return device.setFilterPump(true);
           if (card === actionOff) return device.setFilterPump(false);
   
-          // Toggle: read current state — support both pump_onoff (Lay-Z) and onoff.filter (Connect)
-          const cur = !!(capVal(device, 'pump_onoff') ?? capVal(device, 'onoff.filter'));
-          return device.setFilterPump(!cur);
+          return device.setFilterPump(!filterIsOn(device));
         });
       });
 
@@ -143,11 +153,8 @@ class SpaDriver extends Homey.Driver {
       const condOn  = this.homey.flow.getConditionCard('filter_pump_is_on');
       const condOff = this.homey.flow.getConditionCard('filter_pump_is_off');
 
-      // Support both Lay-Z (pump_onoff) and Connect (onoff.filter) devices
-      condOn.registerRunListener(async ({ device }) =>
-        !!(capVal(device, 'pump_onoff') ?? capVal(device, 'onoff.filter')));
-      condOff.registerRunListener(async ({ device }) =>
-        !(capVal(device, 'pump_onoff') ?? capVal(device, 'onoff.filter')));
+      condOn.registerRunListener(async ({ device }) => filterIsOn(device));
+      condOff.registerRunListener(async ({ device }) => !filterIsOn(device));
   
       this.log('Flow cards for filter pump registered');
     } catch (e) {
@@ -188,6 +195,7 @@ class SpaDriver extends Homey.Driver {
             'Content-Type': 'application/json',
             'X-Gizwits-Application-Id': server.appId,
           },
+          timeout: 8000,
         });
 
         this.log(`Response code from ${server.baseUrl}:`, response.status);
@@ -206,6 +214,7 @@ class SpaDriver extends Homey.Driver {
             'X-Gizwits-Application-Id': server.appId,
             'X-Gizwits-User-token': token,
           },
+          timeout: 8000,
         });
 
         const devices = Array.isArray(devicesResponse?.data?.devices)

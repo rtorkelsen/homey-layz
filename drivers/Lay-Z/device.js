@@ -3,6 +3,11 @@
 const Homey = require('homey');
 const axios = require('axios');
 
+// Bump whenever capabilitiesOptions in driver.compose.json changes, so already
+// paired devices pick the new options up once. See _migrateCapabilityOptions().
+// 1 -> initial, 2 -> added an icon to the onoff.heating button
+const CAPABILITY_OPTIONS_REVISION = 2;
+
 /**
  * Model registry with pluggable adapters.
  * Add future models by appending a new adapter object to MODEL_REGISTRY.
@@ -152,6 +157,7 @@ class SpaDevice extends Homey.Device {
               'X-Gizwits-Application-Id': legacyAppId,
               'X-Gizwits-User-token': legacyToken,
             },
+            timeout: 8000,
           });
           const list = Array.isArray(resp?.data?.devices) ? resp.data.devices : [];
           const found = list.find(d => d?.did === this.getData().did);
@@ -340,6 +346,8 @@ class SpaDevice extends Homey.Device {
     // Lock is Airjet-only (Hydrojet write command has no effect per ha-bestway)
     await this.enableCapability('bestway_locked',    !isHydro);
 
+    await this._migrateCapabilityOptions();
+
     // Register capability listeners (safe to register even if capability isn't present)
     this.log('Registering capability listeners...');
     this.registerCapabilityListener('target_temperature',  this.onCapabilityTargetTemperature.bind(this));
@@ -368,6 +376,32 @@ class SpaDevice extends Homey.Device {
     } else if (!enabled && this.hasCapability(capability)) {
       await this.removeCapability(capability).catch(this.error);
     }
+  }
+
+  /**
+   * Push driver.compose.json's capabilitiesOptions onto an existing device.
+   *
+   * Homey copies those options into the device only when it is first paired —
+   * an already-paired device keeps whatever was stored back then, so manifest
+   * changes (a new icon, a renamed title, a different uiComponent) stay
+   * invisible on existing devices until they are written explicitly. Reading
+   * straight from the manifest keeps this in sync automatically; bump
+   * CAPABILITY_OPTIONS_REVISION whenever the options change so it runs once
+   * more, rather than on every single start.
+   */
+  async _migrateCapabilityOptions() {
+    if (this.getStoreValue('capOptionsRevision') === CAPABILITY_OPTIONS_REVISION) return;
+
+    const options = this.driver?.manifest?.capabilitiesOptions ?? {};
+    for (const [capability, opts] of Object.entries(options)) {
+      if (!this.hasCapability(capability)) continue;
+      await this.setCapabilityOptions(capability, opts).catch(err =>
+        this.error(`setCapabilityOptions("${capability}") failed:`, err.message),
+      );
+    }
+
+    await this.setStoreValue('capOptionsRevision', CAPABILITY_OPTIONS_REVISION).catch(() => {});
+    this.log(`Capability options refreshed from manifest (revision ${CAPABILITY_OPTIONS_REVISION})`);
   }
 
   async updateDeviceStatus() {
@@ -559,6 +593,7 @@ class SpaDevice extends Homey.Device {
         'Content-Type': 'application/json',
         'X-Gizwits-Application-Id': appId,
       },
+      timeout: 8000,
     });
 
     const { token, uid, expire_at: expireAt } = response.data;
@@ -588,6 +623,7 @@ class SpaDevice extends Homey.Device {
       const token = await this._getValidToken();
       const response = await axios.get(`${this.baseUrl}/app/bindings`, {
         headers: { ...this.headers, 'X-Gizwits-User-token': token },
+        timeout: 8000,
       });
       // Log response
       try {
@@ -697,12 +733,12 @@ class SpaDevice extends Homey.Device {
     // value is always in °C from Homey; convert to °F if device operates in Fahrenheit
     const deviceValue = this._deviceUnit === 'F' ? Math.round(value * 9 / 5 + 32) : value;
     try { await this._sendControl('tempSet', deviceValue); }
-    catch (error) { this.error('Failed to set target temperature', error); }
+    catch (error) { this.error('Failed to set target temperature', error); throw error; }
   }
 
   async onCapabilityOnoff(value) {
     try { await this._sendControl('power', value); }
-    catch (error) { this.error('Failed to change on/off status', error); }
+    catch (error) { this.error('Failed to change on/off status', error); throw error; }
   }
 
   async onCapabilityHeating(value) {
@@ -711,12 +747,12 @@ class SpaDevice extends Homey.Device {
 
   async setHeatPower(value) {
     try { await this._sendControl('heat', value); }
-    catch (error) { this.error('Failed to set heating power status', error); }
+    catch (error) { this.error('Failed to set heating power status', error); throw error; }
   }
 
   async onCapabilityPumpOnoff(value) {
     try { await this._sendControl('filter', value); }
-    catch (error) { this.error('Failed to toggle filter pump', error); }
+    catch (error) { this.error('Failed to toggle filter pump', error); throw error; }
   }
 
   async setFilterPump(value) {
@@ -725,7 +761,7 @@ class SpaDevice extends Homey.Device {
 
   async onCapabilityMsgOnoff(value) {
     try { await this._sendControl('wave', value); }
-    catch (error) { this.error('Failed to toggle massage function', error); }
+    catch (error) { this.error('Failed to toggle massage function', error); throw error; }
   }
 
   async onCapabilityAirjetLow(value) {
@@ -738,17 +774,17 @@ class SpaDevice extends Homey.Device {
 
   async onCapabilityMassageMode(value) {
     try { await this._sendControl('waveLevel', value); }
-    catch (error) { this.error('Failed to set massage mode', error); }
+    catch (error) { this.error('Failed to set massage mode', error); throw error; }
   }
 
   async onCapabilityJetOnoff(value) {
     try { await this._sendControl('jet', value); }
-    catch (error) { this.error('Failed to toggle hydrojet', error); }
+    catch (error) { this.error('Failed to toggle hydrojet', error); throw error; }
   }
 
   async onCapabilityBestwayLocked(value) {
     try { await this._sendControl('lock', value); }
-    catch (error) { this.error('Failed to set lock state', error); }
+    catch (error) { this.error('Failed to set lock state', error); throw error; }
   }
 
   // Helpers for spa flow action cards

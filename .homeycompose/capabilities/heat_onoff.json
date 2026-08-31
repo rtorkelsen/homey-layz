@@ -1,0 +1,20 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Heating",
+    "no": "Oppvarming",
+    "cs": "Topení",
+    "nl": "Verwarming",
+    "de": "Heizung",
+    "da": "Opvarmning",
+    "sv": "Uppvärmning",
+    "it": "Riscaldamento",
+    "fr": "Chauffage",
+    "ru": "Нагрев",
+    "pl": "Ogrzewanie"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "button",
+  "icon": "/assets/icons/heater.svg"
+}

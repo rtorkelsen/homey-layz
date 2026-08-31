@@ -13,8 +13,12 @@
     "pl": "Lay-Z"
   },
   "class": "other",
-  "platforms": ["local"],
-  "connectivity": ["cloud"],
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
   "capabilities": [
     "temp_now",
     "measure_temperature",
@@ -286,97 +290,157 @@
           },
           "value": "no",
           "values": [
-            { "id": "yes", "label": { "en": "Yes", "de": "Ja" } },
-            { "id": "no",  "label": { "en": "No",  "de": "Nein" } }
+            {
+              "id": "yes",
+              "label": {
+                "en": "Yes",
+                "de": "Ja"
+              }
+            },
+            {
+              "id": "no",
+              "label": {
+                "en": "No",
+                "de": "Nein"
+              }
+            }
           ]
         },
         {
           "id": "power_standby_w",
           "type": "number",
-          "label": { "en": "Standby (W)", "de": "Standby (W)" },
+          "label": {
+            "en": "Standby (W)",
+            "de": "Standby (W)"
+          },
           "hint": {
             "en": "Total power when the spa is on but nothing is running.",
             "de": "Gesamtleistung wenn der Spa eingeschaltet aber nichts aktiv ist."
           },
           "value": 2,
-          "attr": { "min": 0, "max": 100 }
+          "attr": {
+            "min": 0,
+            "max": 100
+          }
         },
         {
           "id": "power_filter_w",
           "type": "number",
-          "label": { "en": "Filter only (W)", "de": "Nur Filter (W)" },
+          "label": {
+            "en": "Filter only (W)",
+            "de": "Nur Filter (W)"
+          },
           "hint": {
             "en": "Total power when only the filter pump is running.",
             "de": "Gesamtleistung wenn nur die Filterpumpe läuft."
           },
           "value": 125,
-          "attr": { "min": 0, "max": 2000 }
+          "attr": {
+            "min": 0,
+            "max": 2000
+          }
         },
         {
           "id": "power_heating_w",
           "type": "number",
-          "label": { "en": "Filter + Heating (W)", "de": "Filter + Heizung (W)" },
+          "label": {
+            "en": "Filter + Heating (W)",
+            "de": "Filter + Heizung (W)"
+          },
           "hint": {
             "en": "Total power when filter and heater are both running.",
             "de": "Gesamtleistung wenn Filter und Heizung laufen."
           },
           "value": 2200,
-          "attr": { "min": 0, "max": 10000 }
+          "attr": {
+            "min": 0,
+            "max": 10000
+          }
         },
         {
           "id": "power_airjet_low_w",
           "type": "number",
-          "label": { "en": "AirJet Low / Wave (W)", "de": "AirJet Low / Wellen (W)" },
+          "label": {
+            "en": "AirJet Low / Wave (W)",
+            "de": "AirJet Low / Wellen (W)"
+          },
           "hint": {
             "en": "Total power when AirJet Low or wave bubbles are active. Note: on most models the heater switches off automatically when jets are running.",
             "de": "Gesamtleistung wenn AirJet Low oder Luftdüsen aktiv sind. Hinweis: Bei den meisten Modellen schaltet die Heizung automatisch ab wenn die Düsen laufen."
           },
           "value": 1550,
-          "attr": { "min": 0, "max": 5000 }
+          "attr": {
+            "min": 0,
+            "max": 5000
+          }
         },
         {
           "id": "power_airjet_high_w",
           "type": "number",
-          "label": { "en": "AirJet High (W)", "de": "AirJet High (W)" },
+          "label": {
+            "en": "AirJet High (W)",
+            "de": "AirJet High (W)"
+          },
           "hint": {
             "en": "Total power when AirJet High is active (HydroJet models only).",
             "de": "Gesamtleistung wenn AirJet High aktiv ist (nur HydroJet-Modelle)."
           },
           "value": 1960,
-          "attr": { "min": 0, "max": 5000 }
+          "attr": {
+            "min": 0,
+            "max": 5000
+          }
         },
         {
           "id": "power_hydrojet_w",
           "type": "number",
-          "label": { "en": "HydroJet (W)", "de": "HydroJet (W)" },
+          "label": {
+            "en": "HydroJet (W)",
+            "de": "HydroJet (W)"
+          },
           "hint": {
             "en": "Total power when only HydroJet massage is active (HydroJet models only).",
             "de": "Gesamtleistung wenn nur HydroJet aktiv ist (nur HydroJet-Modelle)."
           },
           "value": 430,
-          "attr": { "min": 0, "max": 5000 }
+          "attr": {
+            "min": 0,
+            "max": 5000
+          }
         },
         {
           "id": "power_hydrojet_airjet_low_w",
           "type": "number",
-          "label": { "en": "HydroJet + AirJet Low (W)", "de": "HydroJet + AirJet Low (W)" },
+          "label": {
+            "en": "HydroJet + AirJet Low (W)",
+            "de": "HydroJet + AirJet Low (W)"
+          },
           "hint": {
             "en": "Total power when HydroJet and AirJet Low are both active (HydroJet models only).",
             "de": "Gesamtleistung wenn HydroJet und AirJet Low gleichzeitig aktiv sind (nur HydroJet-Modelle)."
           },
           "value": 840,
-          "attr": { "min": 0, "max": 5000 }
+          "attr": {
+            "min": 0,
+            "max": 5000
+          }
         },
         {
           "id": "power_hydrojet_airjet_high_w",
           "type": "number",
-          "label": { "en": "HydroJet + AirJet High (W)", "de": "HydroJet + AirJet High (W)" },
+          "label": {
+            "en": "HydroJet + AirJet High (W)",
+            "de": "HydroJet + AirJet High (W)"
+          },
           "hint": {
             "en": "Total power when HydroJet and AirJet High are both active (HydroJet models only).",
             "de": "Gesamtleistung wenn HydroJet und AirJet High gleichzeitig aktiv sind (nur HydroJet-Modelle)."
           },
           "value": 1260,
-          "attr": { "min": 0, "max": 5000 }
+          "attr": {
+            "min": 0,
+            "max": 5000
+          }
         }
       ]
     },
@@ -390,37 +454,55 @@
         {
           "id": "debug_last_sync",
           "type": "label",
-          "label": { "en": "Last sync", "de": "Letzter Sync" },
+          "label": {
+            "en": "Last sync",
+            "de": "Letzter Sync"
+          },
           "value": "–"
         },
         {
           "id": "debug_status",
           "type": "label",
-          "label": { "en": "Status", "de": "Status" },
+          "label": {
+            "en": "Status",
+            "de": "Status"
+          },
           "value": "–"
         },
         {
           "id": "debug_product",
           "type": "label",
-          "label": { "en": "Device model", "de": "Gerätemodell" },
+          "label": {
+            "en": "Device model",
+            "de": "Gerätemodell"
+          },
           "value": "–"
         },
         {
           "id": "debug_region",
           "type": "label",
-          "label": { "en": "Active region", "de": "Aktive Region" },
+          "label": {
+            "en": "Active region",
+            "de": "Aktive Region"
+          },
           "value": "–"
         },
         {
           "id": "debug_errors",
           "type": "label",
-          "label": { "en": "Active error codes", "de": "Aktive Fehlercodes" },
+          "label": {
+            "en": "Active error codes",
+            "de": "Aktive Fehlercodes"
+          },
           "value": "–"
         },
         {
           "id": "debug_raw",
           "type": "label",
-          "label": { "en": "Raw device attributes", "de": "Rohe Gerätewerte" },
+          "label": {
+            "en": "Raw device attributes",
+            "de": "Rohe Gerätewerte"
+          },
           "value": "–"
         }
       ]

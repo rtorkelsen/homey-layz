@@ -6,6 +6,22 @@ const { BestwaySmartHomeClient, SmartHomeError } = require('../../lib/BestwaySma
 
 const DEFAULT_POLL_INTERVAL_S = 60;
 const MAX_POLL_INTERVAL_S     = 300;
+
+// Bump whenever capabilitiesOptions in driver.compose.json changes, so already
+// paired devices pick the new options up once. See _migrateCapabilityOptions().
+// 1 -> initial, 2 -> titles moved into the capability definitions
+const CAPABILITY_OPTIONS_REVISION = 2;
+
+// Controls that moved off the built-in `onoff` sub-capabilities onto the app's
+// own capabilities, so each one gets its own icon and both spa drivers share
+// one vocabulary. See _migrateSubCapabilities().
+const SUB_CAPABILITY_MIGRATION = {
+  'onoff.filter':      'pump_onoff',
+  'onoff.heating':     'heat_onoff',
+  'onoff.airjet_low':  'airjet_low',
+  'onoff.airjet_high': 'airjet_high',
+  'onoff.hydrojet':    'jet_onoff',
+};
 const CONTROL_MAX_ATTEMPTS    = 1;
 const CONTROL_RETRY_DELAY_MS  = 0;
 
@@ -36,19 +52,22 @@ class LaZSpaConnectDevice extends Homey.Device {
     // poll completes is still encoded correctly; re-detected on every poll.
     this._dialect = this.getStoreValue('dialect') ?? 'aws';
 
+    // Unit the device itself works in ('C' | 'F'). Homey always shows °C, so
+    // readings are converted down and setpoints converted back up. Defaults to
+    // Celsius until the first poll reports the actual unit.
+    this._deviceUnit = 'C';
+
     this._energyLastTs    = Date.now();
     this._energyLastWatts = this.getCapabilityValue('measure_power') ?? 0;
 
     this._initClient();
 
+    await this._migrateSubCapabilities();
+
     // Migration: add any capabilities that may be missing on older devices.
-    // onoff.heating was present in driver.compose.json from 1.3.0 but could
-    // be absent on devices that were originally paired with a build that omitted it.
-    for (const cap of [
-      'measure_power', 'meter_power',
-      'alarm_generic', 'bestway_error_message', 'bestway_temp_reached', 'bestway_locked',
-      'onoff.heating',
-    ]) {
+    // Derived from the manifest so a capability added there is never forgotten
+    // here — the previous hardcoded list only covered half of them.
+    for (const cap of (this.driver?.manifest?.capabilities ?? [])) {
       if (!this.hasCapability(cap)) {
         this.log(`Migrating: adding capability "${cap}"`);
         await this.addCapability(cap).catch(err =>
@@ -57,13 +76,16 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
     }
 
+    await this._migrateCapabilityOrder();
+    await this._migrateCapabilityOptions();
+
     this.registerCapabilityListener('onoff',              this._onCapabilityOnoff.bind(this));
     this.registerCapabilityListener('target_temperature', this._onCapabilityTargetTemp.bind(this));
-    this.registerCapabilityListener('onoff.heating',      this._onCapabilityHeating.bind(this));
-    this.registerCapabilityListener('onoff.filter',       this._onCapabilityFilter.bind(this));
-    this.registerCapabilityListener('onoff.airjet_low',   this._onCapabilityAirjetLow.bind(this));
-    this.registerCapabilityListener('onoff.airjet_high',  this._onCapabilityAirjetHigh.bind(this));
-    this.registerCapabilityListener('onoff.hydrojet',     this._onCapabilityHydrojet.bind(this));
+    this.registerCapabilityListener('heat_onoff',      this._onCapabilityHeating.bind(this));
+    this.registerCapabilityListener('pump_onoff',       this._onCapabilityFilter.bind(this));
+    this.registerCapabilityListener('airjet_low',   this._onCapabilityAirjetLow.bind(this));
+    this.registerCapabilityListener('airjet_high',  this._onCapabilityAirjetHigh.bind(this));
+    this.registerCapabilityListener('jet_onoff',     this._onCapabilityHydrojet.bind(this));
     this.registerCapabilityListener('bestway_locked',     this._onCapabilityLocked.bind(this));
 
     await this._syncStatus().catch(err => this.error('Initial sync failed:', err.message));
@@ -167,6 +189,105 @@ class LaZSpaConnectDevice extends Homey.Device {
     }
   }
 
+  /**
+   * Move an existing device off the old onoff.* sub-capabilities.
+   *
+   * The controls used to be sub-capabilities of the built-in `onoff`, which
+   * meant Homey drew every one of them with the same generic on/off icon —
+   * a capability's icon comes from its own definition, and sub-capabilities
+   * inherit the base capability's. Switching to the app's own capabilities
+   * (shared with the Lay-Z driver) gives each control its proper icon and
+   * puts both drivers on one capability vocabulary.
+   *
+   * The last known value is carried over so the tile does not go blank until
+   * the next poll.
+   */
+  async _migrateSubCapabilities() {
+    for (const [oldCap, newCap] of Object.entries(SUB_CAPABILITY_MIGRATION)) {
+      if (!this.hasCapability(oldCap)) continue;
+
+      const previous = this.getCapabilityValue(oldCap);
+      this.log(`Migrating capability "${oldCap}" -> "${newCap}"`);
+
+      if (!this.hasCapability(newCap)) {
+        await this.addCapability(newCap).catch(err =>
+          this.error(`Failed to add capability "${newCap}":`, err.message),
+        );
+      }
+      if (typeof previous === 'boolean' && this.hasCapability(newCap)) {
+        await this.setCapabilityValue(newCap, previous).catch(() => {});
+      }
+      await this.removeCapability(oldCap).catch(err =>
+        this.error(`Failed to remove capability "${oldCap}":`, err.message),
+      );
+    }
+  }
+
+  /**
+   * Bring the tile order in line with driver.compose.json.
+   *
+   * Homey appends every addCapability() to the end, so a device that has been
+   * through a migration ends up with its controls in the order they happened
+   * to be added rather than the order the manifest declares. The only way to
+   * reorder is to remove them all and add them back in the right sequence —
+   * so this checks first and does nothing when the order already matches.
+   *
+   * Capability values are lost by the remove/re-add cycle and come back with
+   * the next poll, which is why this must not run on every start.
+   */
+  async _migrateCapabilityOrder() {
+    const desiredAll = this.driver?.manifest?.capabilities ?? [];
+    if (!desiredAll.length) return;
+
+    const snapshot = this.getCapabilities();
+    const desired  = desiredAll.filter(c => snapshot.includes(c));
+    const actual   = snapshot.filter(c => desiredAll.includes(c));
+
+    const alreadyCorrect = snapshot.length === desired.length
+      && desired.every((cap, i) => actual[i] === cap);
+    if (alreadyCorrect) return;
+
+    this.log('Reordering capabilities to manifest order…');
+    this.log('  current:', snapshot.join(', '));
+    this.log('  desired:', desiredAll.join(', '));
+
+    for (const cap of snapshot) {
+      await this.removeCapability(cap).catch(e => this.log(`  remove ${cap}:`, e.message));
+    }
+    // Give Homey a moment to commit the removals before adding them back.
+    await new Promise(resolve => setTimeout(resolve, 500));
+    for (const cap of desiredAll) {
+      await this.addCapability(cap).catch(e => this.error(`  add ${cap}:`, e.message));
+    }
+    this.log('Capability order migration done.');
+  }
+
+  /**
+   * Push driver.compose.json's capabilitiesOptions onto an existing device.
+   *
+   * Homey copies those options into the device only when it is first paired —
+   * an already-paired device keeps whatever was stored back then, so manifest
+   * changes (a new icon, a renamed title, a different uiComponent) are
+   * invisible on existing devices until they are written explicitly. Reading
+   * straight from the manifest keeps this in sync automatically; bump
+   * CAPABILITY_OPTIONS_REVISION whenever the options change so it runs once
+   * more, rather than on every single start.
+   */
+  async _migrateCapabilityOptions() {
+    if (this.getStoreValue('capOptionsRevision') === CAPABILITY_OPTIONS_REVISION) return;
+
+    const options = this.driver?.manifest?.capabilitiesOptions ?? {};
+    for (const [cap, opts] of Object.entries(options)) {
+      if (!this.hasCapability(cap)) continue;
+      await this.setCapabilityOptions(cap, opts).catch(err =>
+        this.error(`setCapabilityOptions("${cap}") failed:`, err.message),
+      );
+    }
+
+    await this.setStoreValue('capOptionsRevision', CAPABILITY_OPTIONS_REVISION).catch(() => {});
+    this.log(`Capability options refreshed from manifest (revision ${CAPABILITY_OPTIONS_REVISION})`);
+  }
+
   async _setCapability(cap, value) {
     if (!this.hasCapability(cap)) return;
     await this.setCapabilityValue(cap, value).catch(e => this.error(`set ${cap}:`, e));
@@ -258,16 +379,26 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
       const state = this._normalizeState(raw);
 
+      // Homey always displays °C. A device configured in Fahrenheit reports raw
+      // F values, so convert on read and back again on write — same as the
+      // Lay-Z driver does. temperature_unit === 1 means Celsius; treat a
+      // missing field as Celsius rather than guessing.
+      this._deviceUnit = (state.temperature_unit !== undefined && state.temperature_unit !== 1)
+        ? 'F' : 'C';
+      const toC = (v) => (this._deviceUnit === 'F' && typeof v === 'number')
+        ? Math.round((v - 32) * 5 / 9 * 10) / 10
+        : v;
+
       if (state.power_state !== undefined) {
         await this._setCapability('onoff', state.power_state === 1);
       }
 
       if (typeof state.water_temperature === 'number') {
-        await this._setCapability('measure_temperature', state.water_temperature);
+        await this._setCapability('measure_temperature', toC(state.water_temperature));
       }
 
       if (typeof state.temperature_setting === 'number') {
-        await this._setCapability('target_temperature', state.temperature_setting);
+        await this._setCapability('target_temperature', toC(state.temperature_setting));
       }
 
       // heater_state: 0=off, anything above 0 = heater engaged. Known values are
@@ -277,7 +408,7 @@ class LaZSpaConnectDevice extends Homey.Device {
       if (state.heater_state !== undefined) {
         const prevHeating = this._prevHeatingOn;
         const heatingOn   = state.heater_state > 0;
-        await this._setCapability('onoff.heating', heatingOn);
+        await this._setCapability('heat_onoff', heatingOn);
         if (prevHeating !== undefined && prevHeating !== heatingOn) {
           if (heatingOn) {
             try { await this.homey.flow.getDeviceTriggerCard('heating_turned_on').trigger(this, {}, {}); }
@@ -293,7 +424,7 @@ class LaZSpaConnectDevice extends Homey.Device {
       if (state.filter_state !== undefined) {
         const prevFilter = this._prevFilterOn;
         const filterOn   = state.filter_state === 1;
-        await this._setCapability('onoff.filter', filterOn);
+        await this._setCapability('pump_onoff', filterOn);
 
         if (prevFilter !== undefined && prevFilter !== filterOn) {
           try { await this.homey.flow.getDeviceTriggerCard('filter_pump_changed').trigger(this, {}, {}); }
@@ -311,12 +442,12 @@ class LaZSpaConnectDevice extends Homey.Device {
 
       if (state.wave_state !== undefined) {
         // 0 = off, 1–99 = low, 100 = high
-        await this._setCapability('onoff.airjet_low',  state.wave_state > 0 && state.wave_state < 100);
-        await this._setCapability('onoff.airjet_high', state.wave_state === 100);
+        await this._setCapability('airjet_low',  state.wave_state > 0 && state.wave_state < 100);
+        await this._setCapability('airjet_high', state.wave_state === 100);
       }
 
       if (state.hydrojet_state !== undefined) {
-        await this._setCapability('onoff.hydrojet', state.hydrojet_state === 1);
+        await this._setCapability('jet_onoff', state.hydrojet_state === 1);
       }
 
       if (state.locked !== undefined) {
@@ -336,19 +467,22 @@ class LaZSpaConnectDevice extends Homey.Device {
           && state.water_temperature >= state.temperature_setting;
       }
 
-      // Hysteresis: once reached, hold "reached" until temp drops ≥1°C below target.
-      // Prevents oscillation when temperature hovers at the setpoint boundary.
+      // Hysteresis: once reached, hold "reached" until the temperature drops a
+      // full degree Celsius below target (1.8 °F on a Fahrenheit device — the
+      // comparison runs in the device's own unit). Prevents oscillation when
+      // the temperature hovers at the setpoint boundary.
+      const hysteresisBuffer = this._deviceUnit === 'F' ? 1.8 : 1.0;
       const prevStable = this._prevTempReached;
       const hysteresisActive = (prevStable === true)
         && typeof state.water_temperature === 'number'
         && typeof state.temperature_setting === 'number'
-        && state.water_temperature >= state.temperature_setting - 1.0;
+        && state.water_temperature >= state.temperature_setting - hysteresisBuffer;
       const tempReached = tempReachedRaw || hysteresisActive;
 
       await this._setCapability('bestway_temp_reached', tempReached);
 
       if (prevStable !== undefined && tempReached && !prevStable) {
-        this._fireTriggerTempReached(state.water_temperature ?? 0);
+        this._fireTriggerTempReached(toC(state.water_temperature ?? 0));
       }
       this._prevTempReached = tempReached;
 
@@ -439,31 +573,34 @@ class LaZSpaConnectDevice extends Homey.Device {
     this.log('Set onoff →', value);
     await this._sendControl({ power_state: value ? 1 : 0 });
     if (!value) {
-      await this.setCapabilityValue('onoff.heating', false).catch(() => {});
-      await this.setCapabilityValue('onoff.filter',  false).catch(() => {});
+      await this.setCapabilityValue('heat_onoff', false).catch(() => {});
+      await this.setCapabilityValue('pump_onoff',  false).catch(() => {});
       this._updateEnergyApproximation();
     }
   }
 
   async _onCapabilityTargetTemp(value) {
-    const rounded = Math.round(value);
-    this.log('Set target_temperature →', rounded, '°C');
-    await this._sendControl({ temperature_setting: rounded });
+    // Homey hands us °C; convert back if the device itself runs in Fahrenheit.
+    const deviceValue = this._deviceUnit === 'F'
+      ? Math.round(value * 9 / 5 + 32)
+      : Math.round(value);
+    this.log(`Set target_temperature → ${Math.round(value)} °C (sending ${deviceValue} °${this._deviceUnit ?? 'C'})`);
+    await this._sendControl({ temperature_setting: deviceValue });
   }
 
   async _onCapabilityHeating(value) {
-    this.log('Set onoff.heating →', value);
+    this.log('Set heat_onoff →', value);
     await this._sendControl({ heater_state: value ? 1 : 0 });
-    if (value && !this.getCapabilityValue('onoff.filter')) {
+    if (value && !this.getCapabilityValue('pump_onoff')) {
       this.log('Heating on — auto-enabling filter pump.');
-      await this.triggerCapabilityListener('onoff.filter', true).catch(err =>
+      await this.triggerCapabilityListener('pump_onoff', true).catch(err =>
         this.error('Auto-enable filter failed:', err.message),
       );
     }
   }
 
   async _onCapabilityFilter(value) {
-    this.log('Set onoff.filter →', value);
+    this.log('Set pump_onoff →', value);
     await this._sendControl({ filter_state: value ? 1 : 0 });
   }
 
@@ -476,27 +613,27 @@ class LaZSpaConnectDevice extends Homey.Device {
   // triggerCapabilityListener both sends the command and updates the UI state.
 
   async setFilterPump(value) {
-    return this.triggerCapabilityListener('onoff.filter', !!value);
+    return this.triggerCapabilityListener('pump_onoff', !!value);
   }
 
   async setFilter(value) {
-    return this.triggerCapabilityListener('onoff.filter', !!value);
+    return this.triggerCapabilityListener('pump_onoff', !!value);
   }
 
   async setHeating(value) {
-    return this.triggerCapabilityListener('onoff.heating', !!value);
+    return this.triggerCapabilityListener('heat_onoff', !!value);
   }
 
   async setAirjetLow(value) {
-    return this.triggerCapabilityListener('onoff.airjet_low', !!value);
+    return this.triggerCapabilityListener('airjet_low', !!value);
   }
 
   async setAirjetHigh(value) {
-    return this.triggerCapabilityListener('onoff.airjet_high', !!value);
+    return this.triggerCapabilityListener('airjet_high', !!value);
   }
 
   async setHydrojet(value) {
-    return this.triggerCapabilityListener('onoff.hydrojet', !!value);
+    return this.triggerCapabilityListener('jet_onoff', !!value);
   }
 
   // Smart Home (Gizwits AEP / UltraFit) pumps report bubbles as on/off only
@@ -509,26 +646,26 @@ class LaZSpaConnectDevice extends Homey.Device {
   }
 
   async _onCapabilityAirjetLow(value) {
-    this.log('Set onoff.airjet_low →', value);
+    this.log('Set airjet_low →', value);
     await this._sendControl({ wave_state: value ? this._airjetOnValue() : 0 });
     if (value) {
-      await this.setCapabilityValue('onoff.airjet_high', false)
-        .catch(e => this.error('set onoff.airjet_high:', e));
+      await this.setCapabilityValue('airjet_high', false)
+        .catch(e => this.error('set airjet_high:', e));
     }
   }
 
   async _onCapabilityAirjetHigh(value) {
-    this.log('Set onoff.airjet_high →', value);
+    this.log('Set airjet_high →', value);
     const backend = this.getStoreValue('backend') ?? 'smarthub';
     await this._sendControl({ wave_state: value ? (backend === 'smart_home' ? 1 : 100) : 0 });
     if (value) {
-      await this.setCapabilityValue('onoff.airjet_low', false)
-        .catch(e => this.error('set onoff.airjet_low:', e));
+      await this.setCapabilityValue('airjet_low', false)
+        .catch(e => this.error('set airjet_low:', e));
     }
   }
 
   async _onCapabilityHydrojet(value) {
-    this.log('Set onoff.hydrojet →', value);
+    this.log('Set jet_onoff →', value);
     await this._sendControl({ hydrojet_state: value ? 1 : 0 });
   }
 
@@ -542,9 +679,9 @@ class LaZSpaConnectDevice extends Homey.Device {
 
     const standby = Number(this.getSetting('power_standby_w')) || 2;
 
-    const airjetHigh = this.getCapabilityValue('onoff.airjet_high');
-    const airjetLow  = this.getCapabilityValue('onoff.airjet_low');
-    const hydrojet   = this.getCapabilityValue('onoff.hydrojet');
+    const airjetHigh = this.getCapabilityValue('airjet_high');
+    const airjetLow  = this.getCapabilityValue('airjet_low');
+    const hydrojet   = this.getCapabilityValue('jet_onoff');
 
     let usageOn;
     if (hydrojet && airjetHigh) {
@@ -557,9 +694,9 @@ class LaZSpaConnectDevice extends Homey.Device {
       usageOn = Number(this.getSetting('power_airjet_low_w')) || 0;
     } else if (hydrojet) {
       usageOn = Number(this.getSetting('power_hydrojet_w')) || 0;
-    } else if (this.getCapabilityValue('onoff.heating') && this.getCapabilityValue('onoff.filter')) {
+    } else if (this.getCapabilityValue('heat_onoff') && this.getCapabilityValue('pump_onoff')) {
       usageOn = Number(this.getSetting('power_heating_w')) || 0;
-    } else if (this.getCapabilityValue('onoff.filter')) {
+    } else if (this.getCapabilityValue('pump_onoff')) {
       usageOn = Number(this.getSetting('power_filter_w')) || 0;
     } else {
       usageOn = standby;
