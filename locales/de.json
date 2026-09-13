@@ -49,5 +49,8 @@
     "lock_not_supported": "Die Tastensperre kann bei diesem Spa-Modell nicht über die App geändert werden. Sie kann nur am Bedienfeld direkt geändert werden.",
     "device_offline": "Gerät ist offline.",
     "system_errors": "Systemfehler"
+  },
+  "hibernation": {
+    "warning": "Winterschlaf aktiv — der Spa ist abgebaut. Die Werte sind eingefroren und die Leistung wird als 0 gemeldet. Schaltet sich selbst ab, sobald der Spa wieder neue Daten liefert."
   }
 }

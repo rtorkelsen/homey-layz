@@ -49,5 +49,8 @@
     "lock_not_supported": "Zámek panelu nelze přepínat přes aplikaci pro tento model spa. Lze jej změnit pouze na fyzickém ovládacím panelu.",
     "device_offline": "Zařízení je offline.",
     "system_errors": "Systémová chyba(y)"
+  },
+  "hibernation": {
+    "warning": "Zimní spánek je aktivní — spa je uklizeno. Hodnoty jsou zmrazeny a příkon se hlásí jako 0. Vypne se sám, jakmile spa opět odešle nová data."
   }
 }

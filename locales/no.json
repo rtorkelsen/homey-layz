@@ -49,5 +49,8 @@
     "lock_not_supported": "Panellåsen kan ikke slås av/på via appen for denne spa-modellen. Den kan bare endres på det fysiske kontrollpanelet.",
     "device_offline": "Enheten er frakoblet.",
     "system_errors": "Systemfeil"
+  },
+  "hibernation": {
+    "warning": "Dvalemodus er på — spaen er pakket bort. Verdiene er frosset og effekten rapporteres som 0. Slås av automatisk så snart spaen sender nye data igjen."
   }
 }

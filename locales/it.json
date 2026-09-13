@@ -49,5 +49,8 @@
     "lock_not_supported": "Il blocco del pannello non può essere attivato/disattivato tramite l'app per questo modello di spa. Può essere modificato solo sul pannello di controllo fisico.",
     "device_offline": "Il dispositivo è offline.",
     "system_errors": "Errore/i di sistema"
+  },
+  "hibernation": {
+    "warning": "La modalità letargo è attiva — la spa è smontata. I valori sono congelati e la potenza è riportata come 0. Si disattiva da sola non appena la spa invia di nuovo dati aggiornati."
   }
 }

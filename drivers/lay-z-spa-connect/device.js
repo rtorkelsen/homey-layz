@@ -3,6 +3,7 @@
 const Homey = require('homey');
 const { BestwaySmarthubClient, SmarthubError } = require('../../lib/BestwaySmarthubClient');
 const { BestwaySmartHomeClient, SmartHomeError } = require('../../lib/BestwaySmartHomeClient');
+const Hibernation = require('../../lib/Hibernation');
 
 const DEFAULT_POLL_INTERVAL_S = 60;
 const MAX_POLL_INTERVAL_S     = 300;
@@ -101,7 +102,16 @@ class LaZSpaConnectDevice extends Homey.Device {
     this.log('Device deleted:', this.getName());
   }
 
-  async onSettings({ newSettings }) {
+  async onSettings({ newSettings, changedKeys }) {
+    // Apply a hibernation change straight away instead of leaving the old
+    // values (and the old poll interval) in place until the next tick.
+    if (Array.isArray(changedKeys) && changedKeys.includes(Hibernation.SETTING_ID)) {
+      this._hibernating = undefined;
+      this.homey.setTimeout(() => {
+        this._syncStatus().catch(err => this.error('Hibernation re-sync failed:', err.message));
+      }, 1000);
+    }
+
     const rawInterval  = Number(newSettings.poll_interval);
     const pollInterval = Number.isFinite(rawInterval)
       ? Math.max(10, Math.min(300, rawInterval))
@@ -165,6 +175,10 @@ class LaZSpaConnectDevice extends Homey.Device {
   }
 
   _getPollIntervalMs() {
+    // Hibernating devices only need to be checked often enough to notice they
+    // came back — not often enough to track a spa nobody is using.
+    if (Hibernation.isActive(this)) return Hibernation.pollIntervalMs();
+
     const baseSec = Number(this.getSetting('poll_interval')) || DEFAULT_POLL_INTERVAL_S;
     const effectiveFailCount = Math.min(this._pollFailCount, 3);
     const backoffSec = Math.min(baseSec * (2 ** effectiveFailCount), MAX_POLL_INTERVAL_S);
@@ -379,6 +393,28 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
       const state = this._normalizeState(raw);
 
+      // Seasonal hibernation: a packed-away spa keeps returning its last known
+      // state forever, so watch the device's own freshness marker rather than
+      // the fact that the request succeeded.
+      const hibernation = await Hibernation.evaluate(this, Hibernation.fingerprint(
+        raw.status_time,
+        raw.updated_at,
+        Hibernation.signatureOf(state, [
+          'power_state', 'water_temperature', 'temperature_setting',
+          'heater_state', 'filter_state', 'wave_state', 'hydrojet_state',
+        ]),
+      ));
+      if (hibernation.changed) this._startPolling();
+      if (hibernation.hibernating) {
+        await this._setCapability('measure_power', 0);
+        this._energyLastTs    = Date.now();
+        this._energyLastWatts = 0;
+        this.setEnergy({ approximation: { usageOn: 0, usageOff: 0 } }).catch(() => {});
+        this._updateDebugSettings(raw);
+        this._pollFailCount = 0;
+        return;
+      }
+
       // Homey always displays °C. A device configured in Fahrenheit reports raw
       // F values, so convert on read and back again on write — same as the
       // Lay-Z driver does. temperature_unit === 1 means Celsius; treat a
@@ -545,9 +581,17 @@ class LaZSpaConnectDevice extends Homey.Device {
         await this._invalidateToken();
       }
 
+      this._updateDebugSettings(null, err.message);
+
+      // A hibernating spa is expected to be unreachable — don't count those
+      // failures, don't mark it unavailable, and don't fill the log all winter.
+      if (Hibernation.isActive(this)) {
+        this.log('Connect sync failed while hibernating (expected):', err.message);
+        return;
+      }
+
       this._pollFailCount++;
       this.error(`Connect sync failed (consecutive: ${this._pollFailCount}):`, err.message);
-      this._updateDebugSettings(null, err.message);
 
       if (this._pollFailCount >= 3) {
         this.setUnavailable(err.message).catch(e => this.log('setUnavailable failed:', e.message));

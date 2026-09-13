@@ -1,9 +1,9 @@
 {
   "pair": {
     "connect": {
-      "title":       "Anslut din Lay-Z-Spa",
+      "title": "Anslut din Lay-Z-Spa",
       "description": "Hämta delningskoden från Bestway Connect- eller Smart Hub-appen för att lägga till din spa i Homey.",
-      "button":      "Anslut",
+      "button": "Anslut",
       "steps": {
         "1": "Öppna Bestway Connect-appen (eller Bestway Smart Hub för äldre spabad)",
         "2": "Gå till din spa → Inställningar → Dela enhet",
@@ -11,43 +11,46 @@
         "4": "Kopiera den och klistra in den nedan"
       },
       "error": {
-        "link_failed":  "Anslutning misslyckades. Kontrollera delningskoden och försök igen.",
-        "no_devices":   "Inga enheter hittades efter länkning. Se till att din spa är konfigurerad i Bestway Connect- eller Smart Hub-appen.",
+        "link_failed": "Anslutning misslyckades. Kontrollera delningskoden och försök igen.",
+        "no_devices": "Inga enheter hittades efter länkning. Se till att din spa är konfigurerad i Bestway Connect- eller Smart Hub-appen.",
         "invalid_code": "Detta ser inte ut som en giltig delningskod eller länk. Kopiera den igen och försök en gång till."
       }
     },
     "repair": {
-      "title":       "Återanslut din Lay-Z-Spa",
+      "title": "Återanslut din Lay-Z-Spa",
       "description": "Ange en ny delningskod för att återupprätta anslutningen.",
-      "button":      "Återanslut"
+      "button": "Återanslut"
     },
     "login": {
-      "title":             "Logga in på Bestway",
-      "description":       "Ange dina Bestway-kontouppgifter.",
-      "label_email":       "E-postadress",
+      "title": "Logga in på Bestway",
+      "description": "Ange dina Bestway-kontouppgifter.",
+      "label_email": "E-postadress",
       "placeholder_email": "email@exempel.se",
-      "label_password":    "Lösenord",
-      "button":            "Logga in"
+      "label_password": "Lösenord",
+      "button": "Logga in"
     },
     "relogin": {
-      "title":       "Uppdatera Bestway-inloggning",
+      "title": "Uppdatera Bestway-inloggning",
       "description": "Ange dina Bestway-inloggningsuppgifter för att återupprätta anslutningen.",
-      "button":      "Uppdatera"
+      "button": "Uppdatera"
     },
     "error": {
-      "login_failed":           "Inloggning misslyckades på alla servrar (EU, US, Global). Kontrollera din e-postadress och ditt lösenord.",
-      "wrong_password":         "Fel lösenord. Försök igen.",
-      "not_authenticated":      "Logga in först.",
-      "fetch_devices_failed":   "Det gick inte att hämta enheter från Bestway-molnet.",
-      "no_devices":             "Inga enheter hittades i ditt Bestway-konto. Se till att din spa är konfigurerad i Bestway Smart Hub-appen."
+      "login_failed": "Inloggning misslyckades på alla servrar (EU, US, Global). Kontrollera din e-postadress och ditt lösenord.",
+      "wrong_password": "Fel lösenord. Försök igen.",
+      "not_authenticated": "Logga in först.",
+      "fetch_devices_failed": "Det gick inte att hämta enheter från Bestway-molnet.",
+      "no_devices": "Inga enheter hittades i ditt Bestway-konto. Se till att din spa är konfigurerad i Bestway Smart Hub-appen."
     }
   },
   "error": {
-    "control_failed":          "Det gick inte att skicka kommando till spat. Kontrollera anslutningen.",
-    "credentials_missing":     "Inloggningsuppgifter saknas. Ta bort och lägg till enheten igen.",
-    "hydrojet_not_supported":  "HydroJet stöds inte av denna spa-modell.",
-    "lock_not_supported":      "Panellåset kan inte växlas via appen för denna spa-modell. Det kan bara ändras på den fysiska kontrollpanelen.",
-    "device_offline":          "Enheten är offline.",
-    "system_errors":           "Systemfel"
+    "control_failed": "Det gick inte att skicka kommando till spat. Kontrollera anslutningen.",
+    "credentials_missing": "Inloggningsuppgifter saknas. Ta bort och lägg till enheten igen.",
+    "hydrojet_not_supported": "HydroJet stöds inte av denna spa-modell.",
+    "lock_not_supported": "Panellåset kan inte växlas via appen för denna spa-modell. Det kan bara ändras på den fysiska kontrollpanelen.",
+    "device_offline": "Enheten är offline.",
+    "system_errors": "Systemfel"
+  },
+  "hibernation": {
+    "warning": "Vinterdvala är på — spabadet är undanplockat. Värdena är frysta och effekten rapporteras som 0. Stängs av automatiskt så snart spabadet skickar nya data igen."
   }
 }

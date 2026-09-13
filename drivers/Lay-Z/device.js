@@ -2,6 +2,7 @@
 
 const Homey = require('homey');
 const axios = require('axios');
+const Hibernation = require('../../lib/Hibernation');
 
 // Bump whenever capabilitiesOptions in driver.compose.json changes, so already
 // paired devices pick the new options up once. See _migrateCapabilityOptions().
@@ -411,6 +412,24 @@ class SpaDevice extends Homey.Device {
       const { attr } = data || {};
       if (!attr) throw new Error('attr field missing in response data');
 
+      // Seasonal hibernation: the Gizwits cloud keeps serving the last state a
+      // packed-away spa ever reported, so watch its own updated_at rather than
+      // the fact that the request succeeded.
+      const hibernation = await Hibernation.evaluate(this, Hibernation.fingerprint(
+        data.updated_at,
+        Hibernation.signatureOf(attr, ['power', 'Tnow', 'Tset', 'heat', 'filter', 'wave', 'jet',
+          'temp_now', 'temp_set', 'heat_power', 'filter_power', 'wave_power']),
+      ));
+      if (hibernation.changed) this._startPolling();
+      if (hibernation.hibernating) {
+        await this.safeSetCapabilityValue('measure_power', 0);
+        this._energyLastTs    = Date.now();
+        this._energyLastWatts = 0;
+        this._updateDebugLabels(attr, null, null);
+        this._pollFailCount = 0;
+        return;
+      }
+
       // Re-select adapter by signature if payload indicates a better match
       const bySig = selectAdapterBySignature(attr);
       if (bySig && bySig.id !== this.adapter.id) {
@@ -551,6 +570,10 @@ class SpaDevice extends Homey.Device {
         this.error('Failed to update device status', error?.message ? error.message : String(error));
       }
       this._updateDebugLabels(null, null, error?.message || String(error));
+
+      // A hibernating spa is expected to be unreachable — don't count those
+      // failures and don't mark it unavailable all winter.
+      if (Hibernation.isActive(this)) return;
 
       // Mark unavailable after 3 consecutive failures (same pattern as Connect driver)
       this._pollFailCount++;
@@ -805,12 +828,15 @@ class SpaDevice extends Homey.Device {
 
   _startPolling() {
     if (this.updateInterval) clearInterval(this.updateInterval);
-    const intervalSec = this.getSetting('poll_interval') || 60;
+    // A hibernating spa only needs checking often enough to notice it is back.
+    const intervalMs = Hibernation.isActive(this)
+      ? Hibernation.pollIntervalMs()
+      : (this.getSetting('poll_interval') || 60) * 1000;
     // Only call updateDeviceStatus on each poll tick — availability is inferred
     // from success/failure inside updateDeviceStatus (no extra API call needed).
     this.updateInterval = setInterval(async () => {
       await this.updateDeviceStatus();
-    }, intervalSec * 1000);
+    }, intervalMs);
   }
 
   _calculatePower(n) {
@@ -887,8 +913,12 @@ class SpaDevice extends Homey.Device {
     if (changedKeys.includes('filter_pump_control_enabled')) {
       await this.enableCapability('pump_onoff', newSettings.filter_pump_control_enabled);
     }
-    if (changedKeys.includes('poll_interval')) {
+    if (changedKeys.includes('poll_interval') || changedKeys.includes(Hibernation.SETTING_ID)) {
       this._startPolling();
+    }
+    if (changedKeys.includes(Hibernation.SETTING_ID)) {
+      // Force evaluate() through its enter/leave branch on the next poll.
+      this._hibernating = undefined;
     }
     await this.updateDeviceStatus();
   }

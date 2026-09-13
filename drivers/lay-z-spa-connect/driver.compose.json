@@ -96,6 +96,37 @@
       }
     },
     {
+      "id": "hibernation_enabled",
+      "type": "checkbox",
+      "label": {
+        "en": "Hibernation (winter storage)",
+        "de": "Winterschlaf (Einlagerung)",
+        "no": "Dvalemodus (vinterlagring)",
+        "cs": "Zimní spánek (uskladnění)",
+        "nl": "Winterslaap (winteropslag)",
+        "da": "Dvale (vinteropbevaring)",
+        "sv": "Vinterdvala (vinterförvaring)",
+        "it": "Letargo (rimessaggio invernale)",
+        "fr": "Hivernage (remisage)",
+        "ru": "Зимний режим (хранение)",
+        "pl": "Tryb zimowy (przechowywanie)"
+      },
+      "hint": {
+        "en": "Switch this on when you pack the device away. Power is reported as 0, connection errors stop marking the device unavailable, Flows are no longer triggered by stale data, and polling slows to every 15 minutes. It switches itself off again as soon as the device reports fresh data.",
+        "de": "Aktiviere dies, wenn du das Gerät abbaust. Die Leistung wird als 0 gemeldet, Verbindungsfehler markieren das Gerät nicht mehr als nicht verfügbar, Flows werden nicht mehr durch veraltete Daten ausgelöst, und die Abfrage verlangsamt sich auf alle 15 Minuten. Schaltet sich selbst wieder ab, sobald das Gerät neue Daten liefert.",
+        "no": "Slå på dette når du pakker bort enheten. Effekten rapporteres som 0, tilkoblingsfeil merker ikke lenger enheten som utilgjengelig, Flows utløses ikke lenger av gamle data, og avspørringen senkes til hvert 15. minutt. Slås av igjen av seg selv så snart enheten sender nye data.",
+        "cs": "Zapněte, když zařízení uklidíte. Příkon se hlásí jako 0, chyby připojení již neoznačují zařízení jako nedostupné, Flows se již nespouštějí ze zastaralých dat a dotazování se zpomalí na každých 15 minut. Vypne se samo, jakmile zařízení odešle nová data.",
+        "nl": "Schakel dit in wanneer je het apparaat opbergt. Het vermogen wordt als 0 gerapporteerd, verbindingsfouten markeren het apparaat niet meer als onbeschikbaar, Flows worden niet meer door verouderde gegevens geactiveerd en de opvraging vertraagt naar elke 15 minuten. Schakelt zichzelf weer uit zodra het apparaat nieuwe gegevens stuurt.",
+        "da": "Slå dette til, når du pakker enheden væk. Effekten rapporteres som 0, forbindelsesfejl markerer ikke længere enheden som utilgængelig, Flows udløses ikke længere af forældede data, og forespørgslen sænkes til hvert 15. minut. Slår fra af sig selv, så snart enheden sender nye data.",
+        "sv": "Slå på detta när du plockar undan enheten. Effekten rapporteras som 0, anslutningsfel markerar inte längre enheten som otillgänglig, Flows utlöses inte längre av gamla data och avfrågningen saktas ned till var 15:e minut. Stängs av igen av sig själv så snart enheten skickar nya data.",
+        "it": "Attiva questa opzione quando smonti il dispositivo. La potenza viene riportata come 0, gli errori di connessione non segnano più il dispositivo come non disponibile, i Flow non vengono più attivati da dati obsoleti e l'interrogazione rallenta a ogni 15 minuti. Si disattiva da sola non appena il dispositivo invia dati aggiornati.",
+        "fr": "Activez cette option lorsque vous rangez l'appareil. La puissance est indiquée à 0, les erreurs de connexion ne marquent plus l'appareil comme indisponible, les Flows ne sont plus déclenchés par des données périmées et l'interrogation ralentit à toutes les 15 minutes. Se désactive dès que l'appareil renvoie de nouvelles données.",
+        "ru": "Включите, когда убираете устройство на хранение. Мощность показывается как 0, ошибки соединения больше не помечают устройство как недоступное, Flow больше не запускаются от устаревших данных, а опрос замедляется до одного раза в 15 минут. Отключится сам, как только устройство передаст свежие данные.",
+        "pl": "Włącz tę opcję, gdy chowasz urządzenie. Moc jest raportowana jako 0, błędy połączenia nie oznaczają już urządzenia jako niedostępnego, Flow nie są już wyzwalane przez nieaktualne dane, a odpytywanie zwalnia do co 15 minut. Wyłączy się samo, gdy urządzenie prześle nowe dane."
+      },
+      "value": false
+    },
+    {
       "type": "group",
       "label": {
         "en": "Power sensor (estimated)",

@@ -49,5 +49,8 @@
     "lock_not_supported": "Paneelvergrendeling kan niet worden in-/uitgeschakeld via de app voor dit spa-model. Dit kan alleen worden gewijzigd op het fysieke bedieningspaneel.",
     "device_offline": "Apparaat is offline.",
     "system_errors": "Systeemfout(en)"
+  },
+  "hibernation": {
+    "warning": "Winterslaap is aan — de spa is opgeborgen. Waarden zijn bevroren en het vermogen wordt als 0 gerapporteerd. Schakelt zichzelf uit zodra de spa weer nieuwe gegevens stuurt."
   }
 }

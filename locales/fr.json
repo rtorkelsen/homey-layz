@@ -49,5 +49,8 @@
     "lock_not_supported": "Le verrouillage du panneau ne peut pas être activé/désactivé via l'application pour ce modèle de spa. Il ne peut être modifié que sur le panneau de commande physique.",
     "device_offline": "L'appareil est hors ligne.",
     "system_errors": "Erreur(s) système"
+  },
+  "hibernation": {
+    "warning": "Le mode hivernage est actif — le spa est rangé. Les valeurs sont figées et la puissance est indiquée à 0. Il se désactive dès que le spa renvoie de nouvelles données."
   }
 }

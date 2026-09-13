@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.utkikk.layz",
-  "version": "1.3.22",
+  "version": "1.4.0",
   "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
@@ -92,6 +92,10 @@
     "url": "https://github.com/rtorkelsen/homey-layz/issues"
   },
   "changelog": {
+    "1.4.0": {
+      "en": "Added: hibernation for winter storage, available on all three drivers. Switch it on in the device settings when you pack the spa or pump away: power is reported as 0 so the Energy dashboard stays honest, connection errors no longer mark the device unavailable, Flows are no longer triggered by months-old data, and polling slows from every minute to every 15 minutes. It switches itself off again as soon as the device reports fresh data, so nothing needs to be remembered when the spa goes back up in spring.",
+      "de": "Neu: Winterschlaf für die Einlagerung, verfügbar in allen drei Treibern. Aktiviere ihn in den Geräteeinstellungen, wenn du Spa oder Pumpe abbaust: Die Leistung wird als 0 gemeldet, damit die Energie-Übersicht ehrlich bleibt, Verbindungsfehler markieren das Gerät nicht mehr als nicht verfügbar, Flows werden nicht mehr von monatealten Daten ausgelöst, und die Abfrage verlangsamt sich von jede Minute auf alle 15 Minuten. Er schaltet sich selbst wieder ab, sobald das Gerät neue Daten meldet — beim Aufbau im Frühling muss man also an nichts denken."
+    },
     "1.3.22": {
       "en": "Improved: on Lay-Z-Spa (Share Code) devices the Heating, Filter, AirJet and HydroJet buttons all showed the same generic on/off icon, because they were sub-capabilities of Homey's built-in on/off. They now use the app's own capabilities and each has its proper icon. Both spa drivers therefore also share one set of capabilities, so the shared Flow cards no longer have to guess which name a device uses. Existing devices are migrated automatically, keeping their current state. Note: Flows built on the automatically generated capability cards for these five controls need to be re-created, and their Insights history starts over. Fixed: the filter Flow cards went blind on Lay-Z spas that had filter pump control switched off. Improved: AirJet capability titles are now translated into all 11 supported languages instead of two.",
       "de": "Verbessert: Bei Lay-Z-Spa (Freigabecode) Geräten zeigten die Tasten für Heizung, Filter, AirJet und HydroJet alle dasselbe generische Ein/Aus-Symbol, weil sie Unter-Capabilities des eingebauten Ein/Aus waren. Sie nutzen jetzt eigene Capabilities und haben damit jeweils ihr passendes Symbol. Dadurch verwenden beide Spa-Treiber denselben Satz an Capabilities, sodass die gemeinsamen Flow-Karten nicht mehr raten müssen, welchen Namen ein Gerät benutzt. Bestehende Geräte werden automatisch migriert und behalten ihren Zustand. Hinweis: Flows, die auf den automatisch erzeugten Capability-Karten dieser fünf Bedienelemente beruhen, müssen neu angelegt werden, und deren Insights-Verlauf beginnt von vorn. Behoben: Die Filter-Flow-Karten waren bei Lay-Z-Spas ohne aktivierte Filterpumpen-Steuerung wirkungslos. Verbessert: Die AirJet-Capability-Titel sind jetzt in allen 11 unterstützten Sprachen übersetzt statt nur in zwei."
@@ -2053,6 +2057,37 @@
           }
         },
         {
+          "id": "hibernation_enabled",
+          "type": "checkbox",
+          "label": {
+            "en": "Hibernation (winter storage)",
+            "de": "Winterschlaf (Einlagerung)",
+            "no": "Dvalemodus (vinterlagring)",
+            "cs": "Zimní spánek (uskladnění)",
+            "nl": "Winterslaap (winteropslag)",
+            "da": "Dvale (vinteropbevaring)",
+            "sv": "Vinterdvala (vinterförvaring)",
+            "it": "Letargo (rimessaggio invernale)",
+            "fr": "Hivernage (remisage)",
+            "ru": "Зимний режим (хранение)",
+            "pl": "Tryb zimowy (przechowywanie)"
+          },
+          "hint": {
+            "en": "Switch this on when you pack the device away. Power is reported as 0, connection errors stop marking the device unavailable, Flows are no longer triggered by stale data, and polling slows to every 15 minutes. It switches itself off again as soon as the device reports fresh data.",
+            "de": "Aktiviere dies, wenn du das Gerät abbaust. Die Leistung wird als 0 gemeldet, Verbindungsfehler markieren das Gerät nicht mehr als nicht verfügbar, Flows werden nicht mehr durch veraltete Daten ausgelöst, und die Abfrage verlangsamt sich auf alle 15 Minuten. Schaltet sich selbst wieder ab, sobald das Gerät neue Daten liefert.",
+            "no": "Slå på dette når du pakker bort enheten. Effekten rapporteres som 0, tilkoblingsfeil merker ikke lenger enheten som utilgjengelig, Flows utløses ikke lenger av gamle data, og avspørringen senkes til hvert 15. minutt. Slås av igjen av seg selv så snart enheten sender nye data.",
+            "cs": "Zapněte, když zařízení uklidíte. Příkon se hlásí jako 0, chyby připojení již neoznačují zařízení jako nedostupné, Flows se již nespouštějí ze zastaralých dat a dotazování se zpomalí na každých 15 minut. Vypne se samo, jakmile zařízení odešle nová data.",
+            "nl": "Schakel dit in wanneer je het apparaat opbergt. Het vermogen wordt als 0 gerapporteerd, verbindingsfouten markeren het apparaat niet meer als onbeschikbaar, Flows worden niet meer door verouderde gegevens geactiveerd en de opvraging vertraagt naar elke 15 minuten. Schakelt zichzelf weer uit zodra het apparaat nieuwe gegevens stuurt.",
+            "da": "Slå dette til, når du pakker enheden væk. Effekten rapporteres som 0, forbindelsesfejl markerer ikke længere enheden som utilgængelig, Flows udløses ikke længere af forældede data, og forespørgslen sænkes til hvert 15. minut. Slår fra af sig selv, så snart enheden sender nye data.",
+            "sv": "Slå på detta när du plockar undan enheten. Effekten rapporteras som 0, anslutningsfel markerar inte längre enheten som otillgänglig, Flows utlöses inte längre av gamla data och avfrågningen saktas ned till var 15:e minut. Stängs av igen av sig själv så snart enheten skickar nya data.",
+            "it": "Attiva questa opzione quando smonti il dispositivo. La potenza viene riportata come 0, gli errori di connessione non segnano più il dispositivo come non disponibile, i Flow non vengono più attivati da dati obsoleti e l'interrogazione rallenta a ogni 15 minuti. Si disattiva da sola non appena il dispositivo invia dati aggiornati.",
+            "fr": "Activez cette option lorsque vous rangez l'appareil. La puissance est indiquée à 0, les erreurs de connexion ne marquent plus l'appareil comme indisponible, les Flows ne sont plus déclenchés par des données périmées et l'interrogation ralentit à toutes les 15 minutes. Se désactive dès que l'appareil renvoie de nouvelles données.",
+            "ru": "Включите, когда убираете устройство на хранение. Мощность показывается как 0, ошибки соединения больше не помечают устройство как недоступное, Flow больше не запускаются от устаревших данных, а опрос замедляется до одного раза в 15 минут. Отключится сам, как только устройство передаст свежие данные.",
+            "pl": "Włącz tę opcję, gdy chowasz urządzenie. Moc jest raportowana jako 0, błędy połączenia nie oznaczają już urządzenia jako niedostępnego, Flow nie są już wyzwalane przez nieaktualne dane, a odpytywanie zwalnia do co 15 minut. Wyłączy się samo, gdy urządzenie prześle nowe dane."
+          },
+          "value": false
+        },
+        {
           "type": "group",
           "label": {
             "en": "Activation of app functions",
@@ -2470,6 +2505,37 @@
           }
         },
         {
+          "id": "hibernation_enabled",
+          "type": "checkbox",
+          "label": {
+            "en": "Hibernation (winter storage)",
+            "de": "Winterschlaf (Einlagerung)",
+            "no": "Dvalemodus (vinterlagring)",
+            "cs": "Zimní spánek (uskladnění)",
+            "nl": "Winterslaap (winteropslag)",
+            "da": "Dvale (vinteropbevaring)",
+            "sv": "Vinterdvala (vinterförvaring)",
+            "it": "Letargo (rimessaggio invernale)",
+            "fr": "Hivernage (remisage)",
+            "ru": "Зимний режим (хранение)",
+            "pl": "Tryb zimowy (przechowywanie)"
+          },
+          "hint": {
+            "en": "Switch this on when you pack the device away. Power is reported as 0, connection errors stop marking the device unavailable, Flows are no longer triggered by stale data, and polling slows to every 15 minutes. It switches itself off again as soon as the device reports fresh data.",
+            "de": "Aktiviere dies, wenn du das Gerät abbaust. Die Leistung wird als 0 gemeldet, Verbindungsfehler markieren das Gerät nicht mehr als nicht verfügbar, Flows werden nicht mehr durch veraltete Daten ausgelöst, und die Abfrage verlangsamt sich auf alle 15 Minuten. Schaltet sich selbst wieder ab, sobald das Gerät neue Daten liefert.",
+            "no": "Slå på dette når du pakker bort enheten. Effekten rapporteres som 0, tilkoblingsfeil merker ikke lenger enheten som utilgjengelig, Flows utløses ikke lenger av gamle data, og avspørringen senkes til hvert 15. minutt. Slås av igjen av seg selv så snart enheten sender nye data.",
+            "cs": "Zapněte, když zařízení uklidíte. Příkon se hlásí jako 0, chyby připojení již neoznačují zařízení jako nedostupné, Flows se již nespouštějí ze zastaralých dat a dotazování se zpomalí na každých 15 minut. Vypne se samo, jakmile zařízení odešle nová data.",
+            "nl": "Schakel dit in wanneer je het apparaat opbergt. Het vermogen wordt als 0 gerapporteerd, verbindingsfouten markeren het apparaat niet meer als onbeschikbaar, Flows worden niet meer door verouderde gegevens geactiveerd en de opvraging vertraagt naar elke 15 minuten. Schakelt zichzelf weer uit zodra het apparaat nieuwe gegevens stuurt.",
+            "da": "Slå dette til, når du pakker enheden væk. Effekten rapporteres som 0, forbindelsesfejl markerer ikke længere enheden som utilgængelig, Flows udløses ikke længere af forældede data, og forespørgslen sænkes til hvert 15. minut. Slår fra af sig selv, så snart enheden sender nye data.",
+            "sv": "Slå på detta när du plockar undan enheten. Effekten rapporteras som 0, anslutningsfel markerar inte längre enheten som otillgänglig, Flows utlöses inte längre av gamla data och avfrågningen saktas ned till var 15:e minut. Stängs av igen av sig själv så snart enheten skickar nya data.",
+            "it": "Attiva questa opzione quando smonti il dispositivo. La potenza viene riportata come 0, gli errori di connessione non segnano più il dispositivo come non disponibile, i Flow non vengono più attivati da dati obsoleti e l'interrogazione rallenta a ogni 15 minuti. Si disattiva da sola non appena il dispositivo invia dati aggiornati.",
+            "fr": "Activez cette option lorsque vous rangez l'appareil. La puissance est indiquée à 0, les erreurs de connexion ne marquent plus l'appareil comme indisponible, les Flows ne sont plus déclenchés par des données périmées et l'interrogation ralentit à toutes les 15 minutes. Se désactive dès que l'appareil renvoie de nouvelles données.",
+            "ru": "Включите, когда убираете устройство на хранение. Мощность показывается как 0, ошибки соединения больше не помечают устройство как недоступное, Flow больше не запускаются от устаревших данных, а опрос замедляется до одного раза в 15 минут. Отключится сам, как только устройство передаст свежие данные.",
+            "pl": "Włącz tę opcję, gdy chowasz urządzenie. Moc jest raportowana jako 0, błędy połączenia nie oznaczają już urządzenia jako niedostępnego, Flow nie są już wyzwalane przez nieaktualne dane, a odpytywanie zwalnia do co 15 minut. Wyłączy się samo, gdy urządzenie prześle nowe dane."
+          },
+          "value": false
+        },
+        {
           "type": "group",
           "label": {
             "en": "Power sensor (estimated)",
@@ -2789,6 +2855,37 @@
             "min": 10,
             "max": 300
           }
+        },
+        {
+          "id": "hibernation_enabled",
+          "type": "checkbox",
+          "label": {
+            "en": "Hibernation (winter storage)",
+            "de": "Winterschlaf (Einlagerung)",
+            "no": "Dvalemodus (vinterlagring)",
+            "cs": "Zimní spánek (uskladnění)",
+            "nl": "Winterslaap (winteropslag)",
+            "da": "Dvale (vinteropbevaring)",
+            "sv": "Vinterdvala (vinterförvaring)",
+            "it": "Letargo (rimessaggio invernale)",
+            "fr": "Hivernage (remisage)",
+            "ru": "Зимний режим (хранение)",
+            "pl": "Tryb zimowy (przechowywanie)"
+          },
+          "hint": {
+            "en": "Switch this on when you pack the device away. Power is reported as 0, connection errors stop marking the device unavailable, Flows are no longer triggered by stale data, and polling slows to every 15 minutes. It switches itself off again as soon as the device reports fresh data.",
+            "de": "Aktiviere dies, wenn du das Gerät abbaust. Die Leistung wird als 0 gemeldet, Verbindungsfehler markieren das Gerät nicht mehr als nicht verfügbar, Flows werden nicht mehr durch veraltete Daten ausgelöst, und die Abfrage verlangsamt sich auf alle 15 Minuten. Schaltet sich selbst wieder ab, sobald das Gerät neue Daten liefert.",
+            "no": "Slå på dette når du pakker bort enheten. Effekten rapporteres som 0, tilkoblingsfeil merker ikke lenger enheten som utilgjengelig, Flows utløses ikke lenger av gamle data, og avspørringen senkes til hvert 15. minutt. Slås av igjen av seg selv så snart enheten sender nye data.",
+            "cs": "Zapněte, když zařízení uklidíte. Příkon se hlásí jako 0, chyby připojení již neoznačují zařízení jako nedostupné, Flows se již nespouštějí ze zastaralých dat a dotazování se zpomalí na každých 15 minut. Vypne se samo, jakmile zařízení odešle nová data.",
+            "nl": "Schakel dit in wanneer je het apparaat opbergt. Het vermogen wordt als 0 gerapporteerd, verbindingsfouten markeren het apparaat niet meer als onbeschikbaar, Flows worden niet meer door verouderde gegevens geactiveerd en de opvraging vertraagt naar elke 15 minuten. Schakelt zichzelf weer uit zodra het apparaat nieuwe gegevens stuurt.",
+            "da": "Slå dette til, når du pakker enheden væk. Effekten rapporteres som 0, forbindelsesfejl markerer ikke længere enheden som utilgængelig, Flows udløses ikke længere af forældede data, og forespørgslen sænkes til hvert 15. minut. Slår fra af sig selv, så snart enheden sender nye data.",
+            "sv": "Slå på detta när du plockar undan enheten. Effekten rapporteras som 0, anslutningsfel markerar inte längre enheten som otillgänglig, Flows utlöses inte längre av gamla data och avfrågningen saktas ned till var 15:e minut. Stängs av igen av sig själv så snart enheten skickar nya data.",
+            "it": "Attiva questa opzione quando smonti il dispositivo. La potenza viene riportata come 0, gli errori di connessione non segnano più il dispositivo come non disponibile, i Flow non vengono più attivati da dati obsoleti e l'interrogazione rallenta a ogni 15 minuti. Si disattiva da sola non appena il dispositivo invia dati aggiornati.",
+            "fr": "Activez cette option lorsque vous rangez l'appareil. La puissance est indiquée à 0, les erreurs de connexion ne marquent plus l'appareil comme indisponible, les Flows ne sont plus déclenchés par des données périmées et l'interrogation ralentit à toutes les 15 minutes. Se désactive dès que l'appareil renvoie de nouvelles données.",
+            "ru": "Включите, когда убираете устройство на хранение. Мощность показывается как 0, ошибки соединения больше не помечают устройство как недоступное, Flow больше не запускаются от устаревших данных, а опрос замедляется до одного раза в 15 минут. Отключится сам, как только устройство передаст свежие данные.",
+            "pl": "Włącz tę opcję, gdy chowasz urządzenie. Moc jest raportowana jako 0, błędy połączenia nie oznaczają już urządzenia jako niedostępnego, Flow nie są już wyzwalane przez nieaktualne dane, a odpytywanie zwalnia do co 15 minut. Wyłączy się samo, gdy urządzenie prześle nowe dane."
+          },
+          "value": false
         },
         {
           "id": "region",

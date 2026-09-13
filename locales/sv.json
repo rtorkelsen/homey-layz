@@ -49,5 +49,8 @@
     "lock_not_supported": "Panellåset kan inte växlas via appen för denna spa-modell. Det kan bara ändras på den fysiska kontrollpanelen.",
     "device_offline": "Enheten är offline.",
     "system_errors": "Systemfel"
+  },
+  "hibernation": {
+    "warning": "Vinterdvala är på — spabadet är undanplockat. Värdena är frysta och effekten rapporteras som 0. Stängs av automatiskt så snart spabadet skickar nya data igen."
   }
 }

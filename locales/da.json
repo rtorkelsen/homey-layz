@@ -49,5 +49,8 @@
     "lock_not_supported": "Panellåsen kan ikke skiftes via appen for denne spa-model. Den kan kun ændres på det fysiske kontrolpanel.",
     "device_offline": "Enheden er offline.",
     "system_errors": "Systemfejl"
+  },
+  "hibernation": {
+    "warning": "Dvale er slået til — spaen er pakket væk. Værdierne er frosne, og effekten rapporteres som 0. Slår fra af sig selv, så snart spaen sender nye data igen."
   }
 }

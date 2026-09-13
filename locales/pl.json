@@ -49,5 +49,8 @@
     "lock_not_supported": "Blokada panelu nie może być przełączana przez aplikację dla tego modelu spa. Można ją zmienić tylko na fizycznym panelu sterowania.",
     "device_offline": "Urządzenie jest w trybie offline.",
     "system_errors": "Błąd(y) systemu"
+  },
+  "hibernation": {
+    "warning": "Tryb zimowy jest włączony — spa jest schowane. Wartości są zamrożone, a moc raportowana jako 0. Wyłączy się sam, gdy tylko spa ponownie prześle nowe dane."
   }
 }
