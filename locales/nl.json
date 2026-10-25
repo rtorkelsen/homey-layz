@@ -2,17 +2,18 @@
   "pair": {
     "connect": {
       "title": "Verbind je Lay-Z-Spa",
-      "description": "Voer de deelcode in uit de Bestway Smart Hub-app om je spa aan Homey toe te voegen.",
+      "description": "Haal de deelcode op uit de Bestway Connect- of Smart Hub-app om je spa aan Homey toe te voegen.",
       "button": "Verbinden",
       "steps": {
-        "1": "Open de Bestway Smart Hub-app",
-        "2": "Ga naar je spa → ··· → Apparaat delen",
-        "3": "Kopieer de deelcode (begint met RW_Share_)",
-        "4": "Plak hem hieronder"
+        "1": "Open de Bestway Connect-app (of Bestway Smart Hub voor oudere spa's)",
+        "2": "Ga naar je spa → Instellingen → Apparaat delen",
+        "3": "Zie je alleen een QR-code? Scan deze met een QR-scanner-app om de tekst te tonen (een code of een link)",
+        "4": "Kopieer hem en plak hem hieronder"
       },
       "error": {
         "link_failed": "Verbinding mislukt. Controleer de deelcode en probeer opnieuw.",
-        "no_devices": "Geen apparaten gevonden na koppeling. Zorg ervoor dat je spa is ingesteld in de Bestway Smart Hub-app."
+        "no_devices": "Geen apparaten gevonden na koppeling. Zorg ervoor dat je spa is ingesteld in de Bestway Connect- of Smart Hub-app.",
+        "invalid_code": "Dit lijkt geen geldige deelcode of link. Kopieer hem opnieuw en probeer het nog eens."
       }
     },
     "repair": {
@@ -48,5 +49,8 @@
     "lock_not_supported": "Paneelvergrendeling kan niet worden in-/uitgeschakeld via de app voor dit spa-model. Dit kan alleen worden gewijzigd op het fysieke bedieningspaneel.",
     "device_offline": "Apparaat is offline.",
     "system_errors": "Systeemfout(en)"
+  },
+  "hibernation": {
+    "warning": "Winterslaap is aan — de spa is opgeborgen. Waarden zijn bevroren en het vermogen wordt als 0 gerapporteerd. Schakelt zichzelf uit zodra de spa weer nieuwe gegevens stuurt."
   }
 }

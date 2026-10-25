@@ -2,17 +2,18 @@
   "pair": {
     "connect": {
       "title": "Connetti il tuo Lay-Z-Spa",
-      "description": "Inserisci il codice di condivisione dall'app Bestway Smart Hub per aggiungere la tua spa a Homey.",
+      "description": "Recupera il codice di condivisione dall'app Bestway Connect o Smart Hub per aggiungere la tua spa a Homey.",
       "button": "Connetti",
       "steps": {
-        "1": "Apri l'app Bestway Smart Hub",
-        "2": "Vai alla tua spa → ··· → Condividi dispositivo",
-        "3": "Copia il codice di condivisione (inizia con RW_Share_)",
-        "4": "Incollalo qui sotto"
+        "1": "Apri l'app Bestway Connect (o Bestway Smart Hub per spa più datate)",
+        "2": "Vai alla tua spa → Impostazioni → Condividi dispositivo",
+        "3": "Vedi solo un codice QR? Scansionalo con un'app per QR code per mostrare il testo (un codice o un link)",
+        "4": "Copialo e incollalo qui sotto"
       },
       "error": {
         "link_failed": "Connessione non riuscita. Controlla il codice di condivisione e riprova.",
-        "no_devices": "Nessun dispositivo trovato dopo il collegamento. Assicurati che la tua spa sia configurata nell'app Bestway Smart Hub."
+        "no_devices": "Nessun dispositivo trovato dopo il collegamento. Assicurati che la tua spa sia configurata nell'app Bestway Connect o Smart Hub.",
+        "invalid_code": "Questo non sembra un codice o link di condivisione valido. Copialo di nuovo e riprova."
       }
     },
     "repair": {
@@ -48,5 +49,8 @@
     "lock_not_supported": "Il blocco del pannello non può essere attivato/disattivato tramite l'app per questo modello di spa. Può essere modificato solo sul pannello di controllo fisico.",
     "device_offline": "Il dispositivo è offline.",
     "system_errors": "Errore/i di sistema"
+  },
+  "hibernation": {
+    "warning": "La modalità letargo è attiva — la spa è smontata. I valori sono congelati e la potenza è riportata come 0. Si disattiva da sola non appena la spa invia di nuovo dati aggiornati."
   }
 }

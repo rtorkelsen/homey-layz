@@ -2,7 +2,16 @@
   "type": "boolean",
   "title": {
     "en": "AirJet Massage Low",
-    "de": "AirJet Massage Low"
+    "no": "AirJet Massasje Lav",
+    "cs": "AirJet Masáž Nízká",
+    "nl": "AirJet Massage Laag",
+    "de": "AirJet Massage Low",
+    "da": "AirJet Massage Lav",
+    "sv": "AirJet Massage Låg",
+    "it": "AirJet Massaggio Basso",
+    "fr": "AirJet Massage Faible",
+    "ru": "AirJet Массаж Низкий",
+    "pl": "AirJet Masaż Niski"
   },
   "getable": true,
   "setable": true,

@@ -2,11 +2,29 @@
   "id": "spa_locked",
   "title": {
     "en": "Panel lock is !{{active|not active}}",
-    "de": "Tastensperre ist !{{aktiv|nicht aktiv}}"
+    "de": "Tastensperre ist !{{aktiv|nicht aktiv}}",
+    "no": "Panellås er !{{aktiv|ikke aktiv}}",
+    "cs": "Zámek panelu je !{{aktivní|neaktivní}}",
+    "nl": "Panelvergrendeling is !{{actief|niet actief}}",
+    "da": "Panellås er !{{aktiv|ikke aktiv}}",
+    "sv": "Panellås är !{{aktiv|inte aktiv}}",
+    "it": "Blocco pannello è !{{attivo|non attivo}}",
+    "fr": "Verrouillage du panneau est !{{actif|inactif}}",
+    "ru": "Блокировка панели !{{активна|не активна}}",
+    "pl": "Blokada panelu jest !{{aktywna|nieaktywna}}"
   },
   "titleFormatted": {
     "en": "[[device]] panel lock is !{{active|not active}}",
-    "de": "[[device]] Tastensperre ist !{{aktiv|nicht aktiv}}"
+    "de": "[[device]] Tastensperre ist !{{aktiv|nicht aktiv}}",
+    "no": "[[device]] panellås er !{{aktiv|ikke aktiv}}",
+    "cs": "[[device]] zámek panelu je !{{aktivní|neaktivní}}",
+    "nl": "[[device]] panelvergrendeling is !{{actief|niet actief}}",
+    "da": "[[device]] panellås er !{{aktiv|ikke aktiv}}",
+    "sv": "[[device]] panellås är !{{aktiv|inte aktiv}}",
+    "it": "[[device]] blocco pannello è !{{attivo|non attivo}}",
+    "fr": "[[device]] verrouillage du panneau est !{{actif|inactif}}",
+    "ru": "[[device]] блокировка панели !{{активна|не активна}}",
+    "pl": "[[device]] blokada panelu jest !{{aktywna|nieaktywna}}"
   },
   "args": [
     {

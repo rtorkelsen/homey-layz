@@ -2,17 +2,35 @@
   "id": "spa_error_active",
   "title": {
     "en": "Spa has !{{an error|no error}}",
-    "de": "Spa hat !{{einen Fehler|keinen Fehler}}"
+    "de": "Spa hat !{{einen Fehler|keinen Fehler}}",
+    "no": "Spa har !{{en feil|ingen feil}}",
+    "cs": "Spa !{{má chybu|nemá chybu}}",
+    "nl": "Spa heeft !{{een fout|geen fout}}",
+    "da": "Spa har !{{en fejl|ingen fejl}}",
+    "sv": "Spa har !{{ett fel|inga fel}}",
+    "it": "Spa ha !{{un errore|nessun errore}}",
+    "fr": "Spa a !{{une erreur|aucune erreur}}",
+    "ru": "Спа !{{имеет ошибку|не имеет ошибок}}",
+    "pl": "Spa ma !{{błąd|brak błędów}}"
   },
   "titleFormatted": {
     "en": "[[device]] spa has !{{an error|no error}}",
-    "de": "[[device]] Spa hat !{{einen Fehler|keinen Fehler}}"
+    "de": "[[device]] Spa hat !{{einen Fehler|keinen Fehler}}",
+    "no": "[[device]] spa har !{{en feil|ingen feil}}",
+    "cs": "[[device]] spa !{{má chybu|nemá chybu}}",
+    "nl": "[[device]] spa heeft !{{een fout|geen fout}}",
+    "da": "[[device]] spa har !{{en fejl|ingen fejl}}",
+    "sv": "[[device]] spa har !{{ett fel|inga fel}}",
+    "it": "[[device]] spa ha !{{un errore|nessun errore}}",
+    "fr": "[[device]] spa a !{{une erreur|aucune erreur}}",
+    "ru": "[[device]] спа !{{имеет ошибку|не имеет ошибок}}",
+    "pl": "[[device]] spa ma !{{błąd|brak błędów}}"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     }
   ]
 }

@@ -2,17 +2,18 @@
   "pair": {
     "connect": {
       "title": "Podłącz swoje Lay-Z-Spa",
-      "description": "Wprowadź kod udostępnienia z aplikacji Bestway Smart Hub, aby dodać spa do Homey.",
+      "description": "Pobierz kod udostępnienia z aplikacji Bestway Connect lub Smart Hub, aby dodać spa do Homey.",
       "button": "Połącz",
       "steps": {
-        "1": "Otwórz aplikację Bestway Smart Hub",
-        "2": "Przejdź do swojego spa → ··· → Udostępnij urządzenie",
-        "3": "Skopiuj kod udostępnienia (zaczyna się od RW_Share_)",
-        "4": "Wklej go poniżej"
+        "1": "Otwórz aplikację Bestway Connect (lub Bestway Smart Hub w starszych modelach spa)",
+        "2": "Przejdź do swojego spa → Ustawienia → Udostępnij urządzenie",
+        "3": "Widzisz tylko kod QR? Zeskanuj go dowolną aplikacją do skanowania kodów QR, aby wyświetlić tekst (kod lub link)",
+        "4": "Skopiuj go i wklej poniżej"
       },
       "error": {
         "link_failed": "Nie udało się połączyć. Sprawdź kod udostępnienia i spróbuj ponownie.",
-        "no_devices": "Nie znaleziono urządzeń po połączeniu. Upewnij się, że spa jest skonfigurowane w aplikacji Bestway Smart Hub."
+        "no_devices": "Nie znaleziono urządzeń po połączeniu. Upewnij się, że spa jest skonfigurowane w aplikacji Bestway Connect lub Smart Hub.",
+        "invalid_code": "To nie wygląda na prawidłowy kod lub link udostępnienia. Skopiuj go ponownie i spróbuj jeszcze raz."
       }
     },
     "repair": {
@@ -48,5 +49,8 @@
     "lock_not_supported": "Blokada panelu nie może być przełączana przez aplikację dla tego modelu spa. Można ją zmienić tylko na fizycznym panelu sterowania.",
     "device_offline": "Urządzenie jest w trybie offline.",
     "system_errors": "Błąd(y) systemu"
+  },
+  "hibernation": {
+    "warning": "Tryb zimowy jest włączony — spa jest schowane. Wartości są zamrożone, a moc raportowana jako 0. Wyłączy się sam, gdy tylko spa ponownie prześle nowe dane."
   }
 }

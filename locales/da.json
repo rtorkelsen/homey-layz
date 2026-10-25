@@ -2,17 +2,18 @@
   "pair": {
     "connect": {
       "title": "Tilslut din Lay-Z-Spa",
-      "description": "Indtast delingskoden fra Bestway Smart Hub-appen for at tilføje din spa til Homey.",
+      "description": "Hent delingskoden fra Bestway Connect- eller Smart Hub-appen for at tilføje din spa til Homey.",
       "button": "Tilslut",
       "steps": {
-        "1": "Åbn Bestway Smart Hub-appen",
-        "2": "Gå til din spa → ··· → Del enhed",
-        "3": "Kopiér delingskoden (begynder med RW_Share_)",
-        "4": "Indsæt den herunder"
+        "1": "Åbn Bestway Connect-appen (eller Bestway Smart Hub til ældre spaer)",
+        "2": "Gå til din spa → Indstillinger → Del enhed",
+        "3": "Ser du kun en QR-kode? Scan den med en QR-scanner-app for at se teksten (en kode eller et link)",
+        "4": "Kopiér den og indsæt den herunder"
       },
       "error": {
         "link_failed": "Tilslutning mislykkedes. Kontrollér delingskoden og prøv igen.",
-        "no_devices": "Ingen enheder fundet efter tilkobling. Sørg for at din spa er konfigureret i Bestway Smart Hub-appen."
+        "no_devices": "Ingen enheder fundet efter tilkobling. Sørg for at din spa er konfigureret i Bestway Connect- eller Smart Hub-appen.",
+        "invalid_code": "Dette ligner ikke en gyldig delingskode eller et link. Kopiér den igen, og prøv en gang til."
       }
     },
     "repair": {
@@ -48,5 +49,8 @@
     "lock_not_supported": "Panellåsen kan ikke skiftes via appen for denne spa-model. Den kan kun ændres på det fysiske kontrolpanel.",
     "device_offline": "Enheden er offline.",
     "system_errors": "Systemfejl"
+  },
+  "hibernation": {
+    "warning": "Dvale er slået til — spaen er pakket væk. Værdierne er frosne, og effekten rapporteres som 0. Slår fra af sig selv, så snart spaen sender nye data igen."
   }
 }

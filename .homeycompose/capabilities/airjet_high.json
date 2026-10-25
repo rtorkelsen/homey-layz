@@ -2,7 +2,16 @@
   "type": "boolean",
   "title": {
     "en": "AirJet Massage High",
-    "de": "AirJet Massage High"
+    "no": "AirJet Massasje Høy",
+    "cs": "AirJet Masáž Vysoká",
+    "nl": "AirJet Massage Hoog",
+    "de": "AirJet Massage High",
+    "da": "AirJet Massage Høj",
+    "sv": "AirJet Massage Hög",
+    "it": "AirJet Massaggio Alto",
+    "fr": "AirJet Massage Fort",
+    "ru": "AirJet Массаж Высокий",
+    "pl": "AirJet Masaż Wysoki"
   },
   "getable": true,
   "setable": true,

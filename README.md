@@ -2,7 +2,7 @@
 
 Control your **Bestway Lay-Z-Spa** (Airjet / Hydrojet Pro) and **Bestway Pool Filter Pump** directly from Homey. Monitor water temperature, control heating, jets and filter pump, and automate everything with Homey Flow.
 
-> **App version:** 1.3.10 · **Homey SDK:** 3 · **Platform:** Homey Pro (≥ 12.0)
+> **App version:** 1.4.0 · **Homey SDK:** 3 · **Platform:** Homey Pro (≥ 12.0)
 
 ---
 
@@ -171,6 +171,74 @@ The app is available on the Homey App Store (TEST channel):
 
 ---
 
+## Manual Installation (without the Homey App Store)
+
+You can install this app directly from source using the Homey CLI — useful for testing unreleased fixes, running a fork, or trying a change before it reaches the Store.
+
+### Prerequisites
+
+- **Node.js 18 or newer** — check with `node -v`; download from [nodejs.org](https://nodejs.org/) if needed
+- **A Homey Pro** (2019 or 2023) — this app uses the `local` platform and does **not** run on Homey Cloud or Homey Bridge
+- **A Homey/Athom account**, with your Homey Pro already paired to it in the Homey app
+- Being on the **same Wi-Fi network** as your Homey Pro is recommended (not strictly required — the CLI can also install over the Athom cloud, just more slowly)
+
+### Steps
+
+1. **Install the Homey CLI** globally:
+   ```bash
+   npm install -g homey
+   ```
+
+2. **Clone this repository** (or download and unzip the [source ZIP](https://github.com/andiwirz/homey-layz/archive/refs/heads/main.zip)):
+   ```bash
+   git clone https://github.com/andiwirz/homey-layz.git
+   cd homey-layz
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+4. **Log in** to your Homey/Athom account — this opens a browser window to authenticate:
+   ```bash
+   homey login
+   ```
+
+5. **Install the app** onto your Homey. From the project's root folder:
+   ```bash
+   homey app install
+   ```
+   - If a Store version of the app is already installed, this simply overwrites it in place — no need to uninstall first, and your paired devices, settings, and flows are preserved.
+   - You'll be prompted to choose which Homey to install to if you have more than one paired to your account.
+   - This builds the app from `.homeycompose/` and installs it **permanently** — it keeps running after you close the terminal, exactly like a Store install.
+   - `homey app validate` runs automatically as part of this; if it fails, fix the reported error before retrying.
+
+6. **Pair your devices.** Open the Homey app → **Devices** → **+** → search for **Lay-Z**, and follow the steps under [Pairing](#pairing) below.
+
+### Alternative: live development mode
+
+Instead of `homey app install`, you can run:
+```bash
+homey app run
+```
+This streams live logs from your Homey to your terminal and reloads the app automatically when you save a file — useful while actively making changes. Recent Homey CLI versions keep the app running on your Homey even after you close the terminal (stop it from the Homey app's **Apps** overview, or press <kbd>Ctrl+C</kbd> to detach). Use `homey app install` instead if you just want a normal, always-on installation without keeping the CLI around.
+
+### Updating a sideloaded install
+
+Pull the latest changes and re-run `homey app install` — it overwrites the existing sideloaded version in place. Your paired devices, settings, and flows are preserved.
+
+```bash
+git pull
+homey app install
+```
+
+### Uninstalling
+
+Homey app → **Settings** → **Apps** → **Lay-Z** → **Uninstall**.
+
+---
+
 ## Community & Support
 
 - 💬 [Homey Community Thread](https://community.homey.app/t/app-pro-lay-z-control-your-bestway-spa-pool-filter-from-homey/155679)
@@ -194,6 +262,35 @@ If this app saves you time or adds value to your smart home, consider a small do
 ---
 
 ## Changelog
+
+### 1.3.18
+- Added: support for the new Bestway **"Smart Home"** backend used by 2025+ UltraFit devices via the Bestway Connect app — since ~July 2026, that app's "Share Device" QR code no longer produces an `RW_Share_` text code but a share link instead (e.g. `smart-spa-eu-app.bestwaycorp.com/...?shareId=...`), which the app previously rejected outright
+- Pairing now automatically detects and routes to the correct backend, whether you paste a legacy `RW_Share_` code or a new share link/id
+- Existing devices are unaffected
+
+### 1.3.17
+- Fixed: pairing instructions for the **Lay-Z-Spa (Share Code)** driver updated for newer Bestway app versions that only display a QR code (no visible text share code) — now explains scanning the QR code with any QR scanner app, and mentions the **Bestway Connect** app alongside **Smart Hub**
+- Updated in all 11 supported languages
+
+### 1.3.15
+- Fixed: removed a redundant runtime `setCapabilityOptions` call — `target_temperature` min/max/step are now defined statically in the driver manifest, eliminating a source of unnecessary capability update events
+
+### 1.3.14
+- Fixed: flow cards briefly showing as unavailable on every data refresh
+- Fixed: flow card run listeners were registered twice (caused warnings and unstable behaviour)
+- Fixed: product name `Hydrojet` was not recognised as the HydroJet adapter, causing unnecessary capability changes on first poll
+- Fixed: `spa_temp_reached` trigger fired repeatedly when temperature oscillated near the setpoint — added hysteresis
+- Fixed: temperature value in the `spa_temp_reached` trigger was in °F instead of °C on Fahrenheit devices
+
+### 1.3.13
+- Fixed: temperature always displayed and set in °C in Homey, even when the physical device is configured in Fahrenheit — conversion happens transparently in the driver
+
+### 1.3.12
+- Improved: 5 new device-level action cards (heating, filter, AirJet Low/High, HydroJet) — appear directly under the selected device in the flow editor
+- Old app-level cards marked as deprecated and continue to work in existing flows
+
+### 1.3.11
+- Improved: extended App Store search tags in English and German — `pool`, `pool filter`, `pump`, `whirlpool`, `inflatable`, `outdoor`, `wellness` and more for better discoverability
 
 ### 1.3.10
 - Added: flow triggers **"Heating turned on"** and **"Heating turned off"** for both drivers

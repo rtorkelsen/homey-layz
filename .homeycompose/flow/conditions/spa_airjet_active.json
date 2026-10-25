@@ -2,17 +2,35 @@
   "id": "spa_airjet_active",
   "title": {
     "en": "AirJet is !{{active|not active}}",
-    "de": "AirJet ist !{{aktiv|nicht aktiv}}"
+    "de": "AirJet ist !{{aktiv|nicht aktiv}}",
+    "no": "AirJet er !{{aktiv|ikke aktiv}}",
+    "cs": "AirJet je !{{aktivní|neaktivní}}",
+    "nl": "AirJet is !{{actief|niet actief}}",
+    "da": "AirJet er !{{aktiv|ikke aktiv}}",
+    "sv": "AirJet är !{{aktiv|inte aktiv}}",
+    "it": "AirJet è !{{attivo|non attivo}}",
+    "fr": "AirJet est !{{actif|inactif}}",
+    "ru": "AirJet !{{активен|не активен}}",
+    "pl": "AirJet jest !{{aktywny|nieaktywny}}"
   },
   "titleFormatted": {
     "en": "[[device]] AirJet is !{{active|not active}}",
-    "de": "[[device]] AirJet ist !{{aktiv|nicht aktiv}}"
+    "de": "[[device]] AirJet ist !{{aktiv|nicht aktiv}}",
+    "no": "[[device]] AirJet er !{{aktiv|ikke aktiv}}",
+    "cs": "[[device]] AirJet je !{{aktivní|neaktivní}}",
+    "nl": "[[device]] AirJet is !{{actief|niet actief}}",
+    "da": "[[device]] AirJet er !{{aktiv|ikke aktiv}}",
+    "sv": "[[device]] AirJet är !{{aktiv|inte aktiv}}",
+    "it": "[[device]] AirJet è !{{attivo|non attivo}}",
+    "fr": "[[device]] AirJet est !{{actif|inactif}}",
+    "ru": "[[device]] AirJet !{{активен|не активен}}",
+    "pl": "[[device]] AirJet jest !{{aktywny|nieaktywny}}"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capability=bestway_temp_reached"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     }
   ]
 }

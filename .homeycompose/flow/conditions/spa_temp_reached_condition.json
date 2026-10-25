@@ -2,17 +2,35 @@
   "id": "spa_temp_reached_condition",
   "title": {
     "en": "Target temperature is !{{reached|not reached}}",
-    "de": "Zieltemperatur ist !{{erreicht|nicht erreicht}}"
+    "de": "Zieltemperatur ist !{{erreicht|nicht erreicht}}",
+    "no": "Måltemperatur er !{{nådd|ikke nådd}}",
+    "cs": "Cílová teplota je !{{dosažena|nedosažena}}",
+    "nl": "Doeltemperatuur is !{{bereikt|niet bereikt}}",
+    "da": "Måltemperatur er !{{nået|ikke nået}}",
+    "sv": "Måltemperatur är !{{uppnådd|inte uppnådd}}",
+    "it": "Temperatura target è !{{raggiunta|non raggiunta}}",
+    "fr": "Température cible est !{{atteinte|non atteinte}}",
+    "ru": "Целевая температура !{{достигнута|не достигнута}}",
+    "pl": "Temperatura docelowa jest !{{osiągnięta|nie osiągnięta}}"
   },
   "titleFormatted": {
     "en": "[[device]] target temperature is !{{reached|not reached}}",
-    "de": "[[device]] Zieltemperatur ist !{{erreicht|nicht erreicht}}"
+    "de": "[[device]] Zieltemperatur ist !{{erreicht|nicht erreicht}}",
+    "no": "[[device]] måltemperatur er !{{nådd|ikke nådd}}",
+    "cs": "[[device]] cílová teplota je !{{dosažena|nedosažena}}",
+    "nl": "[[device]] doeltemperatuur is !{{bereikt|niet bereikt}}",
+    "da": "[[device]] måltemperatur er !{{nået|ikke nået}}",
+    "sv": "[[device]] måltemperatur är !{{uppnådd|inte uppnådd}}",
+    "it": "[[device]] temperatura target è !{{raggiunta|non raggiunta}}",
+    "fr": "[[device]] température cible est !{{atteinte|non atteinte}}",
+    "ru": "[[device]] целевая температура !{{достигнута|не достигнута}}",
+    "pl": "[[device]] temperatura docelowa jest !{{osiągnięta|nie osiągnięta}}"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capability=bestway_temp_reached"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     }
   ]
 }

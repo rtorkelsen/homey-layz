@@ -37,7 +37,19 @@
     {
       "name": "error_message",
       "type": "string",
-      "title": { "en": "Error message", "de": "Fehlermeldung" }
+      "title": {
+        "en": "Error message",
+        "de": "Fehlermeldung",
+        "no": "Feilmelding",
+        "cs": "Chybová zpráva",
+        "nl": "Foutmelding",
+        "da": "Fejlbesked",
+        "sv": "Felmeddelande",
+        "it": "Messaggio di errore",
+        "fr": "Message d'erreur",
+        "ru": "Сообщение об ошибке",
+        "pl": "Komunikat o błędzie"
+      }
     }
   ]
 }

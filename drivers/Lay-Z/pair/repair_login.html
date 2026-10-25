@@ -103,12 +103,12 @@
       try { return Homey.__(key) || fallback; } catch(e) { return fallback; }
     }
 
-    document.getElementById('title').textContent         = t('pair.repair.title',             'Re-authenticate');
-    document.getElementById('description').textContent   = t('pair.repair.description',        'Your session has expired. Please sign in again.');
+    document.getElementById('title').textContent         = t('pair.relogin.title',             'Update Bestway credentials');
+    document.getElementById('description').textContent   = t('pair.relogin.description',        'Enter your Bestway credentials to restore the connection.');
     document.getElementById('labelEmail').textContent    = t('pair.login.label_email',        'Email address');
     document.getElementById('email').placeholder         = t('pair.login.placeholder_email',  'email@example.com');
     document.getElementById('labelPassword').textContent = t('pair.login.label_password',     'Password');
-    document.getElementById('loginBtn').textContent      = t('pair.repair.button',            'Sign in');
+    document.getElementById('loginBtn').textContent      = t('pair.relogin.button',            'Update');
 
     function doLogin() {
       const username = document.getElementById('email').value.trim();

@@ -103,6 +103,13 @@ class PoolFilterDriver extends Homey.Driver {
           userId:      auth.userId,
           tokenExpiry: auth.expiry,
         },
+        // Seed the region dropdown with the region login actually succeeded on.
+        // _resolveRegion() reads the setting first, so without this a non-EU
+        // account would silently fall back to the "eu" default and every poll
+        // would be rejected by the wrong regional server.
+        settings: {
+          region: auth.region,
+        },
       }));
     });
   }

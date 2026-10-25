@@ -5,6 +5,7 @@ const {
   BestwayClient,
   GizwitsError,
 } = require('../../lib/BestwayClient');
+const Hibernation = require('../../lib/Hibernation');
 
 const E_CODE_DESCRIPTIONS = {
   E01: { en: 'Flow sensor error (paddle stuck)',   de: 'Durchflusssensor-Fehler (Paddel blockiert)' },
@@ -29,8 +30,12 @@ class PoolFilterDevice extends Homey.Device {
     this._pollTimer           = null;
     this._pollFailCount       = 0;
     this._tokenRefreshPromise = null;
-    this._prevAlarmActive     = false;
-    this._prevChangeRequired  = false;
+    // undefined (not false): suppresses a spurious trigger fire on the very
+    // first poll after Homey restarts if the alarm/change-required state was
+    // already active — the same "flapping on restart" pattern fixed
+    // elsewhere in this app (Lay-Z / Connect drivers).
+    this._prevAlarmActive     = undefined;
+    this._prevChangeRequired  = undefined;
 
     await this.setSettings({ region: this._resolveRegion() }).catch(() => {});
 
@@ -70,16 +75,29 @@ class PoolFilterDevice extends Homey.Device {
   async onUninit() { this._stopPolling(); }
   async onDeleted() { this._stopPolling(); }
 
-  async onSettings({ newSettings }) {
+  async onSettings({ newSettings, changedKeys }) {
     const raw     = Number(newSettings.poll_interval);
     const clamped = Number.isFinite(raw) ? Math.max(10, Math.min(300, raw)) : DEFAULT_POLL_INTERVAL_S;
     if (clamped !== raw) this.setSettings({ poll_interval: clamped }).catch(() => {});
     this._client = new BestwayClient({ region: newSettings.region ?? 'eu' });
     this._pollFailCount = 0;
+
+    // Apply a hibernation change straight away instead of leaving the old
+    // values (and the old poll interval) in place until the next tick.
+    if (Array.isArray(changedKeys) && changedKeys.includes(Hibernation.SETTING_ID)) {
+      this._hibernating = undefined;
+      this.homey.setTimeout(() => {
+        this._syncStatus().catch(err => this.error('Hibernation re-sync failed:', err.message));
+      }, 1000);
+    }
+
     this._startPolling();
   }
 
   _getPollIntervalMs() {
+    // A hibernating pump only needs checking often enough to notice it is back.
+    if (Hibernation.isActive(this)) return Hibernation.pollIntervalMs();
+
     const base   = Number(this.getSetting('poll_interval')) || DEFAULT_POLL_INTERVAL_S;
     const factor = Math.min(this._pollFailCount, 3);
     return Math.round(Math.min(base * (2 ** factor), MAX_POLL_INTERVAL_S)) * 1000;
@@ -139,6 +157,20 @@ class PoolFilterDevice extends Homey.Device {
 
       this.log('Pool filter status attrs:', JSON.stringify(attrs));
 
+      // Seasonal hibernation: the cloud keeps serving the last state a
+      // packed-away pump ever reported, so watch its own updated_at rather
+      // than the fact that the request succeeded.
+      const hibernation = await Hibernation.evaluate(this, Hibernation.fingerprint(
+        status.updated_at,
+        Hibernation.signatureOf(attrs, ['power', 'time', 'filter']),
+      ));
+      if (hibernation.changed) this._startPolling();
+      if (hibernation.hibernating) {
+        this._updateDebugSettings(attrs);
+        this._pollFailCount = 0;
+        return;
+      }
+
       if (attrs.power !== undefined) {
         await this._setCapability('onoff', attrs.power === 1 || attrs.power === true);
       }
@@ -151,7 +183,7 @@ class PoolFilterDevice extends Homey.Device {
       const changeRequired = !!attrs.filter;
       await this._setCapability('bestway_filter_change', changeRequired);
 
-      if (changeRequired && !this._prevChangeRequired) {
+      if (this._prevChangeRequired !== undefined && changeRequired && !this._prevChangeRequired) {
         this.driver._triggerChangeTriggered
           .trigger(this)
           .catch(e => this.error('Flow trigger pool_filter_change_triggered failed:', e));
@@ -172,7 +204,7 @@ class PoolFilterDevice extends Homey.Device {
         activeCodes.length > 0 ? activeCodes.join(' | ') : '–',
       );
 
-      if (activeCodes.length > 0 && !this._prevAlarmActive) {
+      if (this._prevAlarmActive !== undefined && activeCodes.length > 0 && !this._prevAlarmActive) {
         this.driver._triggerErrorTriggered
           .trigger(this, { error_message: activeCodes.join(' | ') })
           .catch(e => this.error('Flow trigger pool_filter_error_triggered failed:', e));
@@ -196,9 +228,17 @@ class PoolFilterDevice extends Homey.Device {
         throw err;
       }
 
+      this._updateDebugSettings(null, err.message);
+
+      // A hibernating pump is expected to be unreachable — don't count those
+      // failures and don't mark it unavailable all winter.
+      if (Hibernation.isActive(this)) {
+        this.log('Sync failed while hibernating (expected):', err.message);
+        return;
+      }
+
       this._pollFailCount++;
       this.error(`Sync failed (consecutive: ${this._pollFailCount}):`, err.message);
-      this._updateDebugSettings(null, err.message);
       if (this._pollFailCount >= 3) this.setUnavailable(err.message).catch(() => {});
       throw err;
     }

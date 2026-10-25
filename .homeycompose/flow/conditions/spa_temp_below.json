@@ -2,24 +2,51 @@
   "id": "spa_temp_below",
   "title": {
     "en": "Water temperature is !{{below|not below}}",
-    "de": "Wassertemperatur ist !{{unter|nicht unter}}"
+    "de": "Wassertemperatur ist !{{unter|nicht unter}}",
+    "no": "Vanntemperatur er !{{under|ikke under}}",
+    "cs": "Teplota vody je !{{pod|ne pod}}",
+    "nl": "Watertemperatuur is !{{onder|niet onder}}",
+    "da": "Vandtemperatur er !{{under|ikke under}}",
+    "sv": "Vattentemperatur är !{{under|inte under}}",
+    "it": "Temperatura dell'acqua è !{{sotto|non sotto}}",
+    "fr": "Température de l'eau est !{{en dessous|pas en dessous}}",
+    "ru": "Температура воды !{{ниже|не ниже}}",
+    "pl": "Temperatura wody jest !{{poniżej|nie poniżej}}"
   },
   "titleFormatted": {
-    "en": "[[device]] water temperature is !{{below|not below}} [[temperature]]",
-    "de": "[[device]] Wassertemperatur ist !{{unter|nicht unter}} [[temperature]]"
+    "en": "Water temperature is !{{below|not below}} [[temperature]]",
+    "de": "Wassertemperatur ist !{{unter|nicht unter}} [[temperature]]",
+    "no": "Vanntemperatur er !{{under|ikke under}} [[temperature]]",
+    "cs": "Teplota vody je !{{pod|ne pod}} [[temperature]]",
+    "nl": "Watertemperatuur is !{{onder|niet onder}} [[temperature]]",
+    "da": "Vandtemperatur er !{{under|ikke under}} [[temperature]]",
+    "sv": "Vattentemperatur är !{{under|inte under}} [[temperature]]",
+    "it": "Temperatura dell'acqua è !{{sotto|non sotto}} [[temperature]]",
+    "fr": "Température de l'eau est !{{en dessous|pas en dessous}} [[temperature]]",
+    "ru": "Температура воды !{{ниже|не ниже}} [[temperature]]",
+    "pl": "Temperatura wody jest !{{poniżej|nie poniżej}} [[temperature]]"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capability=bestway_temp_reached"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     },
     {
       "name": "temperature",
       "type": "number",
       "title": {
         "en": "Temperature",
-        "de": "Temperatur"
+        "de": "Temperatur",
+        "no": "Temperatur",
+        "cs": "Teplota",
+        "nl": "Temperatuur",
+        "da": "Temperatur",
+        "sv": "Temperatur",
+        "it": "Temperatura",
+        "fr": "Température",
+        "ru": "Температура",
+        "pl": "Temperatura"
       },
       "min": 0,
       "max": 50,

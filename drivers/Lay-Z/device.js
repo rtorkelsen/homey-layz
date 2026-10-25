@@ -2,6 +2,12 @@
 
 const Homey = require('homey');
 const axios = require('axios');
+const Hibernation = require('../../lib/Hibernation');
+
+// Bump whenever capabilitiesOptions in driver.compose.json changes, so already
+// paired devices pick the new options up once. See _migrateCapabilityOptions().
+// 1 -> initial, 2 -> added an icon to the onoff.heating button
+const CAPABILITY_OPTIONS_REVISION = 2;
 
 /**
  * Model registry with pluggable adapters.
@@ -51,7 +57,7 @@ const MODEL_REGISTRY = [
   {
     id: 'Hydrojet_Pro',
     match: {
-      productNames: ['Hydrojet_Pro'],
+      productNames: ['Hydrojet_Pro', 'Hydrojet'],
       // Structural signature: Hydrojet exposes Tnow / Tset
       is: (attr) => typeof attr?.Tnow !== 'undefined' || typeof attr?.Tset !== 'undefined',
       priority: 10,
@@ -152,6 +158,7 @@ class SpaDevice extends Homey.Device {
               'X-Gizwits-Application-Id': legacyAppId,
               'X-Gizwits-User-token': legacyToken,
             },
+            timeout: 8000,
           });
           const list = Array.isArray(resp?.data?.devices) ? resp.data.devices : [];
           const found = list.find(d => d?.did === this.getData().did);
@@ -299,11 +306,12 @@ class SpaDevice extends Homey.Device {
       }
     }
 
-    // State tracking for rising-edge triggers and energy accumulation
-    this._prevTempReached = false;
-    this._prevAlarmActive = false;
-    this._energyLastTs    = null;
-    this._energyLastWatts = 0;
+    this._prevTempReached = undefined;
+    this._prevAlarmActive = undefined;
+    this._prevHeatingOn   = undefined;
+    this._prevFilterOn    = undefined;
+    this._energyLastTs    = Date.now();
+    this._energyLastWatts = this.getCapabilityValue('measure_power') ?? 0;
     this._pollFailCount   = 0;
 
     // *** Common capabilities (shared by all models) ****
@@ -339,6 +347,8 @@ class SpaDevice extends Homey.Device {
     // Lock is Airjet-only (Hydrojet write command has no effect per ha-bestway)
     await this.enableCapability('bestway_locked',    !isHydro);
 
+    await this._migrateCapabilityOptions();
+
     // Register capability listeners (safe to register even if capability isn't present)
     this.log('Registering capability listeners...');
     this.registerCapabilityListener('target_temperature',  this.onCapabilityTargetTemperature.bind(this));
@@ -369,12 +379,56 @@ class SpaDevice extends Homey.Device {
     }
   }
 
+  /**
+   * Push driver.compose.json's capabilitiesOptions onto an existing device.
+   *
+   * Homey copies those options into the device only when it is first paired —
+   * an already-paired device keeps whatever was stored back then, so manifest
+   * changes (a new icon, a renamed title, a different uiComponent) stay
+   * invisible on existing devices until they are written explicitly. Reading
+   * straight from the manifest keeps this in sync automatically; bump
+   * CAPABILITY_OPTIONS_REVISION whenever the options change so it runs once
+   * more, rather than on every single start.
+   */
+  async _migrateCapabilityOptions() {
+    if (this.getStoreValue('capOptionsRevision') === CAPABILITY_OPTIONS_REVISION) return;
+
+    const options = this.driver?.manifest?.capabilitiesOptions ?? {};
+    for (const [capability, opts] of Object.entries(options)) {
+      if (!this.hasCapability(capability)) continue;
+      await this.setCapabilityOptions(capability, opts).catch(err =>
+        this.error(`setCapabilityOptions("${capability}") failed:`, err.message),
+      );
+    }
+
+    await this.setStoreValue('capOptionsRevision', CAPABILITY_OPTIONS_REVISION).catch(() => {});
+    this.log(`Capability options refreshed from manifest (revision ${CAPABILITY_OPTIONS_REVISION})`);
+  }
+
   async updateDeviceStatus() {
     this.log('updateDeviceStatus started');
     try {
       const data = await this.fetchDeviceData();
       const { attr } = data || {};
       if (!attr) throw new Error('attr field missing in response data');
+
+      // Seasonal hibernation: the Gizwits cloud keeps serving the last state a
+      // packed-away spa ever reported, so watch its own updated_at rather than
+      // the fact that the request succeeded.
+      const hibernation = await Hibernation.evaluate(this, Hibernation.fingerprint(
+        data.updated_at,
+        Hibernation.signatureOf(attr, ['power', 'Tnow', 'Tset', 'heat', 'filter', 'wave', 'jet',
+          'temp_now', 'temp_set', 'heat_power', 'filter_power', 'wave_power']),
+      ));
+      if (hibernation.changed) this._startPolling();
+      if (hibernation.hibernating) {
+        await this.safeSetCapabilityValue('measure_power', 0);
+        this._energyLastTs    = Date.now();
+        this._energyLastWatts = 0;
+        this._updateDebugLabels(attr, null, null);
+        this._pollFailCount = 0;
+        return;
+      }
 
       // Re-select adapter by signature if payload indicates a better match
       const bySig = selectAdapterBySignature(attr);
@@ -400,20 +454,13 @@ class SpaDevice extends Homey.Device {
         waveLevel: n.waveLevel, jetOn: n.jetOn
       });
 
-      // Update UI units for target temperature
-      const units = n.unit === 'F' ? '°F' : '°C';
-      const options = {
-        units: { en: units, no: units },
-        min: units === '°F' ? 68 : 20,
-        max: units === '°F' ? 104 : 40,
-        step: 1,
-        decimals: 0,
-      };
-      await this.setCapabilityOptions('target_temperature', options);
+      // Always display in °C — convert Fahrenheit values from device if needed
+      this._deviceUnit = n.unit; // remember for onCapabilityTargetTemperature
+      const toC = (v) => (n.unit === 'F' && typeof v === 'number') ? Math.round((v - 32) * 5 / 9 * 10) / 10 : v;
 
       // Update common capabilities (read)
-      await this.safeSetCapabilityValue('target_temperature', n.tempSet);
-      await this.safeSetCapabilityValue('measure_temperature', n.tempNow);
+      await this.safeSetCapabilityValue('target_temperature', toC(n.tempSet));
+      await this.safeSetCapabilityValue('measure_temperature', toC(n.tempNow));
 
       // Fire Flow triggers when heating state changes
       const prevHeating = this._prevHeatingOn;
@@ -429,7 +476,7 @@ class SpaDevice extends Homey.Device {
       }
       this._prevHeatingOn = n.heatOn;
 
-      await this.safeSetCapabilityValue('temp_now', n.tempNow);
+      await this.safeSetCapabilityValue('temp_now', toC(n.tempNow));
 
       await this.safeSetCapabilityValue('onoff', n.powerOn);
       // Fire Flow triggers when filter state changes
@@ -481,14 +528,21 @@ class SpaDevice extends Homey.Device {
       const errorMsg = hasErrors ? n.errors.join(' | ') : '–';
       await this.safeSetCapabilityValue('bestway_error_message', errorMsg);
       await this.safeSetCapabilityValue('bestway_locked', n.locked ?? false);
-      await this.safeSetCapabilityValue('bestway_temp_reached', n.heatReached);
+      // Hysteresis: once reached, hold "reached" until temp drops ≥1°C (or 1.8°F) below target.
+      // Prevents oscillation when temperature hovers at the setpoint boundary.
+      const prevStable = this._prevTempReached;
+      const hysteresisBuffer = n.unit === 'F' ? 1.8 : 1.0;
+      const hysteresisActive = (prevStable === true)
+        && typeof n.tempNow === 'number' && typeof n.tempSet === 'number'
+        && n.tempNow >= n.tempSet - hysteresisBuffer;
+      const stableReached = n.heatReached || hysteresisActive;
 
-      // Rising-edge: fire spa_temp_reached trigger
-      if (n.heatReached && !this._prevTempReached) {
-        this.driver._triggerTempReached?.trigger(this, { temperature: n.tempNow ?? 0 })
+      await this.safeSetCapabilityValue('bestway_temp_reached', stableReached);
+      if (stableReached && !prevStable) {
+        this.driver._triggerTempReached?.trigger(this, { temperature: toC(n.tempNow ?? 0) })
           .catch(e => this.error('Trigger spa_temp_reached failed', e));
       }
-      this._prevTempReached = n.heatReached;
+      this._prevTempReached = stableReached;
 
       // Rising-edge: fire spa_error_triggered trigger
       if (hasErrors && !this._prevAlarmActive) {
@@ -516,6 +570,10 @@ class SpaDevice extends Homey.Device {
         this.error('Failed to update device status', error?.message ? error.message : String(error));
       }
       this._updateDebugLabels(null, null, error?.message || String(error));
+
+      // A hibernating spa is expected to be unreachable — don't count those
+      // failures and don't mark it unavailable all winter.
+      if (Hibernation.isActive(this)) return;
 
       // Mark unavailable after 3 consecutive failures (same pattern as Connect driver)
       this._pollFailCount++;
@@ -558,6 +616,7 @@ class SpaDevice extends Homey.Device {
         'Content-Type': 'application/json',
         'X-Gizwits-Application-Id': appId,
       },
+      timeout: 8000,
     });
 
     const { token, uid, expire_at: expireAt } = response.data;
@@ -587,6 +646,7 @@ class SpaDevice extends Homey.Device {
       const token = await this._getValidToken();
       const response = await axios.get(`${this.baseUrl}/app/bindings`, {
         headers: { ...this.headers, 'X-Gizwits-User-token': token },
+        timeout: 8000,
       });
       // Log response
       try {
@@ -638,7 +698,7 @@ class SpaDevice extends Homey.Device {
     }
 
     try {
-      const response = await axios({ method, url, data, headers });
+      const response = await axios({ method, url, data, headers, timeout: 8000 });
 
       // Log response status and body
       try {
@@ -687,18 +747,21 @@ class SpaDevice extends Homey.Device {
     const token = await this._getValidToken();
     const body = this.adapter.encode(key, value);
     this.log(`Control payload (${key}):`, JSON.stringify(body));
-    await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, token);
+    const result = await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, token);
+    if (result === null) throw new Error(this.homey.__('error.control_failed') ?? 'Control command failed');
     await this.updateDeviceStatus();
   }
 
   async onCapabilityTargetTemperature(value) {
-    try { await this._sendControl('tempSet', value); }
-    catch (error) { this.error('Failed to set target temperature', error); }
+    // value is always in °C from Homey; convert to °F if device operates in Fahrenheit
+    const deviceValue = this._deviceUnit === 'F' ? Math.round(value * 9 / 5 + 32) : value;
+    try { await this._sendControl('tempSet', deviceValue); }
+    catch (error) { this.error('Failed to set target temperature', error); throw error; }
   }
 
   async onCapabilityOnoff(value) {
     try { await this._sendControl('power', value); }
-    catch (error) { this.error('Failed to change on/off status', error); }
+    catch (error) { this.error('Failed to change on/off status', error); throw error; }
   }
 
   async onCapabilityHeating(value) {
@@ -707,12 +770,12 @@ class SpaDevice extends Homey.Device {
 
   async setHeatPower(value) {
     try { await this._sendControl('heat', value); }
-    catch (error) { this.error('Failed to set heating power status', error); }
+    catch (error) { this.error('Failed to set heating power status', error); throw error; }
   }
 
   async onCapabilityPumpOnoff(value) {
     try { await this._sendControl('filter', value); }
-    catch (error) { this.error('Failed to toggle filter pump', error); }
+    catch (error) { this.error('Failed to toggle filter pump', error); throw error; }
   }
 
   async setFilterPump(value) {
@@ -721,7 +784,7 @@ class SpaDevice extends Homey.Device {
 
   async onCapabilityMsgOnoff(value) {
     try { await this._sendControl('wave', value); }
-    catch (error) { this.error('Failed to toggle massage function', error); }
+    catch (error) { this.error('Failed to toggle massage function', error); throw error; }
   }
 
   async onCapabilityAirjetLow(value) {
@@ -734,17 +797,17 @@ class SpaDevice extends Homey.Device {
 
   async onCapabilityMassageMode(value) {
     try { await this._sendControl('waveLevel', value); }
-    catch (error) { this.error('Failed to set massage mode', error); }
+    catch (error) { this.error('Failed to set massage mode', error); throw error; }
   }
 
   async onCapabilityJetOnoff(value) {
     try { await this._sendControl('jet', value); }
-    catch (error) { this.error('Failed to toggle hydrojet', error); }
+    catch (error) { this.error('Failed to toggle hydrojet', error); throw error; }
   }
 
   async onCapabilityBestwayLocked(value) {
     try { await this._sendControl('lock', value); }
-    catch (error) { this.error('Failed to set lock state', error); }
+    catch (error) { this.error('Failed to set lock state', error); throw error; }
   }
 
   // Helpers for spa flow action cards
@@ -765,12 +828,15 @@ class SpaDevice extends Homey.Device {
 
   _startPolling() {
     if (this.updateInterval) clearInterval(this.updateInterval);
-    const intervalSec = this.getSetting('poll_interval') || 60;
+    // A hibernating spa only needs checking often enough to notice it is back.
+    const intervalMs = Hibernation.isActive(this)
+      ? Hibernation.pollIntervalMs()
+      : (this.getSetting('poll_interval') || 60) * 1000;
     // Only call updateDeviceStatus on each poll tick — availability is inferred
     // from success/failure inside updateDeviceStatus (no extra API call needed).
     this.updateInterval = setInterval(async () => {
       await this.updateDeviceStatus();
-    }, intervalSec * 1000);
+    }, intervalMs);
   }
 
   _calculatePower(n) {
@@ -781,14 +847,14 @@ class SpaDevice extends Homey.Device {
     const hydrojet   = isHydro && n.jetOn;
     const heating    = n.heatOn && !n.heatReached;
 
-    if (hydrojet && airjetHigh) return this.getSetting('power_hydrojet_airjet_high_w');
-    if (hydrojet && airjetLow)  return this.getSetting('power_hydrojet_airjet_low_w');
-    if (hydrojet)               return this.getSetting('power_hydrojet_w');
-    if (airjetHigh)             return this.getSetting('power_airjet_high_w');
-    if (airjetLow)              return this.getSetting('power_airjet_low_w');
-    if (heating)                return this.getSetting('power_heating_w');
-    if (n.filterOn)             return this.getSetting('power_filter_w');
-    return this.getSetting('power_standby_w') ?? 0;
+    if (hydrojet && airjetHigh) return Number(this.getSetting('power_hydrojet_airjet_high_w')) || 0;
+    if (hydrojet && airjetLow)  return Number(this.getSetting('power_hydrojet_airjet_low_w')) || 0;
+    if (hydrojet)               return Number(this.getSetting('power_hydrojet_w')) || 0;
+    if (airjetHigh)             return Number(this.getSetting('power_airjet_high_w')) || 0;
+    if (airjetLow)              return Number(this.getSetting('power_airjet_low_w')) || 0;
+    if (heating)                return Number(this.getSetting('power_heating_w')) || 0;
+    if (n.filterOn)             return Number(this.getSetting('power_filter_w')) || 0;
+    return Number(this.getSetting('power_standby_w')) || 0;
   }
 
   _updateDebugLabels(attr, n, errorMsg) {
@@ -822,18 +888,20 @@ class SpaDevice extends Homey.Device {
 
   _updateEnergyApproximation(watts) {
     const now = Date.now();
-    if (this._energyLastTs !== null) {
-      const elapsedHours = (now - this._energyLastTs) / 3_600_000;
-      const deltaKwh = (this._energyLastWatts / 1000) * elapsedHours;
-      const current = this.getCapabilityValue('meter_power') ?? 0;
-      this.safeSetCapabilityValue('meter_power', current + deltaKwh);
-    }
+    const elapsedHours = (now - this._energyLastTs) / 3_600_000;
+    const deltaKwh     = (this._energyLastWatts / 1000) * elapsedHours;
+    const totalKwh     = (this.getCapabilityValue('meter_power') ?? 0) + deltaKwh;
+    this.safeSetCapabilityValue('meter_power', Math.round(totalKwh * 10000) / 10000);
     this._energyLastTs    = now;
     this._energyLastWatts = watts;
   }
 
+  async onUninit() {
+    if (this.updateInterval) clearInterval(this.updateInterval);
+  }
+
   async onDeleted() {
-    clearInterval(this.updateInterval);
+    if (this.updateInterval) clearInterval(this.updateInterval);
     this.log('SpaDevice has been deleted');
   }
 
@@ -845,8 +913,12 @@ class SpaDevice extends Homey.Device {
     if (changedKeys.includes('filter_pump_control_enabled')) {
       await this.enableCapability('pump_onoff', newSettings.filter_pump_control_enabled);
     }
-    if (changedKeys.includes('poll_interval')) {
+    if (changedKeys.includes('poll_interval') || changedKeys.includes(Hibernation.SETTING_ID)) {
       this._startPolling();
+    }
+    if (changedKeys.includes(Hibernation.SETTING_ID)) {
+      // Force evaluate() through its enter/leave branch on the next poll.
+      this._hibernating = undefined;
     }
     await this.updateDeviceStatus();
   }

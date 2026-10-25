@@ -1,52 +1,56 @@
 {
   "pair": {
     "connect": {
-      "title":       "Connecter votre Lay-Z-Spa",
-      "description": "Entrez le code de partage depuis l'application Bestway Smart Hub pour ajouter votre spa à Homey.",
-      "button":      "Connecter",
+      "title": "Connecter votre Lay-Z-Spa",
+      "description": "Récupérez le code de partage depuis l'application Bestway Connect ou Smart Hub pour ajouter votre spa à Homey.",
+      "button": "Connecter",
       "steps": {
-        "1": "Ouvrez l'application Bestway Smart Hub",
-        "2": "Accédez à votre spa → ··· → Partager l'appareil",
-        "3": "Copiez le code de partage (commence par RW_Share_)",
-        "4": "Collez-le ci-dessous"
+        "1": "Ouvrez l'application Bestway Connect (ou Bestway Smart Hub pour les spas plus anciens)",
+        "2": "Accédez à votre spa → Paramètres → Partager l'appareil",
+        "3": "Vous ne voyez qu'un QR code ? Scannez-le avec une application de lecture QR pour afficher le texte (un code ou un lien)",
+        "4": "Copiez-le et collez-le ci-dessous"
       },
       "error": {
         "link_failed": "La connexion a échoué. Veuillez vérifier le code de partage et réessayer.",
-        "no_devices":  "Aucun appareil trouvé après la liaison. Assurez-vous que votre spa est configuré dans l'application Bestway Smart Hub."
+        "no_devices": "Aucun appareil trouvé après la liaison. Assurez-vous que votre spa est configuré dans l'application Bestway Connect ou Smart Hub.",
+        "invalid_code": "Cela ne ressemble pas à un code ou un lien de partage valide. Copiez-le à nouveau et réessayez."
       }
     },
     "repair": {
-      "title":       "Reconnecter votre Lay-Z-Spa",
+      "title": "Reconnecter votre Lay-Z-Spa",
       "description": "Entrez un nouveau code de partage pour rétablir la connexion.",
-      "button":      "Reconnecter"
+      "button": "Reconnecter"
     },
     "login": {
-      "title":             "Se connecter à Bestway",
-      "description":       "Entrez les identifiants de votre compte Bestway.",
-      "label_email":       "Adresse e-mail",
+      "title": "Se connecter à Bestway",
+      "description": "Entrez les identifiants de votre compte Bestway.",
+      "label_email": "Adresse e-mail",
       "placeholder_email": "email@exemple.fr",
-      "label_password":    "Mot de passe",
-      "button":            "Se connecter"
+      "label_password": "Mot de passe",
+      "button": "Se connecter"
     },
     "relogin": {
-      "title":       "Mettre à jour les identifiants Bestway",
+      "title": "Mettre à jour les identifiants Bestway",
       "description": "Entrez vos identifiants Bestway pour rétablir la connexion.",
-      "button":      "Mettre à jour"
+      "button": "Mettre à jour"
     },
     "error": {
-      "login_failed":           "La connexion a échoué sur tous les serveurs (EU, US, Global). Veuillez vérifier votre adresse e-mail et votre mot de passe.",
-      "wrong_password":         "Mot de passe incorrect. Veuillez réessayer.",
-      "not_authenticated":      "Veuillez d'abord vous connecter.",
-      "fetch_devices_failed":   "Impossible de récupérer les appareils depuis le cloud Bestway.",
-      "no_devices":             "Aucun appareil trouvé dans votre compte Bestway. Assurez-vous que votre spa est configuré dans l'application Bestway Smart Hub."
+      "login_failed": "La connexion a échoué sur tous les serveurs (EU, US, Global). Veuillez vérifier votre adresse e-mail et votre mot de passe.",
+      "wrong_password": "Mot de passe incorrect. Veuillez réessayer.",
+      "not_authenticated": "Veuillez d'abord vous connecter.",
+      "fetch_devices_failed": "Impossible de récupérer les appareils depuis le cloud Bestway.",
+      "no_devices": "Aucun appareil trouvé dans votre compte Bestway. Assurez-vous que votre spa est configuré dans l'application Bestway Smart Hub."
     }
   },
   "error": {
-    "control_failed":          "Impossible d'envoyer la commande au spa. Veuillez vérifier la connexion.",
-    "credentials_missing":     "Les identifiants de connexion sont manquants. Veuillez supprimer et réajouter l'appareil.",
-    "hydrojet_not_supported":  "HydroJet n'est pas pris en charge par ce modèle de spa.",
-    "lock_not_supported":      "Le verrouillage du panneau ne peut pas être activé/désactivé via l'application pour ce modèle de spa. Il ne peut être modifié que sur le panneau de commande physique.",
-    "device_offline":          "L'appareil est hors ligne.",
-    "system_errors":           "Erreur(s) système"
+    "control_failed": "Impossible d'envoyer la commande au spa. Veuillez vérifier la connexion.",
+    "credentials_missing": "Les identifiants de connexion sont manquants. Veuillez supprimer et réajouter l'appareil.",
+    "hydrojet_not_supported": "HydroJet n'est pas pris en charge par ce modèle de spa.",
+    "lock_not_supported": "Le verrouillage du panneau ne peut pas être activé/désactivé via l'application pour ce modèle de spa. Il ne peut être modifié que sur le panneau de commande physique.",
+    "device_offline": "L'appareil est hors ligne.",
+    "system_errors": "Erreur(s) système"
+  },
+  "hibernation": {
+    "warning": "Le mode hivernage est actif — le spa est rangé. Les valeurs sont figées et la puissance est indiquée à 0. Il se désactive dès que le spa renvoie de nouvelles données."
   }
 }

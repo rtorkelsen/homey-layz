@@ -1,52 +1,56 @@
 {
   "pair": {
     "connect": {
-      "title":       "Připojit Lay-Z-Spa",
-      "description": "Zadejte sdílecí kód z aplikace Bestway Smart Hub pro přidání vašeho spa do Homey.",
-      "button":      "Připojit",
+      "title": "Připojit Lay-Z-Spa",
+      "description": "Získejte sdílecí kód z aplikace Bestway Connect nebo Smart Hub pro přidání vašeho spa do Homey.",
+      "button": "Připojit",
       "steps": {
-        "1": "Otevřete aplikaci Bestway Smart Hub",
-        "2": "Přejděte na vaše spa → ··· → Sdílet zařízení",
-        "3": "Zkopírujte sdílecí kód (začíná RW_Share_)",
-        "4": "Vložte ho níže"
+        "1": "Otevřete aplikaci Bestway Connect (nebo Bestway Smart Hub u starších spa)",
+        "2": "Přejděte na vaše spa → Nastavení → Sdílet zařízení",
+        "3": "Vidíte jen QR kód? Naskenujte ho libovolnou aplikací pro čtení QR kódů, abyste zobrazili text (kód nebo odkaz)",
+        "4": "Zkopírujte ho a vložte níže"
       },
       "error": {
         "link_failed": "Připojení se nezdařilo. Zkontrolujte sdílecí kód a zkuste to znovu.",
-        "no_devices":  "Po připojení nebylo nalezeno žádné zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Smart Hub."
+        "no_devices": "Po připojení nebylo nalezeno žádné zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Connect nebo Smart Hub.",
+        "invalid_code": "Toto nevypadá jako platný sdílecí kód nebo odkaz. Zkopírujte ho prosím znovu a zkuste to ještě jednou."
       }
     },
     "repair": {
-      "title":       "Znovu připojit Lay-Z-Spa",
+      "title": "Znovu připojit Lay-Z-Spa",
       "description": "Zadejte nový sdílecí kód pro obnovení připojení.",
-      "button":      "Znovu připojit"
+      "button": "Znovu připojit"
     },
     "login": {
-      "title":             "Přihlaste se k Bestway",
-      "description":       "Zadejte přihlašovací údaje k účtu Bestway.",
-      "label_email":       "E-mailová adresa",
+      "title": "Přihlaste se k Bestway",
+      "description": "Zadejte přihlašovací údaje k účtu Bestway.",
+      "label_email": "E-mailová adresa",
       "placeholder_email": "email@priklad.cz",
-      "label_password":    "Heslo",
-      "button":            "Přihlásit se"
+      "label_password": "Heslo",
+      "button": "Přihlásit se"
     },
     "relogin": {
-      "title":       "Aktualizovat přihlašovací údaje Bestway",
+      "title": "Aktualizovat přihlašovací údaje Bestway",
       "description": "Zadejte přihlašovací údaje Bestway pro obnovení připojení.",
-      "button":      "Aktualizovat"
+      "button": "Aktualizovat"
     },
     "error": {
-      "login_failed":           "Přihlášení selhalo na všech serverech (EU, US, Global). Zkontrolujte e-mailovou adresu a heslo.",
-      "wrong_password":         "Nesprávné heslo. Zkuste to znovu.",
-      "not_authenticated":      "Nejprve se přihlaste.",
-      "fetch_devices_failed":   "Nelze načíst zařízení z cloudu Bestway.",
-      "no_devices":             "Ve vašem účtu Bestway nebyla nalezena žádná zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Smart Hub."
+      "login_failed": "Přihlášení selhalo na všech serverech (EU, US, Global). Zkontrolujte e-mailovou adresu a heslo.",
+      "wrong_password": "Nesprávné heslo. Zkuste to znovu.",
+      "not_authenticated": "Nejprve se přihlaste.",
+      "fetch_devices_failed": "Nelze načíst zařízení z cloudu Bestway.",
+      "no_devices": "Ve vašem účtu Bestway nebyla nalezena žádná zařízení. Ujistěte se, že je spa nastaveno v aplikaci Bestway Smart Hub."
     }
   },
   "error": {
-    "control_failed":          "Příkaz nelze odeslat do spa. Zkontrolujte připojení.",
-    "credentials_missing":     "Přihlašovací údaje chybí. Odeberte a znovu přidejte zařízení.",
-    "hydrojet_not_supported":  "HydroJet není tímto modelem spa podporován.",
-    "lock_not_supported":      "Zámek panelu nelze přepínat přes aplikaci pro tento model spa. Lze jej změnit pouze na fyzickém ovládacím panelu.",
-    "device_offline":          "Zařízení je offline.",
-    "system_errors":           "Systémová chyba(y)"
+    "control_failed": "Příkaz nelze odeslat do spa. Zkontrolujte připojení.",
+    "credentials_missing": "Přihlašovací údaje chybí. Odeberte a znovu přidejte zařízení.",
+    "hydrojet_not_supported": "HydroJet není tímto modelem spa podporován.",
+    "lock_not_supported": "Zámek panelu nelze přepínat přes aplikaci pro tento model spa. Lze jej změnit pouze na fyzickém ovládacím panelu.",
+    "device_offline": "Zařízení je offline.",
+    "system_errors": "Systémová chyba(y)"
+  },
+  "hibernation": {
+    "warning": "Zimní spánek je aktivní — spa je uklizeno. Hodnoty jsou zmrazeny a příkon se hlásí jako 0. Vypne se sám, jakmile spa opět odešle nová data."
   }
 }

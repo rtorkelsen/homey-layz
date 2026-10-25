@@ -2,17 +2,35 @@
   "id": "spa_temp_reached",
   "title": {
     "en": "Target temperature reached",
-    "de": "Zieltemperatur erreicht"
+    "de": "Zieltemperatur erreicht",
+    "no": "Måltemperatur nådd",
+    "cs": "Cílová teplota dosažena",
+    "nl": "Doeltemperatuur bereikt",
+    "da": "Måltemperatur nået",
+    "sv": "Måltemperatur uppnådd",
+    "it": "Temperatura target raggiunta",
+    "fr": "Température cible atteinte",
+    "ru": "Целевая температура достигнута",
+    "pl": "Osiągnięto temperaturę docelową"
   },
   "titleFormatted": {
     "en": "[[device]] target temperature reached",
-    "de": "[[device]] Zieltemperatur erreicht"
+    "de": "[[device]] Zieltemperatur erreicht",
+    "no": "[[device]] måltemperatur nådd",
+    "cs": "[[device]] cílová teplota dosažena",
+    "nl": "[[device]] doeltemperatuur bereikt",
+    "da": "[[device]] måltemperatur nået",
+    "sv": "[[device]] måltemperatur uppnådd",
+    "it": "[[device]] temperatura target raggiunta",
+    "fr": "[[device]] température cible atteinte",
+    "ru": "[[device]] целевая температура достигнута",
+    "pl": "[[device]] osiągnięto temperaturę docelową"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capability=bestway_temp_reached"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     }
   ],
   "tokens": [
@@ -21,7 +39,16 @@
       "type": "number",
       "title": {
         "en": "Temperature",
-        "de": "Temperatur"
+        "de": "Temperatur",
+        "no": "Temperatur",
+        "cs": "Teplota",
+        "nl": "Temperatuur",
+        "da": "Temperatur",
+        "sv": "Temperatur",
+        "it": "Temperatura",
+        "fr": "Température",
+        "ru": "Температура",
+        "pl": "Temperatura"
       }
     }
   ]

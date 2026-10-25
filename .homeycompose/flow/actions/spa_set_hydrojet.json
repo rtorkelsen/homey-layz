@@ -1,25 +1,95 @@
 {
   "id": "spa_set_hydrojet",
+  "deprecated": true,
   "title": {
     "en": "Turn HydroJet on or off",
-    "de": "HydroJet ein- oder ausschalten"
+    "de": "HydroJet ein- oder ausschalten",
+    "no": "Slå HydroJet av eller på",
+    "cs": "Zapnout nebo vypnout HydroJet",
+    "nl": "HydroJet aan of uit zetten",
+    "da": "Tænd eller sluk HydroJet",
+    "sv": "Slå HydroJet av eller på",
+    "it": "Accendi o spegni HydroJet",
+    "fr": "Allumer ou éteindre le HydroJet",
+    "ru": "Включить или выключить HydroJet",
+    "pl": "Włącz lub wyłącz HydroJet"
   },
   "titleFormatted": {
     "en": "Turn HydroJet [[onoff]]",
-    "de": "HydroJet [[onoff]] schalten"
+    "de": "HydroJet [[onoff]] schalten",
+    "no": "Slå HydroJet [[onoff]]",
+    "cs": "HydroJet [[onoff]]",
+    "nl": "HydroJet [[onoff]]",
+    "da": "Slå HydroJet [[onoff]]",
+    "sv": "Slå HydroJet [[onoff]]",
+    "it": "HydroJet [[onoff]]",
+    "fr": "HydroJet [[onoff]]",
+    "ru": "HydroJet [[onoff]]",
+    "pl": "HydroJet [[onoff]]"
   },
   "hint": {
     "en": "Only available on HydroJet spa models.",
-    "de": "Nur für HydroJet-Spa-Modelle verfügbar."
+    "de": "Nur für HydroJet-Spa-Modelle verfügbar.",
+    "no": "Kun tilgjengelig på HydroJet-spa-modeller.",
+    "cs": "Dostupné pouze pro modely spa HydroJet.",
+    "nl": "Alleen beschikbaar op HydroJet spa-modellen.",
+    "da": "Kun tilgængelig på HydroJet spa-modeller.",
+    "sv": "Endast tillgänglig på HydroJet spa-modeller.",
+    "it": "Disponibile solo sui modelli spa HydroJet.",
+    "fr": "Disponible uniquement sur les modèles de spa HydroJet.",
+    "ru": "Доступно только на моделях спа HydroJet.",
+    "pl": "Dostępne tylko na modelach spa HydroJet."
   },
   "args": [
     {
       "name": "onoff",
       "type": "dropdown",
-      "title": { "en": "State", "de": "Zustand" },
+      "title": {
+        "en": "State",
+        "de": "Zustand",
+        "no": "Tilstand",
+        "cs": "Stav",
+        "nl": "Toestand",
+        "da": "Tilstand",
+        "sv": "Tillstånd",
+        "it": "Stato",
+        "fr": "État",
+        "ru": "Состояние",
+        "pl": "Stan"
+      },
       "values": [
-        { "id": "true",  "label": { "en": "on",  "de": "ein" } },
-        { "id": "false", "label": { "en": "off", "de": "aus" } }
+        {
+          "id": "true",
+          "label": {
+            "en": "on",
+            "de": "ein",
+            "no": "på",
+            "cs": "zapnout",
+            "nl": "aan",
+            "da": "til",
+            "sv": "på",
+            "it": "acceso",
+            "fr": "allumé",
+            "ru": "вкл",
+            "pl": "wł"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "off",
+            "de": "aus",
+            "no": "av",
+            "cs": "vypnout",
+            "nl": "uit",
+            "da": "fra",
+            "sv": "av",
+            "it": "spento",
+            "fr": "éteint",
+            "ru": "выкл",
+            "pl": "wył"
+          }
+        }
       ]
     }
   ]

@@ -2,17 +2,35 @@
   "id": "spa_error_triggered",
   "title": {
     "en": "Spa error occurred",
-    "de": "Spa-Fehler aufgetreten"
+    "de": "Spa-Fehler aufgetreten",
+    "no": "Spa-feil oppstod",
+    "cs": "Nastala chyba spa",
+    "nl": "Spa fout opgetreden",
+    "da": "Spa-fejl opstod",
+    "sv": "Spa-fel uppstod",
+    "it": "Si è verificato un errore spa",
+    "fr": "Erreur spa survenue",
+    "ru": "Произошла ошибка спа",
+    "pl": "Wystąpił błąd spa"
   },
   "titleFormatted": {
     "en": "[[device]] spa error occurred",
-    "de": "[[device]] Spa-Fehler aufgetreten"
+    "de": "[[device]] Spa-Fehler aufgetreten",
+    "no": "[[device]] spa-feil oppstod",
+    "cs": "[[device]] nastala chyba spa",
+    "nl": "[[device]] spa fout opgetreden",
+    "da": "[[device]] spa-fejl opstod",
+    "sv": "[[device]] spa-fel uppstod",
+    "it": "[[device]] si è verificato un errore spa",
+    "fr": "[[device]] erreur spa survenue",
+    "ru": "[[device]] произошла ошибка спа",
+    "pl": "[[device]] wystąpił błąd spa"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
+      "filter": "driver_id=Lay-Z|lay-z-spa-connect"
     }
   ],
   "tokens": [
@@ -21,7 +39,16 @@
       "type": "string",
       "title": {
         "en": "Error message",
-        "de": "Fehlermeldung"
+        "de": "Fehlermeldung",
+        "no": "Feilmelding",
+        "cs": "Chybová zpráva",
+        "nl": "Foutmelding",
+        "da": "Fejlbesked",
+        "sv": "Felmeddelande",
+        "it": "Messaggio di errore",
+        "fr": "Message d'erreur",
+        "ru": "Сообщение об ошибке",
+        "pl": "Komunikat o błędzie"
       }
     }
   ]
