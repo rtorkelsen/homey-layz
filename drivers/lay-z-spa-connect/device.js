@@ -4,6 +4,7 @@ const Homey = require('homey');
 const { BestwaySmarthubClient, SmarthubError } = require('../../lib/BestwaySmarthubClient');
 const { BestwaySmartHomeClient, SmartHomeError } = require('../../lib/BestwaySmartHomeClient');
 const Hibernation = require('../../lib/Hibernation');
+const { estimateWatts } = require('../../lib/PowerEstimate');
 
 const DEFAULT_POLL_INTERVAL_S = 60;
 const MAX_POLL_INTERVAL_S     = 300;
@@ -42,6 +43,7 @@ class LaZSpaConnectDevice extends Homey.Device {
     this.log('Device init (Connect):', this.getName());
 
     this._pollTimer      = null;
+    this._pollGeneration = 0;
     this._pollFailCount  = 0;
     this._authPromise    = null;
 
@@ -169,6 +171,19 @@ class LaZSpaConnectDevice extends Homey.Device {
     await this._authPromise;
   }
 
+  /**
+   * Does this error mean the session token is no longer good?
+   *
+   * Shared by the poll and the control path so both react the same way — the
+   * control path used to never clear a stale token at all.
+   */
+  _looksLikeAuthFailure(err) {
+    const code = (err instanceof SmarthubError || err instanceof SmartHomeError) ? err.code : null;
+    const codeStr = code !== null && code !== undefined ? String(code) : null;
+    return codeStr === '401' || codeStr === '403' || codeStr === '505'
+      || !!(err?.message && err.message.toLowerCase().includes('token'));
+  }
+
   async _invalidateToken() {
     this._client._token = null;
     await this.setStoreValue('token', null).catch(() => {});
@@ -187,9 +202,17 @@ class LaZSpaConnectDevice extends Homey.Device {
 
   _startPolling() {
     this._stopPolling();
+    // Generation counter: the chain re-arms itself after each run, so a run
+    // that was still awaiting its HTTP call when the device was torn down (or
+    // when polling was restarted) would schedule another one and keep a
+    // removed device polling forever — or leave two chains running at once.
+    // Anything from a superseded generation stops here.
+    const generation = this._pollGeneration;
     const schedule = () => {
       this._pollTimer = setTimeout(async () => {
+        if (generation !== this._pollGeneration) return;
         await this._syncStatus().catch(err => this.error('Poll sync failed:', err.message));
+        if (generation !== this._pollGeneration) return;
         schedule();
       }, this._getPollIntervalMs());
     };
@@ -197,6 +220,8 @@ class LaZSpaConnectDevice extends Homey.Device {
   }
 
   _stopPolling() {
+    // Retire the current generation so an in-flight run cannot re-arm itself.
+    this._pollGeneration = (this._pollGeneration || 0) + 1;
     if (this._pollTimer) {
       clearTimeout(this._pollTimer);
       this._pollTimer = null;
@@ -404,13 +429,16 @@ class LaZSpaConnectDevice extends Homey.Device {
           'heater_state', 'filter_state', 'wave_state', 'hydrojet_state',
         ]),
       ));
-      if (hibernation.changed) this._startPolling();
+      // No _startPolling() here: this runs inside the poll callback, which
+      // schedules the next run itself and re-reads the interval each time, so
+      // the hibernation interval is picked up automatically. Restarting the
+      // chain from in here would leave a second one running alongside it.
       if (hibernation.hibernating) {
         await this._setCapability('measure_power', 0);
         this._energyLastTs    = Date.now();
         this._energyLastWatts = 0;
         this.setEnergy({ approximation: { usageOn: 0, usageOff: 0 } }).catch(() => {});
-        this._updateDebugSettings(raw);
+        this._updateDebugSettings(raw, null, 'Hibernating — waiting for fresh data');
         this._pollFailCount = 0;
         return;
       }
@@ -572,11 +600,7 @@ class LaZSpaConnectDevice extends Homey.Device {
       if (!this.getAvailable()) this.setAvailable().catch(err => this.log('setAvailable failed:', err.message));
 
     } catch (err) {
-      const code = (err instanceof SmarthubError || err instanceof SmartHomeError) ? err.code : null;
-      const codeStr = code !== null && code !== undefined ? String(code) : null;
-
-      if (codeStr === '401' || codeStr === '403' || codeStr === '505'
-        || (err.message && err.message.toLowerCase().includes('token'))) {
+      if (this._looksLikeAuthFailure(err)) {
         this.log('Token appears invalid — will re-authenticate on next poll.');
         await this._invalidateToken();
       }
@@ -719,33 +743,22 @@ class LaZSpaConnectDevice extends Homey.Device {
   }
 
   _updateEnergyApproximation() {
-    if (this.getSetting('power_sensor_enabled') !== 'yes') return;
-
+    const enabled = this.getSetting('power_sensor_enabled') === 'yes';
     const standby = Number(this.getSetting('power_standby_w')) || 2;
 
-    const airjetHigh = this.getCapabilityValue('airjet_high');
-    const airjetLow  = this.getCapabilityValue('airjet_low');
-    const hydrojet   = this.getCapabilityValue('jet_onoff');
+    const usageOn = enabled ? estimateWatts(this, {
+      filterOn:   !!this.getCapabilityValue('pump_onoff'),
+      heating:    !!this.getCapabilityValue('heat_onoff'),
+      airjetLow:  !!this.getCapabilityValue('airjet_low'),
+      airjetHigh: !!this.getCapabilityValue('airjet_high'),
+      hydrojet:   !!this.getCapabilityValue('jet_onoff'),
+    }) : 0;
 
-    let usageOn;
-    if (hydrojet && airjetHigh) {
-      usageOn = Number(this.getSetting('power_hydrojet_airjet_high_w')) || 0;
-    } else if (hydrojet && airjetLow) {
-      usageOn = Number(this.getSetting('power_hydrojet_airjet_low_w')) || 0;
-    } else if (airjetHigh) {
-      usageOn = Number(this.getSetting('power_airjet_high_w')) || 0;
-    } else if (airjetLow) {
-      usageOn = Number(this.getSetting('power_airjet_low_w')) || 0;
-    } else if (hydrojet) {
-      usageOn = Number(this.getSetting('power_hydrojet_w')) || 0;
-    } else if (this.getCapabilityValue('heat_onoff') && this.getCapabilityValue('pump_onoff')) {
-      usageOn = Number(this.getSetting('power_heating_w')) || 0;
-    } else if (this.getCapabilityValue('pump_onoff')) {
-      usageOn = Number(this.getSetting('power_filter_w')) || 0;
-    } else {
-      usageOn = standby;
-    }
-
+    // Keep accumulating even while the estimate is switched off. Returning
+    // early here used to freeze the clock, so the first poll after switching
+    // it back on billed the whole gap at the last known wattage — days of
+    // phantom kWh in one jump. At 0 W the same gap adds nothing, and
+    // measure_power reads 0 instead of keeping a stale figure forever.
     const now = Date.now();
     const elapsedHours = (now - this._energyLastTs) / 3_600_000;
     const deltaKwh     = (this._energyLastWatts / 1000) * elapsedHours;
@@ -754,18 +767,21 @@ class LaZSpaConnectDevice extends Homey.Device {
     this._energyLastTs    = now;
     this._energyLastWatts = usageOn;
 
-    this.setEnergy({ approximation: { usageOn, usageOff: standby } })
-      .catch(err => this.error('setEnergy failed:', err.message));
+    if (enabled) {
+      this.setEnergy({ approximation: { usageOn, usageOff: standby } })
+        .catch(err => this.error('setEnergy failed:', err.message));
+    }
 
     this._setCapability('measure_power', usageOn);
   }
 
-  _updateDebugSettings(state, error = null) {
+
+  _updateDebugSettings(state, error = null, statusOverride = null) {
     const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
 
     const updates = {
       debug_last_sync: timestamp,
-      debug_status:    error ? `Error: ${error}` : 'OK ✓',
+      debug_status:    statusOverride ?? (error ? `Error: ${error}` : 'OK ✓'),
       debug_region:    this.getStoreValue('region') ?? '–',
       debug_backend:   `${this.getStoreValue('backend') ?? 'smarthub'} (${this._dialect ?? 'aws'})`,
     };
@@ -830,14 +846,23 @@ class LaZSpaConnectDevice extends Homey.Device {
         lastErr = err;
         this.log(`Connect control failed (attempt ${attempt}):`, err.message);
 
-        if (attempt < CONTROL_MAX_ATTEMPTS) {
+        // Clear a suspect token regardless of whether another attempt follows.
+        // With CONTROL_MAX_ATTEMPTS at 1 (kept low so a command cannot outlive
+        // Homey's 10 s Flow card budget) this branch never ran, so a stale
+        // token survived until some unrelated poll happened to fail — every
+        // button press in between failed with the same dead token.
+        if (this._looksLikeAuthFailure(err)) {
+          this.log('Control failed on a stale token — clearing it.');
           await this._invalidateToken();
+        }
+
+        if (attempt < CONTROL_MAX_ATTEMPTS) {
           await new Promise(resolve => setTimeout(resolve, CONTROL_RETRY_DELAY_MS));
         }
       }
     }
 
-    this.error('Connect control failed after retry:', lastErr.message);
+    this.error('Connect control failed:', lastErr.message);
     throw new Error(this.homey.__('error.control_failed'));
   }
 
