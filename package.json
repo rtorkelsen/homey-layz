@@ -1,6 +1,6 @@
 {
   "name": "com.utkikk.layz",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "app.js",
   "scripts": {
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore ."

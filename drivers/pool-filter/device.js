@@ -28,6 +28,7 @@ class PoolFilterDevice extends Homey.Device {
 
     this._client              = new BestwayClient({ region: this._resolveRegion() });
     this._pollTimer           = null;
+    this._pollGeneration      = 0;
     this._pollFailCount       = 0;
     this._tokenRefreshPromise = null;
     // undefined (not false): suppresses a spurious trigger fire on the very
@@ -105,9 +106,17 @@ class PoolFilterDevice extends Homey.Device {
 
   _startPolling() {
     this._stopPolling();
+    // Generation counter: the chain re-arms itself after each run, so a run
+    // that was still awaiting its HTTP call when the device was torn down (or
+    // when polling was restarted) would schedule another one and keep a
+    // removed device polling forever — or leave two chains running at once.
+    // Anything from a superseded generation stops here.
+    const generation = this._pollGeneration;
     const schedule = () => {
       this._pollTimer = setTimeout(async () => {
+        if (generation !== this._pollGeneration) return;
         await this._syncStatus().catch(err => this.error('Poll sync failed:', err.message));
+        if (generation !== this._pollGeneration) return;
         schedule();
       }, this._getPollIntervalMs());
     };
@@ -115,6 +124,8 @@ class PoolFilterDevice extends Homey.Device {
   }
 
   _stopPolling() {
+    // Retire the current generation so an in-flight run cannot re-arm itself.
+    this._pollGeneration = (this._pollGeneration || 0) + 1;
     if (this._pollTimer) { clearTimeout(this._pollTimer); this._pollTimer = null; }
   }
 
@@ -164,9 +175,12 @@ class PoolFilterDevice extends Homey.Device {
         status.updated_at,
         Hibernation.signatureOf(attrs, ['power', 'time', 'filter']),
       ));
-      if (hibernation.changed) this._startPolling();
+      // No _startPolling() here: this runs inside the poll callback, which
+      // schedules the next run itself and re-reads the interval each time, so
+      // the hibernation interval is picked up automatically. Restarting the
+      // chain from in here would leave a second one running alongside it.
       if (hibernation.hibernating) {
-        this._updateDebugSettings(attrs);
+        this._updateDebugSettings(attrs, null, 'Hibernating — waiting for fresh data');
         this._pollFailCount = 0;
         return;
       }
@@ -255,11 +269,11 @@ class PoolFilterDevice extends Homey.Device {
     await this._sendControl({ time: hours });
   }
 
-  _updateDebugSettings(attrs, error = null) {
+  _updateDebugSettings(attrs, error = null, statusOverride = null) {
     const timestamp = new Date().toLocaleString('sv-SE', { timeZone: this.homey.clock.getTimezone() });
     const updates = {
       debug_last_sync: timestamp,
-      debug_status:    error ? `Error: ${error}` : 'OK ✓',
+      debug_status:    statusOverride ?? (error ? `Error: ${error}` : 'OK ✓'),
       debug_product:   this.getData().productName ?? '–',
       debug_region:    this._resolveRegion(),
     };

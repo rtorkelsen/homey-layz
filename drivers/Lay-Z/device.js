@@ -3,6 +3,7 @@
 const Homey = require('homey');
 const axios = require('axios');
 const Hibernation = require('../../lib/Hibernation');
+const { estimateWatts } = require('../../lib/PowerEstimate');
 
 // Bump whenever capabilitiesOptions in driver.compose.json changes, so already
 // paired devices pick the new options up once. See _migrateCapabilityOptions().
@@ -16,6 +17,11 @@ const CAPABILITY_OPTIONS_REVISION = 2;
 const MODEL_REGISTRY = [
   {
     id: 'Airjet',
+    // What the hardware actually has, rather than inferring it from the
+    // adapter name. AirJet V01 has two bubble levels like a HydroJet but no
+    // jets, so an "is this a HydroJet?" check got it wrong in both directions.
+    // Lock support follows the attribute table in lib/BestwayClient.js.
+    features: { bubbleLevels: false, jets: false, lock: true },
     match: {
       productNames: ['Airjet'],
       // Structural signature: Airjet exposes temp_now / temp_set
@@ -26,9 +32,15 @@ const MODEL_REGISTRY = [
       const unit = (attr?.temp_set_unit === '华氏') ? 'F' : 'C';
       return {
         powerOn:  attr?.power === 1,
-        heatOn:   attr?.heat_power === 1,
-        filterOn: attr?.filter_power === 1,
-        waveOn:   attr?.wave_power === 1,
+        // Read the model's own attribute when it is there, but fall back to the
+        // generic name rather than reporting "off": a unit that answers with
+        // `filter`/`heat` instead of `filter_power`/`heat_power` used to read
+        // as permanently off, which flipped the buttons back and pinned the
+        // power estimate at standby. Values are "anything non-zero is on",
+        // because the ON value is 1 on some models and 2 on others.
+        heatOn:   attr?.heat_power   !== undefined ? attr.heat_power   === 1 : (attr?.heat   ?? 0) > 0,
+        filterOn: attr?.filter_power !== undefined ? attr.filter_power === 1 : (attr?.filter ?? 0) > 0,
+        waveOn:   attr?.wave_power   !== undefined ? attr.wave_power   === 1 : (attr?.wave   ?? 0) > 0,
         tempNow:  attr?.temp_now,
         tempSet:  attr?.temp_set,
         unit,
@@ -55,7 +67,82 @@ const MODEL_REGISTRY = [
   },
 
   {
+    // AirJet V01 speaks the HydroJet attribute names (Tnow/Tset/heat/filter/
+    // wave) but is not a HydroJet: it has no jets, and its low bubble level is
+    // 50 rather than 40. Without its own adapter these units fell through to
+    // Hydrojet_Pro, where "AirJet Low" wrote 42 and read back as off, and
+    // HydroJet controls appeared for hardware that has none.
+    //
+    // Matched on product_name only, deliberately: its payload is structurally
+    // identical to a HydroJet's, so a signature rule would be a guess. Units
+    // that report a different product name keep their previous adapter.
+    id: 'Airjet_V01',
+    // What the hardware actually has, rather than inferring it from the
+    // adapter name. AirJet V01 has two bubble levels like a HydroJet but no
+    // jets, so an "is this a HydroJet?" check got it wrong in both directions.
+    // Lock support follows the attribute table in lib/BestwayClient.js.
+    features: { bubbleLevels: true,  jets: false, lock: false },
+    match: {
+      productNames: ['Airjet_V01'],
+      // Fits the same payload shape as a HydroJet, so it stays selected once
+      // chosen — but never wins an automatic signature match, which is what
+      // keeps HydroJets out of this adapter.
+      is: (attr) => typeof attr?.Tnow !== 'undefined' || typeof attr?.Tset !== 'undefined',
+      signatureSelectable: false,
+      priority: 20,
+    },
+    normalize(attr) {
+      const unit = (typeof attr?.Tunit === 'number') ? (attr.Tunit === 1 ? 'C' : 'F') : 'C';
+      const waveLevel = !attr?.wave ? 'off' : (attr.wave >= 90 ? 'high' : 'low');
+
+      return {
+        powerOn:  attr?.power === 1,
+        heatOn:   (attr?.heat ?? 0) >= 1,
+        filterOn: (attr?.filter ?? 0) > 0,
+        waveOn:   (attr?.wave ?? 0) > 0,
+        waveLevel,
+        jetOn:    false, // no jets on this model
+        tempNow:  attr?.Tnow,
+        tempSet:  attr?.Tset,
+        unit,
+        heatReached: (typeof attr?.Tnow === 'number' && typeof attr?.Tset === 'number')
+          ? (attr.Tnow >= attr.Tset) : false,
+        locked: attr?.bit2 === 1,
+        errors: (() => {
+          const a = [];
+          for (let i = 1; i <= 31; i++) {
+            const k = `E${String(i).padStart(2, '0')}`;
+            if (attr?.[k] === 1) a.push(k);
+          }
+          return a;
+        })(),
+      };
+    },
+    encode(cmd, value) {
+      switch (cmd) {
+        case 'power':     return { attrs: { power:  value ? 1 : 0 } };
+        case 'heat':      return { attrs: { heat:   value ? 1 : 0 } };
+        case 'filter':    return { attrs: { filter: value ? 2 : 0 } };
+        case 'wave':      return { attrs: { wave:   value ? 1 : 0 } };
+        // AirJet V01 low is 50, not the 40 HydroJet uses
+        case 'waveLevel': {
+          const map = { off: 0, low: 50, high: 100 };
+          return { attrs: { wave: map[String(value)] ?? 0 } };
+        }
+        case 'tempSet':   return { attrs: { Tset:   value } };
+        case 'lock':      return { attrs: { locked: value ? 1 : 0 } };
+        default:          return { attrs: {} };
+      }
+    },
+  },
+
+  {
     id: 'Hydrojet_Pro',
+    // What the hardware actually has, rather than inferring it from the
+    // adapter name. AirJet V01 has two bubble levels like a HydroJet but no
+    // jets, so an "is this a HydroJet?" check got it wrong in both directions.
+    // Lock support follows the attribute table in lib/BestwayClient.js.
+    features: { bubbleLevels: true,  jets: true,  lock: false },
     match: {
       productNames: ['Hydrojet_Pro', 'Hydrojet'],
       // Structural signature: Hydrojet exposes Tnow / Tset
@@ -65,17 +152,18 @@ const MODEL_REGISTRY = [
     normalize(attr) {
       // Hydrojet: Tunit === 1 → Celsius
       const unit = (typeof attr?.Tunit === 'number') ? (attr.Tunit === 1 ? 'C' : 'F') : 'C';
-      // Map wave numeric to enum
-      const waveLevel =
-        attr?.wave === 100 ? 'high' :
-        attr?.wave === 42  ? 'low'  : 'off';
+      // Map wave numeric to enum. Read by range, not by exact value: the low
+      // level is reported as 40 on HydroJet, 42 on some firmwares and 50 on
+      // AirJet V01, so an exact match read every one of those as "off".
+      const waveLevel = !attr?.wave ? 'off' : (attr.wave >= 90 ? 'high' : 'low');
 
       return {
         powerOn:  attr?.power  === 1,
         // Heat can report >=1 when on (e.g., 1, 3, 4...). Treat any value >= 1 as ON.
         heatOn:   (attr?.heat ?? 0) >= 1,
-        // Filter is 0/2 (2 means ON)
-        filterOn: attr?.filter === 2,
+        // Filter is 0/2 (2 means ON) — treat any non-zero as on, so a unit that
+        // answers 1 is not reported as permanently off
+        filterOn: (attr?.filter ?? 0) > 0,
         // Legacy wave toggle (0/1); kept for backward compatibility
         waveOn:   attr?.wave   === 1,
         // Hydrojet-specific extras
@@ -107,9 +195,11 @@ const MODEL_REGISTRY = [
         case 'filter':    return { attrs: { filter: value ? 2 : 0 } };
         // Legacy wave toggle (0/1)
         case 'wave':      return { attrs: { wave:   value ? 1 : 0 } };
-        // Explicit massage levels → wave numeric values
+        // Explicit massage levels → wave numeric values. 40 is what these
+        // units actually report for low (and what lib/BestwayClient.js's
+        // attribute table documents); 42 was only ever seen on one firmware.
         case 'waveLevel': {
-          const map = { off: 0, low: 42, high: 100 };
+          const map = { off: 0, low: 40, high: 100 };
           return { attrs: { wave: map[String(value)] ?? 0 } };
         }
         // Hydrojet on/off
@@ -130,6 +220,7 @@ function selectAdapterByProductName(productName) {
 }
 function selectAdapterBySignature(attr) {
   const candidates = MODEL_REGISTRY
+    .filter(a => a.match?.signatureSelectable !== false)
     .filter(a => typeof a.match?.is === 'function' && a.match.is(attr))
     .sort((a, b) => (b.match?.priority || 0) - (a.match?.priority || 0));
   return candidates[0] || null;
@@ -329,10 +420,10 @@ class SpaDevice extends Homey.Device {
     await this.enableCapability('alarm_generic', true);
   
     // *** Model-specific capabilities ***
-    const isHydro = this.adapter?.id === 'Hydrojet_Pro';
+    const feat = this.adapter?.features ?? {};
 
     // Wave/bubble toggle: Airjet only (Hydrojet uses airjet_low/high buttons instead)
-    await this.enableCapability('msg_onoff', !isHydro);
+    await this.enableCapability('msg_onoff', !feat.bubbleLevels);
 
     // Hydrojet-only controls (massage_mode replaced by airjet_low/high buttons)
     await this.removeCapability('massage_mode').catch(() => {});
@@ -341,11 +432,11 @@ class SpaDevice extends Homey.Device {
       await this.removeCapability(old).catch(() => {});
     }
 
-    await this.enableCapability('airjet_low',  isHydro);
-    await this.enableCapability('airjet_high', isHydro);
-    await this.enableCapability('jet_onoff',         isHydro);
+    await this.enableCapability('airjet_low',  !!feat.bubbleLevels);
+    await this.enableCapability('airjet_high', !!feat.bubbleLevels);
+    await this.enableCapability('jet_onoff',   !!feat.jets);
     // Lock is Airjet-only (Hydrojet write command has no effect per ha-bestway)
-    await this.enableCapability('bestway_locked',    !isHydro);
+    await this.enableCapability('bestway_locked', !!feat.lock);
 
     await this._migrateCapabilityOptions();
 
@@ -420,30 +511,41 @@ class SpaDevice extends Homey.Device {
         Hibernation.signatureOf(attr, ['power', 'Tnow', 'Tset', 'heat', 'filter', 'wave', 'jet',
           'temp_now', 'temp_set', 'heat_power', 'filter_power', 'wave_power']),
       ));
+      // Needed here, unlike the other two drivers: this one polls with a
+      // fixed setInterval, so the new interval only takes effect when the
+      // timer is recreated. Safe from inside the callback — setInterval does
+      // not re-arm itself, so no second chain is left behind.
       if (hibernation.changed) this._startPolling();
       if (hibernation.hibernating) {
         await this.safeSetCapabilityValue('measure_power', 0);
         this._energyLastTs    = Date.now();
         this._energyLastWatts = 0;
-        this._updateDebugLabels(attr, null, null);
+        this._updateDebugLabels(attr, null, null, 'Hibernating — waiting for fresh data');
         this._pollFailCount = 0;
         return;
       }
 
-      // Re-select adapter by signature if payload indicates a better match
-      const bySig = selectAdapterBySignature(attr);
-      if (bySig && bySig.id !== this.adapter.id) {
-        this.log(`Switching adapter based on payload signature: ${this.adapter.id} -> ${bySig.id}`);
-        this.adapter = bySig;
+      // Re-select the adapter only when the current one no longer fits this
+      // payload. Switching whenever *some* adapter matches better would undo
+      // a product-name choice on every poll — AirJet V01 and HydroJet are
+      // structurally identical, so only the product name tells them apart.
+      const currentStillFits = typeof this.adapter?.match?.is === 'function'
+        && this.adapter.match.is(attr);
+      if (!currentStillFits) {
+        const bySig = selectAdapterBySignature(attr);
+        if (bySig && bySig.id !== this.adapter.id) {
+          this.log(`Switching adapter based on payload signature: ${this.adapter.id} -> ${bySig.id}`);
+          this.adapter = bySig;
+        }
       }
 
       // Toggle Hydrojet-only caps dynamically (in case adapter changed)
-      const isHydro = this.adapter?.id === 'Hydrojet_Pro';
-      await this.enableCapability('airjet_low',  isHydro);
-      await this.enableCapability('airjet_high', isHydro);
-      await this.enableCapability('jet_onoff',   isHydro);
-      await this.enableCapability('msg_onoff',         !isHydro);
-      await this.enableCapability('bestway_locked',    !isHydro);
+      const feat = this.adapter?.features ?? {};
+      await this.enableCapability('airjet_low',     !!feat.bubbleLevels);
+      await this.enableCapability('airjet_high',    !!feat.bubbleLevels);
+      await this.enableCapability('jet_onoff',      !!feat.jets);
+      await this.enableCapability('msg_onoff',      !feat.bubbleLevels);
+      await this.enableCapability('bestway_locked', !!feat.lock);
 
       // Normalize and log snapshot
       const n = this.adapter.normalize(attr);
@@ -841,23 +943,19 @@ class SpaDevice extends Homey.Device {
 
   _calculatePower(n) {
     if (this.getSetting('power_sensor_enabled') !== 'yes') return 0;
-    const isHydro = this.adapter?.id === 'Hydrojet_Pro';
-    const airjetLow  = isHydro ? n.waveLevel === 'low'  : n.waveOn;
-    const airjetHigh = isHydro ? n.waveLevel === 'high' : false;
-    const hydrojet   = isHydro && n.jetOn;
-    const heating    = n.heatOn && !n.heatReached;
+    const feat = this.adapter?.features ?? {};
 
-    if (hydrojet && airjetHigh) return Number(this.getSetting('power_hydrojet_airjet_high_w')) || 0;
-    if (hydrojet && airjetLow)  return Number(this.getSetting('power_hydrojet_airjet_low_w')) || 0;
-    if (hydrojet)               return Number(this.getSetting('power_hydrojet_w')) || 0;
-    if (airjetHigh)             return Number(this.getSetting('power_airjet_high_w')) || 0;
-    if (airjetLow)              return Number(this.getSetting('power_airjet_low_w')) || 0;
-    if (heating)                return Number(this.getSetting('power_heating_w')) || 0;
-    if (n.filterOn)             return Number(this.getSetting('power_filter_w')) || 0;
-    return Number(this.getSetting('power_standby_w')) || 0;
+    return estimateWatts(this, {
+      filterOn:   !!n.filterOn,
+      // A heater sitting at its target is not drawing heating power.
+      heating:    !!(n.heatOn && !n.heatReached),
+      airjetLow:  feat.bubbleLevels ? n.waveLevel === 'low'  : !!n.waveOn,
+      airjetHigh: feat.bubbleLevels ? n.waveLevel === 'high' : false,
+      hydrojet:   !!n.jetOn,
+    });
   }
 
-  _updateDebugLabels(attr, n, errorMsg) {
+  _updateDebugLabels(attr, n, errorMsg, statusOverride) {
     const region = (() => {
       const url = this.baseUrl || '';
       if (url.includes('euapi')) return 'EU';
@@ -872,7 +970,13 @@ class SpaDevice extends Homey.Device {
       debug_product:   `${this.getData()?.product_name || '?'} (${this.adapter?.id || '?'})`,
     };
 
-    if (errorMsg) {
+    if (statusOverride) {
+      patch.debug_status = statusOverride;
+      if (attr) {
+        const raw = JSON.stringify(attr);
+        patch.debug_raw = raw.length > 500 ? raw.slice(0, 497) + '…' : raw;
+      }
+    } else if (errorMsg) {
       patch.debug_status = `Error: ${errorMsg}`;
     } else if (n) {
       patch.debug_status = 'OK';
